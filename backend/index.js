@@ -5,6 +5,7 @@ import cors from "cors";
 import { connectDB } from "./libs/db.js";
 
 import authRoute from "./routes/user.route.js";
+import hackathonRoute from "./routes/hackathon.route.js";
 
 dotenv.config();
 const app = express();
@@ -23,6 +24,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/auth", authRoute);
+app.use("/hackathon", hackathonRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is running at port ${PORT}`);
