@@ -24,7 +24,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/auth", authRoute);
-app.use("/hackathon", hackathonRoute);
+app.use("/home", hackathonRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is running at port ${PORT}`);

@@ -40,3 +40,20 @@ export const hackathon = async (req, res) => {
       .json({ message: "Internal error while creating hackathon" });
   }
 };
+
+export const getHackathonTournament = async (req, res) => {
+  try {
+    const hackathons = await Hackathon.find();
+    res
+      .status(200)
+      .json({
+        message: "Successfully fetched hackathon tournaments",
+        hackathons,
+      });
+  } catch (error) {
+    console.log("Error on fetching hackathon tournaments", error);
+    res
+      .status(400)
+      .json({ message: "Internal error while fetching hackathon tournaments" });
+  }
+};
