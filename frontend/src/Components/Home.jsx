@@ -50,47 +50,55 @@ export default function home() {
           </Link>
         </div>
       </nav>
-      <div className="grid grid-cols-2 gap-6 py-12 px-[100px]">
+      <div className="grid grid-cols-2 gap-10 py-12 px-[80px]">
         {hackathons.map((hackathon, index) => {
           return (
             <div
               key={hackathon._id}
-              className="mb-4 p-4 bg-white rounded shadow flex gap-10"
+              className=" mb-4 bg-white shadow-lg flex  w-[660px] border cursor-pointer border-sky-600  "
             >
-              <div className="bg-[url('./src/assets/demo-logo.jpg')]  h-30 w-30 bg-cover bg-center">
+              <div className="p-[2px] bg-sky-600 transition-all duration-75">
                 {" "}
               </div>
-              <div className="w-[500px]">
-                <h2 className="text-3xl font-semibold h-[120px]">
-                  {hackathon.title}
-                </h2>
-                <div className="flex justify-between pr-10 py-4">
-                  <p className="text-lg text-gray-500">
-                    Starts:{" "}
-                    <span className="text-black">
-                      {new Date(hackathon.startDate).toLocaleDateString()}
-                    </span>
-                  </p>
-                  <p className="text-lg text-gray-500">
-                    Ends:{" "}
-                    <span className="text-black">
-                      {new Date(hackathon.endDate).toLocaleDateString()}
-                    </span>
-                  </p>
+              <div className="flex gap-10 p-6 w-full">
+                <div className="bg-[url('./src/assets/demo-logo.jpg')]  h-32 w-36 bg-cover bg-center">
+                  {" "}
                 </div>
-                <div className="flex justify-between pr-10 py-4">
-                  <p className="text-lg text-gray-500">
-                    Registration Deadline:{" "}
-                    <span className="text-black">
-                      {new Date(
-                        hackathon.registrationDeadline
-                      ).toLocaleDateString()}
-                    </span>
-                  </p>
-                  <p className="text-lg">
-                    <FontAwesomeIcon icon={faGlobe} className="text-gray-500" />
-                    <span className="ml-2 capitalize">{hackathon.mode}</span>
-                  </p>
+                <div className="w-[500px]">
+                  <h2 className="text-[26px] font-semibold h-[120px]">
+                    {hackathon.title}
+                  </h2>
+                  <div className="flex justify-between pr-10 py-3">
+                    <p className="text-lg text-gray-500">
+                      Starts:{" "}
+                      <span className="text-black">
+                        {new Date(hackathon.startDate).toLocaleDateString()}
+                      </span>
+                    </p>
+                    <p className="text-lg text-gray-500">
+                      Ends:{" "}
+                      <span className="text-black">
+                        {new Date(hackathon.endDate).toLocaleDateString()}
+                      </span>
+                    </p>
+                  </div>
+                  <div className="flex justify-between pr-10 pt-3">
+                    <p className="text-lg text-gray-500">
+                      Registration Deadline:{" "}
+                      <span className="text-black">
+                        {new Date(
+                          hackathon.registrationDeadline
+                        ).toLocaleDateString()}
+                      </span>
+                    </p>
+                    <p className="text-lg">
+                      <FontAwesomeIcon
+                        icon={faGlobe}
+                        className="text-gray-500"
+                      />
+                      <span className="ml-2 capitalize">{hackathon.mode}</span>
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
