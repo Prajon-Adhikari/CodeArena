@@ -104,11 +104,6 @@ export const forgotpassword = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
-    
-
-  // const token = jwt.sign({ id: checkUser._id }, process.env.JWT_SECRET, {
-  //   expiresIn: "1h",
-  // });
 
   const transporter = nodemailer.createTransport({
     service: "gmail",

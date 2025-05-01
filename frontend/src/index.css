@@ -2,3 +2,268 @@
 *{
     font-family: Merienda;
 }
+
+/* about us */
+.aboutus-hero-section {
+    height: 670px;
+    display: flex;
+  }
+  
+  .left-aboutus-hero-section {
+    position: relative;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    background: url("./assets/host-hackathon.jpg");
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 120px 460px 100px 150px;
+    color: white;
+    z-index: 1;
+  }
+  
+  .left-aboutus-hero-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(
+      29,
+      28,
+      28,
+      0.7
+    ); /* Adjust the color and opacity here */
+    z-index: 1;
+  }
+  
+  .left-aboutus-hero-section > * {
+    position: relative;
+    z-index: 2; /* Ensure content stays above the overlay */
+  }
+  
+  .left-aboutus-hero-section h2 {
+    font-size: 3.6rem;
+    -webkit-text-stroke: 4px;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .left-aboutus-hero-section p {
+    font-size: 1.4rem;
+  }
+  
+  .left-aboutus-hero-section h2 span {
+    color: #D69ADE;
+  }
+  
+  .left-aboutus-hero-section button,
+  .learn-btn {
+    color: white;
+    background: linear-gradient(to right, #D69ADE, #AA60C8);
+    border: none;
+    border-radius: 7px;
+    padding: 8px 30px;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    width: 200px;
+  }
+  
+  .right-aboutus-hero-section {
+    width: 45%;
+    position: absolute;
+    height: 500px;
+    right: 0px;
+    z-index: 0;
+  }
+  
+  .right-aboutus-hero-section img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* features */
+  .features-section {
+    display: flex;
+    justify-content: center;
+    margin: 80px 180px;
+    gap: 30px;
+  }
+  
+  .features {
+    border-radius: 10px;
+    padding: 40px;
+    box-shadow: 0px 0px 5px grey;
+    background: linear-gradient(
+      to top,
+      rgb(217, 122, 233) 0%,
+      rgb(238, 176, 245) 100%
+    );
+    background-size: 0% 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.5s ease;
+    color: black;
+  }
+  
+  .features:hover {
+    background-size: 100% 100%;
+    color: white;
+  }
+  
+  .feature-top-section {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 20px;
+  }
+  
+  .feature-top-section p {
+    font-size: 4.6rem;
+    -webkit-text-stroke: 4px;
+  }
+  
+  .feature-bottom-section h3 {
+    -webkit-text-stroke: 1px;
+  }
+
+.aboutus-contents {
+    display: flex;
+    align-items: center;
+    gap: 100px;
+    padding: 0px 160px 0px 180px;
+    margin: 140px 0px;
+  }
+  
+  .aboutus-content-image {
+    width: 400px;
+    height: 600px;
+    object-fit: cover;
+    border-top-right-radius: 40px;
+    border-bottom-right-radius: 40px;
+    border-bottom-left-radius: 40px;
+    box-shadow: -10px -10px 10px grey;
+  }
+  
+  .aboutus-description h4 {
+    color: rgb(62, 154, 215);
+    text-decoration: underline;
+    font-size: 1.8rem;
+    -webkit-text-stroke: 1px;
+  }
+  
+  .description {
+    font-size: 1.3rem;
+    margin-top: 14px;
+  }
+  
+  .aboutus-description h2 {
+    -webkit-text-stroke: 1px;
+    font-size: 3rem;
+  }
+  
+  /* qualitites */
+  .about-qualities {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    font-size: 1.5rem;
+    margin: 50px 18px;
+  }
+  
+  .about-quality {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .circle-check-icon {
+    color: #D69ADE;
+    padding-top: 6px;
+  }
+  
+  /* experiences */
+  .experiences {
+    display: flex;
+    gap: 60px;
+  }
+  
+  .experience {
+    display: flex;
+    border: 1px dotted black;
+    width: 260px;
+    gap: 20px;
+    padding: 8px 16px;
+    align-items: center;
+  }
+  
+  sup {
+    font-weight: 300;
+  }
+  
+  .experience-section-leftside {
+    font-size: 3rem;
+    -webkit-text-stroke: 2px;
+  }
+  
+  .experience-section-rightside {
+    font-size: 1.6rem;
+    width: 130px;
+    font-weight: 500;
+  }
+  
+  .learn-btn {
+    margin-top: 40px;
+  }
+  
+  /* meeting */
+  .meeting-contents {
+    padding: 80px;
+    height: 700px;
+    background-color: rgb(244, 244, 244);
+  }
+  
+  .meeting-image {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .meeting-image img {
+    width: 600px;
+  }
+  
+  .meeting-contents p {
+    margin: 40px 80px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 1.4rem;
+  }
+  
+  /* teams */
+  .teams-container h2 {
+    margin: 60px 160px;
+    font-size: 2.4rem;
+  }
+  
+  .teams {
+    display: flex;
+    justify-content: space-around;
+    margin: 80px 100px 120px 100px;
+  }
+  
+  .person-pic-container {
+    width: 140px;
+    height: 140px;
+  }
+  
+  .person-pic-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  
+  .person-pic-container p {
+    text-align: center;
+    padding-top: 8px;
+    font-size: 1.2rem;
+    font-weight: 500;
+  }

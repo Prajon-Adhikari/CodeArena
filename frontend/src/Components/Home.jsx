@@ -22,7 +22,7 @@ export default function home() {
     fetchHackathons();
   }, []);
   return (
-    <div className="min-h-screen  bg-gray-50">
+    <div className="min-h-screen ">
       <nav className="px-22 flex items-center justify-between py-4 bg-white shadow">
         <div className="flex items-center space-x-6">
           <div className="text-2xl font-bold text-blue-900 bg-cyan-500 px-3 py-1 rounded">
@@ -58,16 +58,13 @@ export default function home() {
           return (
             <div
               key={hackathon._id}
-              className="group relative pl-[6px] bg-gray-50 pr-[50px] py-[1px] w-[700px] h-[250px] mb-6 overflow-hidden"
+              className="group relative bg-transparent pr-[50px] py-[2px] w-[700px] h-[250px] mb-6 overflow-hidden"
             >
               {/* Animated Background Layer */}
-              <div className="absolute inset-0 bg-gradient-to-r from-teal-500 to-teal-500 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-100 ease-in-out z-0"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-300 to-blue-300 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-400 ease-in-out z-0"></div>
 
               {/* Content Layer */}
-              <div className="relative z-10 mb-4 bg-white outline-none flex w-[660px] h-full border cursor-pointer border-teal-500">
-                <div className="p-[2px] bg-teal-500 transition-all duration-200">
-                  {" "}
-                </div>
+              <div className="relative z-10 mb-4 bg-white flex w-[660px] h-full border border-l-8 cursor-pointer border-blue-300">
                 <div className="flex gap-8 p-6 w-full">
                   <div className="bg-[url('./src/assets/demo-logo.jpg')] h-24 w-24 bg-cover bg-center"></div>
                   <div className="w-[500px]">
