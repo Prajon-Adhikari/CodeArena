@@ -6,7 +6,7 @@ import {
 
 const router = express.Router();
 
-router.post("/hackathon", hackathon);
+router.post("/host/hackathon", hackathon);
 
 router.get("/", getHackathonTournament);
 

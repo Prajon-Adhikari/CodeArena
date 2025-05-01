@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Signup from "./Components/Signup";
 import Signin from "./Components/Signin";
 import Home from "./Components/Home";
+import HostHackathon from "./Components/HostHackathon";
 
 export default function App() {
   return (
@@ -11,6 +12,7 @@ export default function App() {
         <Route path="/api/auth/signup" element={<Signup />} />
         <Route path="/api/auth/signin" element={<Signin />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/host/hackathon" element={<HostHackathon />} />
       </Routes>
     </BrowserRouter>
   );
