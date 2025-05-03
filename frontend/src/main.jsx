@@ -17,6 +17,7 @@ import ForgotPassword from './Components/ForgotPassword.jsx';
 import ResetPassword from './Components/ResetPassword.jsx';
 import Home from './Pages/Home.jsx';
 import HostHackathon from './Pages/HostHackathon.jsx';
+import JoinHackathon from './Pages/JoinHackathon.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -32,6 +33,7 @@ const router = createBrowserRouter(
       {/* App routes with navbar/footer */}
       <Route path="/" element={<App />}>
         <Route index element={<Home />} />
+        <Route path="join/hackathon" element={<JoinHackathon />} />
         <Route path="host/hackathon" element={<HostHackathon />} />
       </Route>
     </>
