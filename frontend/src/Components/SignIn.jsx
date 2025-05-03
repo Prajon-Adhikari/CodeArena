@@ -30,7 +30,7 @@ export default function Signin() {
         }
       );
       console.log(data);
-      navigate("/home");
+      navigate("/");
     } catch (error) {
       console.log("Error on logging in", error);
     }
