@@ -6,7 +6,7 @@ const Navbar = () => {
   const { pathname } = useLocation();
   const [isOpen, setIsOpen] = useState(false);
 
-  const isHostPage = pathname === "/host/hackathon";
+  const isHostPage = pathname === "/hackathon";
 
   const navLinkClass = "text-lg font-semibold hover:underline";
   const authButtonClass = `px-4 py-2 rounded text-sm transition-all ${
@@ -18,7 +18,9 @@ const Navbar = () => {
   return (
     <nav
       className={`w-full z-20 ${
-        isHostPage ? "absolute top-4 left-0 text-white" : "bg-white shadow text-gray-800"
+        isHostPage
+          ? "absolute top-4 left-0 text-white"
+          : "bg-white shadow text-gray-800"
       } transition-all`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-4 flex justify-between items-center">
@@ -39,7 +41,7 @@ const Navbar = () => {
           <Link to="/join/hackathon" className={navLinkClass}>
             Join a hackathon
           </Link>
-          <Link to="/host/hackathon" className={navLinkClass}>
+          <Link to="/hackathon" className={navLinkClass}>
             Host a hackathon
           </Link>
           <Link to="#" className={navLinkClass}>
@@ -72,19 +74,39 @@ const Navbar = () => {
             isHostPage ? "bg-black text-white" : "bg-white text-gray-800"
           }`}
         >
-          <Link to="/join/hackathon" onClick={() => setIsOpen(false)} className={navLinkClass}>
+          <Link
+            to="/join/hackathon"
+            onClick={() => setIsOpen(false)}
+            className={navLinkClass}
+          >
             Join a hackathon
           </Link>
-          <Link to="/host/hackathon" onClick={() => setIsOpen(false)} className={navLinkClass}>
+          <Link
+            to="/host/hackathon"
+            onClick={() => setIsOpen(false)}
+            className={navLinkClass}
+          >
             Host a hackathon
           </Link>
-          <Link to="#" onClick={() => setIsOpen(false)} className={navLinkClass}>
+          <Link
+            to="#"
+            onClick={() => setIsOpen(false)}
+            className={navLinkClass}
+          >
             Resources
           </Link>
-          <Link to="/api/auth/signin" onClick={() => setIsOpen(false)} className="text-sm hover:underline">
+          <Link
+            to="/api/auth/signin"
+            onClick={() => setIsOpen(false)}
+            className="text-sm hover:underline"
+          >
             Sign in
           </Link>
-          <Link to="/api/auth/signup" onClick={() => setIsOpen(false)} className={authButtonClass}>
+          <Link
+            to="/api/auth/signup"
+            onClick={() => setIsOpen(false)}
+            className={authButtonClass}
+          >
             Sign up
           </Link>
         </div>
