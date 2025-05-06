@@ -1,27 +1,28 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
     <footer className="bg-white border-t mt-10">
       <div className="max-w-6xl mx-auto px-4 py-10 grid grid-cols-2 sm:grid-cols-4 gap-8 text-sm text-gray-700">
         <div>
-          <h4 className="font-semibold mb-2">Devpost</h4>
+          <h4 className="font-semibold mb-2">CodeArena</h4>
           <ul className="space-y-1">
-            <li><a href="#" className="hover:underline">About</a></li>
-            <li><a href="#" className="hover:underline">Careers</a></li>
-            <li><a href="#" className="hover:underline">Press</a></li>
-            <li><a href="#" className="hover:underline">Contact</a></li>
-            <li><a href="#" className="hover:underline">Help</a></li>
+            <li><Link to="/about" className="hover:underline">About</Link></li>
+            <li><Link to="" className="hover:underline">Careers</Link></li>
+            <li><Link to="" className="hover:underline">Press</Link></li>
+            <li><Link to="" className="hover:underline">Contact</Link></li>
+            <li><Link to="" className="hover:underline">Help</Link></li>
           </ul>
         </div>
 
         <div>
           <h4 className="font-semibold mb-2">Hackathons</h4>
           <ul className="space-y-1">
-            <li><a href="#" className="hover:underline">Browse hackathons</a></li>
-            <li><a href="#" className="hover:underline">Explore projects</a></li>
-            <li><a href="#" className="hover:underline">Host a hackathon</a></li>
-            <li><a href="#" className="hover:underline">Hackathon guides</a></li>
+            <li><Link to="" className="hover:underline">Browse hackathons</Link></li>
+            <li><Link to="" className="hover:underline">Explore projects</Link></li>
+            <li><Link to="" className="hover:underline">Host a hackathon</Link></li>
+            <li><Link to="" className="hover:underline">Hackathon guides</Link></li>
           </ul>
         </div>
 

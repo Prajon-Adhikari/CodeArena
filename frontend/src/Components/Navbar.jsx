@@ -27,13 +27,13 @@ const Navbar = () => {
         {/* Logo */}
         <Link
           to="/"
-          className={`text-xl font-bold px-3 py-1 rounded ${
+          className={`text-xl font-bold px-5 py-2 rounded ${
             isHostPage
               ? "bg-gradient-to-r from-[#D69ADE] to-[#AA60C8] text-white"
               : "text-blue-900 bg-cyan-500"
           }`}
         >
-          Hacked
+          CodeArena
         </Link>
 
         {/* Desktop Nav Links */}
