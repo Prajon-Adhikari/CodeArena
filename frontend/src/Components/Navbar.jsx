@@ -44,7 +44,7 @@ const Navbar = () => {
           <Link to="/hackathon" className={navLinkClass}>
             Host a hackathon
           </Link>
-          <Link to="#" className={navLinkClass}>
+          <Link to="/resources" className={navLinkClass}>
             Resources
           </Link>
         </div>
@@ -89,7 +89,7 @@ const Navbar = () => {
             Host a hackathon
           </Link>
           <Link
-            to="#"
+            to="/resources"
             onClick={() => setIsOpen(false)}
             className={navLinkClass}
           >
