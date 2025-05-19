@@ -23,7 +23,7 @@ const Navbar = () => {
           : "bg-white shadow text-gray-800"
       } transition-all`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-4 flex justify-between items-center">
+      <div className="max-w-full mx-[60px] px-4 sm:px-6 lg:px-12 py-4 flex justify-between items-center">
         {/* Logo */}
         <Link
           to="/"

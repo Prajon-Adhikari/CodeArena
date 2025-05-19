@@ -7,15 +7,15 @@ import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 
 export default function HostHackathon() {
   return (
-    <div className="relative">
-      <div className="h-[130vh] ">
+    <div className="">
+      <div className="h-[160vh]">
         {/* Hero Section */}
         <div
-          className="relative h-[840px] bg-fixed bg-cover bg-center  text-white"
+          className="relative h-[100vh] bg-fixed bg-cover bg-center px-10  text-white"
           style={{ backgroundImage: `url(${demoBack})` }}
         >
           <div className="absolute inset-0 bg-black opacity-88 z-0"></div>
-          <div className="relative z-10 max-w-4xl mx-[100px] px-6 pt-[160px]">
+          <div className="relative z-10 max-w-4xl mx-[100px] px-2 pt-[250px]">
             <p className="text-2xl mb-4">
               Branded &nbsp; | &nbsp; Quality &nbsp; | &nbsp; Products
             </p>
@@ -37,7 +37,7 @@ export default function HostHackathon() {
         </div>
 
         {/* Features Section */}
-        <div className="grid grid-cols-1 cursor-pointer md:grid-cols-3 gap-12 my-20 px-6 md:px-20 absolute top-140">
+        <div className="grid grid-cols-1 cursor-pointer md:grid-cols-3 gap-12 my-20 px-6 md:px-20">
           {["Best Quality", "Fast Delivery", "Best Price"].map((title, idx) => (
             <div
               key={idx}
@@ -57,11 +57,11 @@ export default function HostHackathon() {
         </div>
       </div>
       {/* About Us Section */}
-      <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-20 px-6 md:px-20 my-[100px]">
+      <div className="flex flex-col lg:flex-row items-center py-14 bg-[rgb(242,233,245)] gap-[100px] lg:gap-[200px] px-6 md:px-20 my-[100px]">
         <img
           src={meeting3}
           alt="Meeting"
-          className="w-full lg:w-[400px] h-[400px] md:h-[600px] object-cover rounded-tr-[40px] rounded-bl-[40px] rounded-br-[40px] shadow-xl"
+          className="w-full lg:w-[440px] h-[400px] md:h-[600px] object-cover rounded-tr-[40px] rounded-bl-[40px] rounded-br-[40px] shadow-xl"
         />
         <div className="w-full">
           <h4 className="text-blue-400 underline text-xl md:text-2xl mb-4 font-semibold">

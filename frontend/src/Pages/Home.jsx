@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 
+import dragon from "../assets/dragon.jpg";
+
 export default function home() {
   const [hackathons, setHackathons] = useState([]);
 
@@ -33,7 +35,10 @@ export default function home() {
               <div className="absolute inset-0 bg-gradient-to-r from-blue-300 to-blue-300 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-400 ease-in-out z-0"></div>
 
               {/* Content Layer */}
-              <div className="relative z-10 mb-4 bg-white flex w-[660px] h-full border border-l-8 cursor-pointer border-blue-300">
+              <div
+                style={{ backgroundImage: `url(${dragon})` }}
+                className="relative z-10 mb-4  bg-cover bg-center flex w-[660px] h-full border border-l-8 cursor-pointer border-blue-300"
+              >
                 <div className="flex gap-8 p-6 w-full">
                   <div className="bg-[url('./src/assets/demo-logo.jpg')] h-24 w-24 bg-cover bg-center"></div>
                   <div className="w-[500px]">
