@@ -46,12 +46,12 @@ const [hackathons, setHackathons] = useState([]);
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Non amet
               neque nobis. Fugiat eos id esse excepturi velit, debitis alias.
             </p>
-            <Link
-              to="/host/hackathon"
+            <a
+              href="host-hackathon"
               className="cursor-pointer hover:shadow-[0px_0px_7px_#D69ADE] bg-gradient-to-r from-[#D69ADE] to-[#AA60C8] text-white py-3 px-6 rounded-lg text-base md:text-lg"
             >
               Host a hackathon &rarr;
-            </Link>
+            </a>
           </div>
         </div>
 
@@ -137,14 +137,16 @@ const [hackathons, setHackathons] = useState([]);
       </div>
 
       {/* Online hackathons section */}
-      <div>
+      <div id="host-hackathon">
         <h2 className="text-xl font-semibold mb-2">Online hackathons for companies</h2>
         <p className="text-gray-600 mb-4">
           Reach developers globally. Get planning and marketing support.
         </p>
+        <Link to="/host/hackathon">
         <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">
           Host online
         </button>
+         </Link>
       </div>
 
       {/* In-person hackathons section */}
