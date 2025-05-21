@@ -166,6 +166,7 @@ export default function BlogPage() {
                 </h3>
               </div>
             </div>
+              
           ))}
         </div>
       </div>
