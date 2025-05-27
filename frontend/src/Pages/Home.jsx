@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGlobe } from "@fortawesome/free-solid-svg-icons";
+import { faGlobe, faStarOfLife } from "@fortawesome/free-solid-svg-icons";
 import dragon from "../assets/dragon.jpg";
+import developer from "../assets/developer.png";
 
 export default function home() {
   const [hackathons, setHackathons] = useState([]);
@@ -23,6 +24,61 @@ export default function home() {
   }, []);
   return (
     <div className="min-h-screen ">
+      <div className="flex px-[120px] py-[80px] gap-20 items-center">
+        <div className="w-[700px]">
+          <h1
+            className="text-6xl pb-14 text-blue-300"
+            style={{ WebkitTextStroke: "1px" }}
+          >
+            Unlock your Potential with{" "}
+            <span className="text-orange-300">CodeArena</span>
+          </h1>
+          <p className="text-[1.2rem]">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia quis,
+            illum veritatis at, explicabo cum eos blanditiis accusamus quaerat
+            enim officiis laborum quidem magni, ipsa dicta minus maxime fugit ad
+            labore similique cumque iusto. Vitae ex laudantium dolore incidunt
+            mollitia doloremque inventore odit! Quasi nihil quam amet illum
+            perspiciatis deserunt.
+          </p>
+          <div className="flex gap-10 text-white pt-14">
+            <button className="hover:shadow-[0px_0px_7px_#60B5FF] cursor-pointer bg-gradient-to-r from-[#60B5FF] to-[#8DD8FF] px-7 py-3 text-lg rounded-md">
+              Join a Hackathon &rarr;
+            </button>
+            <button className="hover:shadow-[0px_0px_7px_#60B5FF] cursor-pointer bg-gradient-to-r from-[#60B5FF] to-[#8DD8FF] px-7 py-3 text-lg rounded-md">
+              Host a Hackathon &rarr;
+            </button>
+          </div>
+        </div>
+        <div className="h-[500px] ">
+          <img
+            src={developer}
+            alt=""
+            className="w-full h-full drop-shadow-xl"
+          />
+        </div>
+      </div>
+      <div className="pb-[200px] pt-20 w-[100%] overflow-hidden relative">
+        <div
+          className="bg-blue-300  text-gray-700 h-14 absolute rotate-3 w-[100%] z-24 flex items-center justify-center gap-[110px] text-2xl px-8"
+          style={{ WebkitTextStroke: "1px" }}
+        >
+          <FontAwesomeIcon icon={faStarOfLife} />
+          <span> CODE </span>
+          <FontAwesomeIcon icon={faStarOfLife} /> <span>CREATE </span>
+          <FontAwesomeIcon icon={faStarOfLife} /> <span>HACK </span>
+          <FontAwesomeIcon icon={faStarOfLife} /> <span>CONQUER </span>
+          <FontAwesomeIcon icon={faStarOfLife} />
+        </div>
+        <div className="bg-orange-300 text-gray-700 h-14 absolute -rotate-3 w-[100%] flex items-center justify-center gap-[110px] text-2xl px-8">
+          <FontAwesomeIcon icon={faStarOfLife} />
+          <span> CONQUER </span>
+          <FontAwesomeIcon icon={faStarOfLife} /> <span>HACK </span>
+          <FontAwesomeIcon icon={faStarOfLife} /> <span>CREATE </span>
+          <FontAwesomeIcon icon={faStarOfLife} /> <span>CODE </span>
+          <FontAwesomeIcon icon={faStarOfLife} />
+        </div>
+      </div>
       <div className="ml-[100px] mt-10">
         {hackathons.map((hackathon, index) => {
           return (
