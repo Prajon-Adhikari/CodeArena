@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGlobe, faStarOfLife } from "@fortawesome/free-solid-svg-icons";
+import {
+  faGlobe,
+  faStarOfLife,
+  faMagnifyingGlass,
+} from "@fortawesome/free-solid-svg-icons";
 import dragon from "../assets/dragon.jpg";
 import developer from "../assets/developer.png";
 
@@ -24,7 +28,7 @@ export default function home() {
   }, []);
   return (
     <div className="min-h-screen ">
-      <div className="flex px-[120px] py-[80px] gap-20 items-center">
+      <div className="flex px-[120px] py-[100px] gap-20 items-center">
         <div className="w-[700px]">
           <h1
             className="text-6xl pb-14 text-blue-300"
@@ -54,13 +58,13 @@ export default function home() {
           <img
             src={developer}
             alt=""
-            className="w-full h-full drop-shadow-xl"
+            className="w-full h-full drop-shadow-[10px_10px_10px_rgba(0,0,0,0.3)]"
           />
         </div>
       </div>
-      <div className="pb-[200px] pt-20 w-[100%] overflow-hidden relative">
+      <div className="pb-[200px] pt-20 w-[100%]  overflow-hidden relative">
         <div
-          className="bg-blue-300  text-gray-700 h-14 absolute rotate-3 w-[100%] z-24 flex items-center justify-center gap-[110px] text-2xl px-8"
+          className="bg-blue-300  text-gray-600 h-14 absolute rotate-3 w-[100%] z-24 flex items-center justify-center gap-[110px] text-2xl px-8"
           style={{ WebkitTextStroke: "1px" }}
         >
           <FontAwesomeIcon icon={faStarOfLife} />
@@ -70,7 +74,7 @@ export default function home() {
           <FontAwesomeIcon icon={faStarOfLife} /> <span>CONQUER </span>
           <FontAwesomeIcon icon={faStarOfLife} />
         </div>
-        <div className="bg-orange-300 text-gray-700 h-14 absolute -rotate-3 w-[100%] flex items-center justify-center gap-[110px] text-2xl px-8">
+        <div className="bg-orange-300 text-gray-600 h-14 absolute -rotate-3 w-[100%] flex items-center justify-center gap-[110px] text-2xl px-8">
           <FontAwesomeIcon icon={faStarOfLife} />
           <span> CONQUER </span>
           <FontAwesomeIcon icon={faStarOfLife} /> <span>HACK </span>
@@ -79,7 +83,24 @@ export default function home() {
           <FontAwesomeIcon icon={faStarOfLife} />
         </div>
       </div>
+      <div className="flex justify-center gap-4 pb-14 pt-10">
+        <div className="border-blue-400 border-2 px-5 py-3 rounded-sm flex items-center gap-4">
+          <FontAwesomeIcon
+            icon={faMagnifyingGlass}
+            className="text-xl text-blue-400"
+          />
+          <input
+            type="text"
+            placeholder="Find your next hackathon"
+            className=" w-[640px] text-xl  outline-none"
+          />
+        </div>
+        <button className="bg-blue-400 hover:bg-blue-500 cursor-pointer text-xl text-white px-8 rounded-sm">
+          Search Hackathon
+        </button>
+      </div>
       <div className="ml-[100px] mt-10">
+        <h1 className="text-4xl pb-10 font-semibold">Hackathons for you </h1>
         {hackathons.map((hackathon, index) => {
           return (
             <div
