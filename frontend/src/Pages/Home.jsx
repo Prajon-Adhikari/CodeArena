@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGlobe,
@@ -28,7 +29,7 @@ export default function home() {
   }, []);
   return (
     <div className="min-h-screen ">
-      <div className="flex px-[120px] py-[100px] gap-20 items-center">
+      <div className="flex px-[120px] pt-[100px] pb-[80px] gap-20 items-center">
         <div className="w-[700px]">
           <h1
             className="text-6xl pb-14 text-blue-300"
@@ -46,12 +47,18 @@ export default function home() {
             perspiciatis deserunt.
           </p>
           <div className="flex gap-10 text-white pt-14">
-            <button className="hover:shadow-[0px_0px_7px_#60B5FF] cursor-pointer bg-gradient-to-r from-[#60B5FF] to-[#8DD8FF] px-7 py-3 text-lg rounded-md">
+            <Link
+              to="/join/hackathon"
+              className="hover:shadow-[0px_0px_7px_#60B5FF] cursor-pointer bg-gradient-to-r from-[#60B5FF] to-[#8DD8FF] px-7 py-3 text-lg rounded-md"
+            >
               Join a Hackathon &rarr;
-            </button>
-            <button className="hover:shadow-[0px_0px_7px_#60B5FF] cursor-pointer bg-gradient-to-r from-[#60B5FF] to-[#8DD8FF] px-7 py-3 text-lg rounded-md">
+            </Link>
+            <Link
+              to="/hackathon"
+              className="hover:shadow-[0px_0px_7px_#60B5FF] cursor-pointer bg-gradient-to-r from-[#60B5FF] to-[#8DD8FF] px-7 py-3 text-lg rounded-md"
+            >
               Host a Hackathon &rarr;
-            </button>
+            </Link>
           </div>
         </div>
         <div className="h-[500px] ">
@@ -100,7 +107,9 @@ export default function home() {
         </button>
       </div>
       <div className="ml-[100px] mt-10">
-        <h1 className="text-4xl pb-10 font-semibold">Hackathons for you </h1>
+        <h1 className="text-4xl pb-10 font-semibold pl-4">
+          Hackathons for you{" "}
+        </h1>
         {hackathons.map((hackathon, index) => {
           return (
             <div
@@ -160,6 +169,11 @@ export default function home() {
             </div>
           );
         })}
+        <Link to="/join/hackathon">
+          <button className="bg-blue-400 px-10 py-3 text-xl mt-5  rounded-sm cursor-pointer text-white hover:shadow-[0px_0px_4px_#60B5FF]">
+            View All Hackathon <span className="pl-4">&rarr;</span>
+          </button>
+        </Link>
       </div>
     </div>
   );
