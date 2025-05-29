@@ -12,6 +12,34 @@ import developer from "../assets/developer.png";
 export default function home() {
   const [hackathons, setHackathons] = useState([]);
 
+  const hackthonData = [
+    {
+      theme: "Beginner Friendly",
+      hackathonNumber: 53,
+      totalPrizes: 1749000,
+    },
+    {
+      theme: "Machine Learning",
+      hackathonNumber: 45,
+      totalPrizes: 1561000,
+    },
+    {
+      theme: "Social Goods ",
+      hackathonNumber: 35,
+      totalPrizes: 749000,
+    },
+    {
+      theme: "Web ",
+      hackathonNumber: 30,
+      totalPrizes: 649000,
+    },
+    {
+      theme: "Education",
+      hackathonNumber: 28,
+      totalPrizes: 499000,
+    },
+  ];
+
   useEffect(() => {
     const fetchHackathons = async () => {
       try {
@@ -91,7 +119,7 @@ export default function home() {
         </div>
       </div>
       <div className="flex justify-center gap-4 pb-14 pt-10">
-        <div className="border-blue-400 border-2 px-5 py-3 rounded-sm flex items-center gap-4">
+        <div className="border-blue-400 border-2 px-5 py-3 rounded-sm flex items-center gap-4 focus-within:ring-1 focus-within:ring-blue-400">
           <FontAwesomeIcon
             icon={faMagnifyingGlass}
             className="text-xl text-blue-400"
@@ -106,74 +134,107 @@ export default function home() {
           Search Hackathon
         </button>
       </div>
-      <div className="ml-[100px] mt-10">
-        <h1 className="text-4xl pb-10 font-semibold pl-4">
-          Hackathons for you{" "}
-        </h1>
-        {hackathons.map((hackathon, index) => {
-          return (
-            <div
-              key={hackathon._id}
-              className="group relative bg-transparent pr-[50px] py-[2px] w-[700px] h-[250px] mb-6 overflow-hidden"
-            >
-              {/* Animated Background Layer */}
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-300 to-blue-300 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-400 ease-in-out z-0"></div>
-
-              {/* Content Layer */}
+      <div className="flex ml-[100px] mt-10 gap-16">
+        <div>
+          <h1 className="text-4xl pb-10 font-semibold pl-4">
+            Hackathons for you{" "}
+          </h1>
+          {hackathons.map((hackathon, index) => {
+            return (
               <div
-                style={{ backgroundImage: `url(${dragon})` }}
-                className="relative z-10 mb-4  bg-cover bg-center flex w-[660px] h-full border border-l-8 cursor-pointer border-blue-300"
+                key={hackathon._id}
+                className="group relative bg-transparent pr-[50px] py-[2px] w-[700px] h-[250px] mb-6 overflow-hidden"
               >
-                <div className="flex gap-8 p-6 w-full">
-                  <div className="bg-[url('./src/assets/demo-logo.jpg')] h-24 w-24 bg-cover bg-center"></div>
-                  <div className="w-[500px]">
-                    <h2 className="text-[22px] font-semibold h-[100px]">
-                      {hackathon.title}
-                    </h2>
-                    <div className="flex justify-between pr-10 py-3">
-                      <p className="text-lg text-gray-500">
-                        Starts:{" "}
-                        <span className="text-black">
-                          {new Date(hackathon.startDate).toLocaleDateString()}
-                        </span>
-                      </p>
-                      <p className="text-lg text-gray-500">
-                        Ends:{" "}
-                        <span className="text-black">
-                          {new Date(hackathon.endDate).toLocaleDateString()}
-                        </span>
-                      </p>
-                    </div>
-                    <div className="flex justify-between pr-10 pt-3">
-                      <p className="text-lg text-gray-500">
-                        Registration Deadline:{" "}
-                        <span className="text-black">
-                          {new Date(
-                            hackathon.registrationDeadline
-                          ).toLocaleDateString()}
-                        </span>
-                      </p>
-                      <p className="text-lg">
-                        <FontAwesomeIcon
-                          icon={faGlobe}
-                          className="text-gray-500"
-                        />
-                        <span className="ml-2 capitalize">
-                          {hackathon.mode}
-                        </span>
-                      </p>
+                {/* Animated Background Layer */}
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-300 to-blue-300 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-400 ease-in-out z-0"></div>
+
+                {/* Content Layer */}
+                <div
+                  style={{ backgroundImage: `url(${dragon})` }}
+                  className="relative z-10 mb-4  bg-cover bg-center flex w-[660px] h-full border border-l-8 cursor-pointer border-blue-300"
+                >
+                  <div className="flex gap-8 p-6 w-full">
+                    <div className="bg-[url('./src/assets/demo-logo.jpg')] h-24 w-24 bg-cover bg-center"></div>
+                    <div className="w-[500px]">
+                      <h2 className="text-[22px] font-semibold h-[100px]">
+                        {hackathon.title}
+                      </h2>
+                      <div className="flex justify-between pr-10 py-3">
+                        <p className="text-lg text-gray-500">
+                          Starts:{" "}
+                          <span className="text-black">
+                            {new Date(hackathon.startDate).toLocaleDateString()}
+                          </span>
+                        </p>
+                        <p className="text-lg text-gray-500">
+                          Ends:{" "}
+                          <span className="text-black">
+                            {new Date(hackathon.endDate).toLocaleDateString()}
+                          </span>
+                        </p>
+                      </div>
+                      <div className="flex justify-between pr-10 pt-3">
+                        <p className="text-lg text-gray-500">
+                          Registration Deadline:{" "}
+                          <span className="text-black">
+                            {new Date(
+                              hackathon.registrationDeadline
+                            ).toLocaleDateString()}
+                          </span>
+                        </p>
+                        <p className="text-lg">
+                          <FontAwesomeIcon
+                            icon={faGlobe}
+                            className="text-gray-500"
+                          />
+                          <span className="ml-2 capitalize">
+                            {hackathon.mode}
+                          </span>
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
-        <Link to="/join/hackathon">
-          <button className="bg-blue-400 px-10 py-3 text-xl mt-5  rounded-sm cursor-pointer text-white hover:shadow-[0px_0px_4px_#60B5FF]">
-            View All Hackathon <span className="pl-4">&rarr;</span>
-          </button>
-        </Link>
+            );
+          })}
+          <Link to="/join/hackathon">
+            <button className="bg-blue-400 px-10 py-3 text-xl mt-5  rounded-sm cursor-pointer text-white hover:shadow-[0px_0px_4px_#60B5FF]">
+              View All Hackathon <span className="pl-4">&rarr;</span>
+            </button>
+          </Link>
+        </div>
+        <div>
+          <h2 className=" text-2xl font-semibold pl-4 pb-6">
+            Top Hackathon Themes
+          </h2>
+          <table className="border-separate border-spacing-y-4">
+            <thead className="text-left text-xl">
+              <tr className="">
+                <th className="w-[280px] py-4 px-6">Theme</th>
+                <th className="w-[160px]">Hackathons</th>
+                <th className="w-[120px]">Prizes</th>
+                <th className="w-[40px]"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {hackthonData.map((data, index) => {
+                return (
+                  <tr className="hover:bg-blue-50">
+                    <td className="p-4 ">
+                      <span className="bg-orange-200 rounded-2xl py-2 px-6">
+                        {data.theme}
+                      </span>
+                    </td>
+                    <td className="text-lg">{data.hackathonNumber}</td>
+                    <td className="text-lg">{data.totalPrizes}</td>
+                    <td className="text-lg font-semibold ">&rarr;</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

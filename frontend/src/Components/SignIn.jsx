@@ -37,7 +37,7 @@ export default function Signin() {
   };
 
   return (
-    <div className="bg-[url(./assets/sigin-background.jpg)] bg-no-repeat w-full  min-h-screen flex items-center justify-center bg-cover">
+    <div className="bg-[url(./assets/coding-background.jpg)] bg-no-repeat w-full  min-h-screen flex items-center justify-center bg-cover">
       <div className="backdrop-blur-lg bg-white/10 p-8 pb-[50px] rounded-2xl shadow-lg w-full max-w-md">
         <p className="text-white mb-1">START FOR FREE</p>
         <h2 className="text-yellow-500 text-4xl font-bold mb-2">Welcome !</h2>
