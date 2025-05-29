@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -38,6 +38,26 @@ export default function home() {
       hackathonNumber: 28,
       totalPrizes: 499000,
     },
+    {
+      theme: "Open Ended",
+      hackathonNumber: 25,
+      totalPrizes: 461000,
+    },
+    {
+      theme: "Low/No Code",
+      hackathonNumber: 22,
+      totalPrizes: 349000,
+    },
+    {
+      theme: "IoT ",
+      hackathonNumber: 20,
+      totalPrizes: 259000,
+    },
+    {
+      theme: "Blockchain",
+      hackathonNumber: 17,
+      totalPrizes: 209000,
+    },
   ];
 
   useEffect(() => {
@@ -55,6 +75,7 @@ export default function home() {
     };
     fetchHackathons();
   }, []);
+
   return (
     <div className="min-h-screen ">
       <div className="flex px-[120px] pt-[100px] pb-[80px] gap-20 items-center">
@@ -97,7 +118,7 @@ export default function home() {
           />
         </div>
       </div>
-      <div className="pb-[200px] pt-20 w-[100%]  overflow-hidden relative">
+      <div className="pb-[180px] pt-20 w-[100%]  overflow-hidden relative">
         <div
           className="bg-blue-300  text-gray-600 h-14 absolute rotate-3 w-[100%] z-24 flex items-center justify-center gap-[110px] text-2xl px-8"
           style={{ WebkitTextStroke: "1px" }}
@@ -118,7 +139,10 @@ export default function home() {
           <FontAwesomeIcon icon={faStarOfLife} />
         </div>
       </div>
-      <div className="flex justify-center gap-4 pb-14 pt-10">
+      <h1 className=" text-center text-4xl font-bold pb-16">
+        Search For Your Dream <span className="text-orange-400">Hackathon</span>
+      </h1>
+      <div className="flex justify-center gap-4 pb-14 ">
         <div className="border-blue-400 border-2 px-5 py-3 rounded-sm flex items-center gap-4 focus-within:ring-1 focus-within:ring-blue-400">
           <FontAwesomeIcon
             icon={faMagnifyingGlass}
@@ -205,12 +229,12 @@ export default function home() {
           </Link>
         </div>
         <div>
-          <h2 className=" text-2xl font-semibold pl-4 pb-6">
+          <h2 className=" text-2xl font-semibold pl-4 pb-6 text-gray-600">
             Top Hackathon Themes
           </h2>
           <table className="border-separate border-spacing-y-4">
             <thead className="text-left text-xl">
-              <tr className="">
+              <tr className=" text-gray-600 ">
                 <th className="w-[280px] py-4 px-6">Theme</th>
                 <th className="w-[160px]">Hackathons</th>
                 <th className="w-[120px]">Prizes</th>
@@ -220,7 +244,7 @@ export default function home() {
             <tbody>
               {hackthonData.map((data, index) => {
                 return (
-                  <tr className="hover:bg-blue-50">
+                  <tr className="hover:bg-blue-50 cursor-pointer">
                     <td className="p-4 ">
                       <span className="bg-orange-200 rounded-2xl py-2 px-6">
                         {data.theme}

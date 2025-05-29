@@ -5,7 +5,6 @@ import nodemailer from "nodemailer";
 import jwt, { decode } from "jsonwebtoken";
 import dotenv from "dotenv";
 
-
 dotenv.config();
 // SignUp
 export const signup = async (req, res) => {
@@ -85,8 +84,6 @@ export const signin = async (req, res) => {
   }
 };
 
-
-
 //forgot password
 export const forgotpassword = async (req, res) => {
   try {
@@ -105,33 +102,34 @@ export const forgotpassword = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    secure: true,
-    auth: {
-      user: process.env.MY_GMAIL,
-      pass: process.env.MY_PASSWORD,
-    },
-  });
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      secure: true,
+      auth: {
+        user: process.env.MY_GMAIL,
+        pass: process.env.MY_PASSWORD,
+      },
+    });
 
-const receiver ={
-  from : process.env.MY_GMAIL,
-  to: email,
-  subject: "Password Reset",
-  text: `http://localhost:5173/api/auth/resetpassword/${token}`
+    const receiver = {
+      from: process.env.MY_GMAIL,
+      to: email,
+      subject: "Password Reset",
+      text: `http://localhost:5173/api/auth/resetpassword/${token}`,
+    };
 
-};
+    await transporter.sendMail(receiver);
 
-await transporter.sendMail(receiver);
-
-return res.status(200).send({message: "Password reset link sent to your email",    status: "success",    });
-
-
-  }catch (error) {
-    console.log("Error on forgot password", error);   
+    return res
+      .status(200)
+      .send({
+        message: "Password reset link sent to your email",
+        status: "success",
+      });
+  } catch (error) {
+    console.log("Error on forgot password", error);
   }
-}
-
+};
 
 ///// Reset Password
 export const resetPassword = async (req, res) => {
@@ -139,7 +137,8 @@ export const resetPassword = async (req, res) => {
     const { token } = req.params;
     const { password } = req.body;
 
-    if (!password) return res.status(400).send({ message: "Password is required" });
+    if (!password)
+      return res.status(400).send({ message: "Password is required" });
 
     let decoded;
     try {
@@ -156,7 +155,6 @@ export const resetPassword = async (req, res) => {
     await user.save();
 
     return res.status(200).send({ message: "Password reset successfully" });
-
   } catch (error) {
     console.error("Reset password error:", error);
     return res.status(500).send({ message: "Something went wrong" });
