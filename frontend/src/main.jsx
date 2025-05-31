@@ -16,11 +16,11 @@ import Signin from "./Components/Signin.jsx";
 import ForgotPassword from "./Components/ForgotPassword.jsx";
 import ResetPassword from "./Components/ResetPassword.jsx";
 import Home from "./Pages/Home.jsx";
-import HostHackathon from "./Pages/HostHackathon.jsx";
-import JoinHackathon from "./Pages/JoinHackathon.jsx";
-import Hosting from "./Pages/Hosting.jsx";
-import BlogPage from "./Pages/BlogPage.jsx";
-import Resources from "./Pages/Resources.jsx";
+import HostHackathon from "./HostPages/HostHackathon.jsx";
+import JoinHackathon from "./JoinPages/JoinHackathon.jsx";
+import Hosting from "./HostPages/Hosting.jsx";
+import BlogPage from "./ResourcePages/BlogPage.jsx";
+import Resources from "./ResourcePages/Resources.jsx";
 import About from "./Pages/About.jsx";
 import Contact from "./Pages/Contact.jsx";
 
