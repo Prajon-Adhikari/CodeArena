@@ -49,7 +49,24 @@ const Contact = () => {
 
   return (
     < >
-     <div className="bg-white text-gray-800 py-12 px-24">
+   
+      <div
+        className="bg-cover bg-center bg-gray-200  text-gray-800 py-24 px-6"
+        style={{
+         // backgroundImage: `url(${backgroundImg})`,
+          backgroundBlendMode: "multiply",
+        }}
+      >
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-5xl font-bold mb-4">Contact US</h1>
+          <p className="text-lg">
+            CodeArena is your gateway to success, connecting aspiring professionals with top hackathon opportunities.
+            <br />
+            Have questions or need assistance? We're here to help!
+          </p>
+        </div>
+      </div>
+        <div className="bg-white text-gray-800 py-12 px-24">
       <div className="container mx-auto px-4 ">
         <div className="flex flex-col md:flex-row gap-8">
           <div className="md:w-1/2 mt-22">

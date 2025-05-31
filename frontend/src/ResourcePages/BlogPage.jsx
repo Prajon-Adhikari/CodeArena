@@ -117,7 +117,7 @@ export default function BlogPage() {
 
       {/* Tabs (Blog navigation) */}
       <div className="max-w-6xl mx-auto px-4">
-        {/* <div className="flex justify-center gap-8 cursor-pointer border-b pb-4 mb-6">
+        <div className="flex justify-center gap-8 cursor-pointer border-b pb-4 mb-6">
           <button className="text-gray-800 font-medium hover:text-blue-600 border-b-2 border-blue-600">
             Blog posts
           </button>
@@ -125,7 +125,7 @@ export default function BlogPage() {
           <button className="text-gray-500 hover:text-blue-600">Customer stories</button>
           <button className="text-gray-500 hover:text-blue-600">Guides</button>
           <button className="text-gray-500 hover:text-blue-600">Webinars & events</button>
-        </div> */}
+        </div>
 
         {/* Filter buttons */}
         <div className="flex justify-center cursor-pointer flex-wrap gap-4 mb-10">

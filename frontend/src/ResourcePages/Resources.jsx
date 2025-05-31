@@ -1,12 +1,9 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 
-const Resource = () => {
+const Resources = () => {
   return (
-    <div>
-      <Link to="/blogPage">blog</Link>
-    </div>
+   <></>
   )
 }
 
-export default Resource
+export default Resources
