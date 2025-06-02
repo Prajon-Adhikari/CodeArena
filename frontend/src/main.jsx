@@ -44,8 +44,8 @@ const router = createBrowserRouter(
         <Route path="join/hackathon" element={<JoinHackathon />} />
         <Route path="hackathon" element={<HostHackathon />} />
         <Route path="host/hackathon" element={<Hosting />} />
-        <Route path="blogPage" element={<BlogPage />} />
         <Route path="resources" element={<Resources />} />
+        <Route path="blogPage" element={<BlogPage />} />
         <Route path="about" element={<About />} />
         <Route path="contact" element={<Contact />} />
       </Route>

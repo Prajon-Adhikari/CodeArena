@@ -17,7 +17,7 @@ const Navbar = () => {
   const resources = [
     { title: "Blog", description: "Insights into hackathon planning", to: "/blogpage" },
     { title: "Customer stories", description: "Inspiration from industry leaders", to: "/resources/stories" },
-    { title: "Planning guides", description: "Best practices for events", to: "/resources/guides" },
+    { title: "Planning guides", description: "Best practices for events", to: "/guides" },
     { title: "Webinars & events", description: "Upcoming and on-demand", to: "/resources/webinars" },
     { title: "Help desk", description: "Support documentation", to: "/resources/help" },
   ];

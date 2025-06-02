@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const categories = [
   "All posts",
@@ -15,15 +16,18 @@ const posts = [
     imageBg: "bg-teal-600",
   },
   {
-    title: "Dive into innovation: The Google Cloud AI in Action Hackathon on Devpost",
+    title:
+      "Dive into innovation: The Google Cloud AI in Action Hackathon on Devpost",
     category: "Participant resources",
     imageText: "Google Cloud AI in Action Hackathon on Devpost",
     imageBg: "bg-blue-600",
   },
   {
-    title: "How to get executive buy-in for internal hackathons (With templates)",
+    title:
+      "How to get executive buy-in for internal hackathons (With templates)",
     category: "Hackathon planning",
-    imageText: "How to get exec buy-in for internal hackathons (With templates)",
+    imageText:
+      "How to get exec buy-in for internal hackathons (With templates)",
     imageBg: "bg-teal-600",
   },
   {
@@ -64,7 +68,6 @@ const posts = [
   },
 ];
 
-
 export default function BlogPage() {
   const [selectedCategory, setSelectedCategory] = useState("All posts");
 
@@ -79,7 +82,8 @@ export default function BlogPage() {
       <div className="bg-gray-100 py-16 px-4 flex flex-col items-center text-center">
         <h1 className="text-4xl font-bold text-gray-800 mb-2">Blog</h1>
         <p className="text-gray-600 max-w-2xl">
-          Learn how to run a hackathon and get new ideas, industry insights, and more on the CodeArena blog
+          Learn how to run a hackathon and get new ideas, industry insights, and
+          more on the CodeArena blog
         </p>
       </div>
 
@@ -104,10 +108,13 @@ export default function BlogPage() {
             Hackathon planning
           </span>
           <h3 className="text-2xl font-semibold text-gray-800 mb-4">
-            How to get executive buy-in for your internal hackathons (With templates)
+            How to get executive buy-in for your internal hackathons (With
+            templates)
           </h3>
           <p className="text-gray-600 mb-6">
-            Learn how to secure leadership approval for your internal hackathon — and get access to a business case template you can use to build your pitch.
+            Learn how to secure leadership approval for your internal hackathon
+            — and get access to a business case template you can use to build
+            your pitch.
           </p>
           <button className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 w-fit">
             Read more
@@ -118,13 +125,36 @@ export default function BlogPage() {
       {/* Tabs (Blog navigation) */}
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex justify-center gap-8 cursor-pointer border-b pb-4 mb-6">
-          <button className="text-gray-800 font-medium hover:text-blue-600 border-b-2 border-blue-600">
-            Blog posts
-          </button>
-          <button className="text-gray-500 hover:text-blue-600">All resources</button>
-          <button className="text-gray-500 hover:text-blue-600">Customer stories</button>
-          <button className="text-gray-500 hover:text-blue-600">Guides</button>
-          <button className="text-gray-500 hover:text-blue-600">Webinars & events</button>
+          <Link to="">
+            {" "}
+            <button className="text-gray-800 font-medium hover:text-blue-600 border-b-2 border-blue-600">
+              Blog posts
+            </button>{" "}
+          </Link>
+          <Link to="/all-resources">
+            {" "}
+            <button className="text-gray-500 hover:text-blue-600">
+              All resources
+            </button>{" "}
+          </Link>
+          <Link to="/customer-stories">
+            {" "}
+            <button className="text-gray-500 hover:text-blue-600">
+              Customer stories
+            </button>{" "}
+          </Link>
+          <Link to="/guides">
+            {" "}
+            <button className="text-gray-500 hover:text-blue-600">
+              Guides
+            </button>{" "}
+          </Link>
+          <Link to="/events">
+            {" "}
+            <button className="text-gray-500 hover:text-blue-600">
+              Webinars & events
+            </button>{" "}
+          </Link>
         </div>
 
         {/* Filter buttons */}
@@ -166,7 +196,6 @@ export default function BlogPage() {
                 </h3>
               </div>
             </div>
-              
           ))}
         </div>
       </div>

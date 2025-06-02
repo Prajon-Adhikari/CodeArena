@@ -87,7 +87,7 @@ export default function home() {
             Unlock your Potential with{" "}
             <span className="text-orange-300">CodeArena</span>
           </h1>
-          <p className="text-[1.2rem]">
+          <p className="text-[1.2rem] ">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia quis,
             illum veritatis at, explicabo cum eos blanditiis accusamus quaerat
             enim officiis laborum quidem magni, ipsa dicta minus maxime fugit ad
