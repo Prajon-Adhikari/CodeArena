@@ -8,6 +8,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import dragon from "../assets/dragon.jpg";
 import developer from "../assets/developer.png";
+import coding1 from "../assets/coding1.jpg";
+import coding2 from "../assets/coding2.jpg";
+import coding3 from "../assets/coding3.jpg";
+import coding4 from "../assets/coding4.jpg";
 
 export default function home() {
   const [hackathons, setHackathons] = useState([]);
@@ -258,6 +262,51 @@ export default function home() {
               })}
             </tbody>
           </table>
+        </div>
+      </div>
+      <div className="bg-[#2E5077]  text-white h-[780px] my-20 px-[100px] py-[100px] flex gap-30 ">
+        <div className="w-[600px] relative">
+          <img
+            src={coding1}
+            alt=""
+            className="h-[440px] w-[360px] object-cover absolute top-10 left-30  rounded-4xl z-10 shadow-[0px_0px_10px_#79D7BE]"
+          />
+          <img
+            src={coding4}
+            alt=""
+            className="h-[100px] absolute top-18 left-0  rounded-2xl shadow-[0px_0px_10px_#79D7BE]"
+          />
+          <img
+            src={coding2}
+            alt=""
+            className="h-[160px] w-[220px] object-cover absolute bottom-5 left-0  rounded-4xl shadow-[0px_0px_10px_#4DA1A9]"
+          />
+          <img
+            src={coding3}
+            alt=""
+            className="h-[230px] w-[300px] object-cover absolute bottom-0 right-0 z-20  rounded-4xl shadow-[0px_0px_10px_#4DA1A9]"
+          />
+        </div>
+        <div className="w-[600px] flex flex-col justify-center gap-10">
+          <h1 className="text-[3.4rem] font-bold">
+            Explore more about{" "}
+            <span className="text-orange-400">CODEARENA</span>
+          </h1>
+          <p className="text-lg">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Consequuntur quasi fugiat, culpa hic, laboriosam dolore ipsum
+            possimus voluptas placeat eos asperiores, reprehenderit impedit!
+            Aliquid libero molestias pariatur ducimus ipsa sit quae, quam quos
+            dolor ullam fugit esse ipsum consequuntur ratione facilis!
+            Accusantium similique quia facilis neque ut quae eligendi aperiam
+            blanditiis hic.
+          </p>
+          <Link
+            to="/about"
+            className="hover:shadow-[0px_0px_7px_#FF9D3D] cursor-pointer bg-[#FF9D3D] w-[200px] px-7 py-3 text-lg rounded-md"
+          >
+            Explore More &rarr;
+          </Link>
         </div>
       </div>
     </div>
