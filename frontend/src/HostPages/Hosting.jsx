@@ -22,7 +22,7 @@ export default function Hosting() {
   const [location, setLocation] = useState("");
   const [mode, setMode] = useState("");
   const [organizer, setOrganizer] = useState("");
-  const [prizeDetails, setPriceDetails] = useState("");
+  const [prizeDetails, setPrizeDetails] = useState("");
   const [rules, setRules] = useState("");
   const [judgingCriteria, setJudgingCriteria] = useState("");
   const [bannerUrl, setBannerUrl] = useState("");
@@ -47,6 +47,12 @@ export default function Hosting() {
           rules,
           judgingCriteria,
           bannerUrl,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
         }
       );
       console.log(data);
@@ -80,7 +86,7 @@ export default function Hosting() {
               placeholder="Prize Details"
               value={prizeDetails}
               name="prizeDetails"
-              onChange={(e) => setPriceDetails(e.target.value)}
+              onChange={(e) => setPrizeDetails(e.target.value)}
               className="bg-transparent focus:outline-none w-[400px]"
             />
           </div>

@@ -138,7 +138,7 @@ const Navbar = () => {
         {/* Auth Buttons */}
         {user ? (
           <div className="w-[52px] h-[50px] rounded-full bg-indigo-900 text-white flex items-center justify-center font-bold text-xl">
-            {user.fullName[0]}
+            {user.fullName[0].toUpperCase()}
           </div>
         ) : (
           <div className="hidden md:flex items-center gap-4">
