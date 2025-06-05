@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 
 const Navbar = () => {
   const { pathname } = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState();
 
   const isHostPage = pathname === "/hackathon";
 
@@ -15,21 +16,64 @@ const Navbar = () => {
   ];
 
   const resources = [
-    { title: "Blog", description: "Insights into hackathon planning", to: "/blogpage" },
-    { title: "Customer stories", description: "Inspiration from industry leaders", to: "/resources/stories" },
-    { title: "Planning guides", description: "Best practices for events", to: "/guides" },
-    { title: "Webinars & events", description: "Upcoming and on-demand", to: "/resources/webinars" },
-    { title: "Help desk", description: "Support documentation", to: "/resources/help" },
+    {
+      title: "Blog",
+      description: "Insights into hackathon planning",
+      to: "/blogpage",
+    },
+    {
+      title: "Customer stories",
+      description: "Inspiration from industry leaders",
+      to: "/resources/stories",
+    },
+    {
+      title: "Planning guides",
+      description: "Best practices for events",
+      to: "/guides",
+    },
+    {
+      title: "Webinars & events",
+      description: "Upcoming and on-demand",
+      to: "/resources/webinars",
+    },
+    {
+      title: "Help desk",
+      description: "Support documentation",
+      to: "/resources/help",
+    },
   ];
 
   const navLinkClass =
-    "text-base font-medium hover:underline transition-colors duration-150";
+    "text-base font-medium hover:underline transition-colors duration-150 text-xl";
 
   const authButtonClass = `px-4 py-2 rounded text-sm font-medium transition-all duration-200 ${
     isHostPage
       ? "bg-gradient-to-r from-[#D69ADE] to-[#AA60C8] text-white"
       : "bg-orange-500 text-white hover:bg-blue-600"
   }`;
+
+  useEffect(() => {
+    const fetchLoggedInUser = async () => {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_BASE_URL}/home`,
+          {
+            method: "GET",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+        console.log(data.user);
+        setUser(data.user);
+      } catch (error) {
+        console.log("");
+      }
+    };
+    fetchLoggedInUser();
+  }, []);
 
   return (
     <nav
@@ -39,7 +83,7 @@ const Navbar = () => {
           : "bg-white shadow text-gray-800"
       }`}
     >
-      <div className="max-w-screen-xl mx-auto px-4 md:px-8 py-4 flex justify-between items-center">
+      <div className="max-w-screen-xl mx-[80px] px-4 md:px-8 py-4 flex justify-between items-center">
         {/* Logo */}
         <Link
           to="/"
@@ -53,18 +97,19 @@ const Navbar = () => {
         </Link>
 
         {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-8 relative">
+        <div className="hidden md:flex items-center gap-14  relative">
           {navLinks.map(({ to, label }) =>
             label === "Resources" ? (
               <div key={to} className="relative group">
-                <span className={`${navLinkClass} cursor-pointer`}>
+                <span className={`${navLinkClass} cursor-pointer text-xl`}>
                   {label}
                 </span>
 
                 {/* Dropdown */}
-                <div className="absolute left-0 top-full mt-2 w-[320px] bg-white rounded-xl shadow-xl p-4 space-y-3
+                <div
+                  className="absolute left-0 top-full mt-2 w-[320px] bg-white rounded-xl shadow-xl p-4 space-y-3
                   opacity-0 invisible group-hover:visible group-hover:opacity-100 
-                  transition-all duration-200 z-50"
+                  transition-all duration-200 z-50 "
                 >
                   {resources.map((item, idx) => (
                     <Link
@@ -72,8 +117,12 @@ const Navbar = () => {
                       key={idx}
                       className="block border rounded-xl p-4 hover:border-blue-500 hover:bg-blue-50 active:scale-[0.98] transition-all"
                     >
-                      <h3 className="text-blue-600 font-semibold">{item.title}</h3>
-                      <p className="text-gray-600 text-sm mt-1">{item.description}</p>
+                      <h3 className="text-blue-600 font-semibold">
+                        {item.title}
+                      </h3>
+                      <p className="text-gray-600 text-sm mt-1">
+                        {item.description}
+                      </p>
                     </Link>
                   ))}
                 </div>
@@ -87,15 +136,20 @@ const Navbar = () => {
         </div>
 
         {/* Auth Buttons */}
-        <div className="hidden md:flex items-center gap-4">
-          <Link to="/api/auth/signin" className="text-sm hover:underline">
-            Sign in
-          </Link>
-          <Link to="/api/auth/signup" className={authButtonClass}>
-            Sign up
-          </Link>
-        </div>
-
+        {user ? (
+          <div className="w-[52px] h-[50px] rounded-full bg-indigo-900 text-white flex items-center justify-center font-bold text-xl">
+            {user.fullName[0]}
+          </div>
+        ) : (
+          <div className="hidden md:flex items-center gap-4">
+            <Link to="/api/auth/signin" className="text-sm hover:underline">
+              Sign in
+            </Link>
+            <Link to="/api/auth/signup" className={authButtonClass}>
+              Sign up
+            </Link>
+          </div>
+        )}
         {/* Mobile Menu Button */}
         <button
           className="md:hidden"

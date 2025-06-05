@@ -12,6 +12,7 @@ import coding1 from "../assets/coding1.jpg";
 import coding2 from "../assets/coding2.jpg";
 import coding3 from "../assets/coding3.jpg";
 import coding4 from "../assets/coding4.jpg";
+import coding5 from "../assets/coding5.jpg";
 
 export default function home() {
   const [hackathons, setHackathons] = useState([]);
@@ -68,7 +69,14 @@ export default function home() {
     const fetchHackathons = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/home`
+          `${import.meta.env.VITE_API_BASE_URL}/home`,
+          {
+            method: "GET",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
         );
         const data = await response.json();
         console.log(data.hackathons);
@@ -248,7 +256,7 @@ export default function home() {
             <tbody>
               {hackthonData.map((data, index) => {
                 return (
-                  <tr className="hover:bg-blue-50 cursor-pointer">
+                  <tr key={index} className="hover:bg-blue-50 cursor-pointer">
                     <td className="p-4 ">
                       <span className="bg-orange-200 rounded-2xl py-2 px-6">
                         {data.theme}
@@ -264,7 +272,7 @@ export default function home() {
           </table>
         </div>
       </div>
-      <div className="bg-[#2E5077]  text-white h-[780px] my-20 px-[100px] py-[100px] flex gap-30 ">
+      <div className="bg-[#254D70]  text-white h-[780px] my-20 px-[100px] py-[100px] flex gap-30 ">
         <div className="w-[600px] relative">
           <img
             src={coding1}
@@ -277,6 +285,11 @@ export default function home() {
             className="h-[100px] absolute top-18 left-0  rounded-2xl shadow-[0px_0px_10px_#79D7BE]"
           />
           <img
+            src={coding5}
+            alt=""
+            className="h-[80px] w-[80px] object-cover absolute top-40 right-5  rounded-2xl z-10 shadow-[0px_0px_10px_#79D7BE]"
+          />
+          <img
             src={coding2}
             alt=""
             className="h-[160px] w-[220px] object-cover absolute bottom-5 left-0  rounded-4xl shadow-[0px_0px_10px_#4DA1A9]"
@@ -287,12 +300,12 @@ export default function home() {
             className="h-[230px] w-[300px] object-cover absolute bottom-0 right-0 z-20  rounded-4xl shadow-[0px_0px_10px_#4DA1A9]"
           />
         </div>
-        <div className="w-[600px] flex flex-col justify-center gap-10">
+        <div className="w-[600px] flex flex-col justify-center text-center gap-10">
           <h1 className="text-[3.4rem] font-bold">
             Explore more about{" "}
             <span className="text-orange-400">CODEARENA</span>
           </h1>
-          <p className="text-lg">
+          <p className="text-lg pl-5">
             Lorem ipsum dolor sit amet consectetur adipisicing elit.
             Consequuntur quasi fugiat, culpa hic, laboriosam dolore ipsum
             possimus voluptas placeat eos asperiores, reprehenderit impedit!
@@ -303,7 +316,7 @@ export default function home() {
           </p>
           <Link
             to="/about"
-            className="hover:shadow-[0px_0px_7px_#FF9D3D] cursor-pointer bg-[#FF9D3D] w-[200px] px-7 py-3 text-lg rounded-md"
+            className="hover:shadow-[0px_0px_7px_#FF9D3D] mx-auto cursor-pointer bg-[#FF9D3D] w-[200px] px-7 py-3 text-lg rounded-md"
           >
             Explore More &rarr;
           </Link>

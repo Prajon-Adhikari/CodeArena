@@ -10,7 +10,14 @@ export default function HostHackathon() {
     const fetchHackathons = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/home`
+          `${import.meta.env.VITE_API_BASE_URL}/home`,
+          {
+            method: "GET",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
         );
         const data = await response.json();
         console.log(data.hackathons);

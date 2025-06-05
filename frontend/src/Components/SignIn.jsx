@@ -29,7 +29,6 @@ export default function Signin() {
           withCredentials: true,
         }
       );
-      console.log(data);
       navigate("/");
     } catch (error) {
       console.log("Error on logging in", error);

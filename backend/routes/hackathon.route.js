@@ -3,11 +3,12 @@ import {
   hackathon,
   getHackathonTournament,
 } from "../controllers/hackathon.controller.js";
+import { protectRoute } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
-router.post("/host/hackathon", hackathon);
+router.post("/host/hackathon", protectRoute, hackathon);
 
-router.get("/", getHackathonTournament);
+router.get("/", protectRoute, getHackathonTournament);
 
 export default router;
