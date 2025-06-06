@@ -137,9 +137,11 @@ const Navbar = () => {
 
         {/* Auth Buttons */}
         {user ? (
-          <div className="w-[52px] h-[50px] rounded-full bg-indigo-900 text-white flex items-center justify-center font-bold text-xl">
-            {user.fullName[0].toUpperCase()}
-          </div>
+          <Link to="/profile">
+            <div className="w-[52px] h-[50px] rounded-full bg-indigo-900 text-white flex items-center justify-center font-bold text-xl">
+              {user.fullName[0].toUpperCase()}
+            </div>
+          </Link>
         ) : (
           <div className="hidden md:flex items-center gap-4">
             <Link to="/api/auth/signin" className="text-sm hover:underline">

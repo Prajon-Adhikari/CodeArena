@@ -23,6 +23,7 @@ import BlogPage from "./ResourcePages/BlogPage.jsx";
 import Resources from "./ResourcePages/Resources.jsx";
 import About from "./Pages/About.jsx";
 import Contact from "./Pages/Contact.jsx";
+import Profile from "./Pages/Profile.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -44,6 +45,7 @@ const router = createBrowserRouter(
         <Route path="join/hackathon" element={<JoinHackathon />} />
         <Route path="hackathon" element={<HostHackathon />} />
         <Route path="host/hackathon" element={<Hosting />} />
+        <Route path="profile" element={<Profile />} />
         <Route path="resources" element={<Resources />} />
         <Route path="blogPage" element={<BlogPage />} />
         <Route path="about" element={<About />} />
