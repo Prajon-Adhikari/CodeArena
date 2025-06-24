@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -7,15 +7,65 @@ import {
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import dragon from "../assets/dragon.jpg";
-import developer from "../assets/developer.png";
 import coding1 from "../assets/coding1.jpg";
 import coding2 from "../assets/coding2.jpg";
 import coding3 from "../assets/coding3.jpg";
 import coding4 from "../assets/coding4.jpg";
 import coding5 from "../assets/coding5.jpg";
+import homeimg1 from "../assets/homeimg1.jpg";
+import homeimg2 from "../assets/homeimg2.jpg";
+import homeimg3 from "../assets/homeimg3.jpg";
+import homeimg4 from "../assets/homeimg4.jpg";
+import homeimg5 from "../assets/homeimg5.jpg";
 
 export default function home() {
   const [hackathons, setHackathons] = useState([]);
+  const [images, setImages] = useState([homeimg4, homeimg3, homeimg5]);
+  const [imageIndex, setImageIndex] = useState(0);
+  const [tagline1, setTagline1] = useState("");
+  const [tagline2, setTagline2] = useState("");
+  const hasTyped = useRef(false); // Prevents double typing
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [images]);
+
+  useEffect(() => {
+    if (hasTyped.current) return; // Skip if already run
+    hasTyped.current = true;
+
+    setTagline1(""); // Clear before typing
+    setTagline2("");
+
+    const text1 = "Coode Create Conquer";
+    const text2 = "Onne Arena. Infinite Possibilities.";
+
+    let i = 0;
+    let j = 0;
+
+    const typeText1 = () => {
+      if (i < text1.length) {
+        setTagline1((prev) => prev + text1.charAt(i));
+        i++;
+        setTimeout(typeText1, 100);
+      } else {
+        setTimeout(typeText2, 500);
+      }
+    };
+
+    const typeText2 = () => {
+      if (j < text2.length) {
+        setTagline2((prev) => prev + text2.charAt(j));
+        j++;
+        setTimeout(typeText2, 80);
+      }
+    };
+
+    typeText1();
+  }, []);
 
   const hackthonData = [
     {
@@ -80,7 +130,7 @@ export default function home() {
         );
         const data = await response.json();
         console.log(data.hackathons);
-        setHackathons(data.hackathons);
+        setHackathons(data.hackathons || []);
       } catch (error) {
         console.log("Error while fetching hackathon tournaments", error);
       }
@@ -89,9 +139,9 @@ export default function home() {
   }, []);
 
   return (
-    <div className="min-h-screen ">
-      <div className="flex px-[120px] pt-[100px] pb-[80px] gap-20 items-center">
-        <div className="w-[700px]">
+    <div className="min-h-screen">
+      <div className="flex px-[100px] pt-[100px] pb-[80px] gap-20 items-center">
+        <div className="w-[650px]">
           <h1
             className="text-6xl pb-14 text-blue-300"
             style={{ WebkitTextStroke: "1px" }}
@@ -122,12 +172,29 @@ export default function home() {
             </Link>
           </div>
         </div>
-        <div className="h-[500px] ">
+        <div className="h-[500px] w-[570px] relative ">
           <img
-            src={developer}
+            src={images[imageIndex]}
             alt=""
-            className="w-full h-full drop-shadow-[10px_10px_10px_rgba(0,0,0,0.3)]"
+            className="w-[290px] h-[360px] z-10 object-cover rounded-2xl absolute top-15 right-30"
           />
+          <img
+            src={homeimg2}
+            alt=""
+            className="w-[180px] h-[220px] object-cover rounded-xl absolute bottom-0 left-10"
+          />
+          <img
+            src={homeimg1}
+            alt=""
+            className="w-[160px] h-[120px] object-cover rounded-xl absolute top-10 right-0 z-20"
+          />
+          <div class="bg-white/20 backdrop-blur-md border font-semibold border-white/20 rounded-xl p-4 shadow-lg absolute top-20 left-0 z-20 ">
+            {" "}
+            {tagline1}
+          </div>
+          <div class="bg-white/20 backdrop-blur-md border font-semibold border-white/20 rounded-xl p-6 shadow-lg absolute bottom-10 z-20 right-0 ">
+            {tagline2}
+          </div>
         </div>
       </div>
       <div className="pb-[180px] pt-20 w-[100%]  overflow-hidden relative">
