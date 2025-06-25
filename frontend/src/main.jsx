@@ -24,6 +24,7 @@ import Resources from "./ResourcePages/Resources.jsx";
 import About from "./Pages/About.jsx";
 import Contact from "./Pages/Contact.jsx";
 import Profile from "./Pages/Profile.jsx";
+import SpecificHackathon from "./Pages/SpecificHackathon.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -44,6 +45,7 @@ const router = createBrowserRouter(
         <Route index element={<Home />} />
         <Route path="join/hackathon" element={<JoinHackathon />} />
         <Route path="hackathon" element={<HostHackathon />} />
+        <Route path=":id" element={<SpecificHackathon />} />
         <Route path="host/hackathon" element={<Hosting />} />
         <Route path="profile" element={<Profile />} />
         <Route path="resources" element={<Resources />} />

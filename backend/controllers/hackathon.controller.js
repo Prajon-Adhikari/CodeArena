@@ -72,3 +72,24 @@ export const getTopHackathon = async (req, res) => {
       .json({ message: "Internal error while fetching hackathon tournaments" });
   }
 };
+
+export const getSpecificHackathonDetails = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const hackathon = await Hackathon.findById(id);
+
+    if (!hackathon) {
+      return res.status(404).json({ message: "Hackathon not found" });
+    }
+
+    return res.status(200).json({
+      message: "Successfully fetched specific hackathon details",
+      hackathon,
+    });
+  } catch (error) {
+    console.log("Error while fetching specific hackathon details", error);
+    res.status(500).json({
+      message: "Internal error while fetching specific hackathon detailss",
+    });
+  }
+};
