@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { Github, Linkedin, Mail, Pencil } from "lucide-react";
+import {  Github, Linkedin, Mail, Pencil } from "lucide-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
+ // Ensure you have font-awesome installed
 
 export default function Profile() {
   const [user, setUser] = useState(null);
@@ -62,12 +65,12 @@ export default function Profile() {
         )}
         {user.github && (
           <a href={user.github} target="_blank" rel="noopener noreferrer" className="hover:text-teal-600">
-            <Github />
+            <FontAwesomeIcon icon={faGithub} />
           </a>
         )}
         {user.linkedin && (
           <a href={user.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-teal-600">
-            <Linkedin />
+            <FontAwesomeIcon icon={faLinkedin} />
           </a>
         )}
       </div>
