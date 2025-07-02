@@ -28,33 +28,75 @@ export default function HostHackathon() {
   }, []);
 
   return (
-  <>     
-  
-         <div className="pt-10 pb-10 px-10 grid grid-cols-1 md:grid-cols-2 items-center gap-8">
-  {/* Left Content */}
-  <div>
-    <p className="text-2xl mb-4">
-      Branded &nbsp; | &nbsp; Quality &nbsp; | &nbsp; Products
-    </p>
-    <h2 className="text-[30px] font-bold mb-4">
+  <>    
+
+  <section className="relative min-h-[550px] flex items-center bg-gradient-radial from-yellow-400/10 via-black to-black/90 overflow-hidden">
+      {/* Inline keyframes definition */}
+      <style>
+        {`
+          @keyframes floatY {
+            0%, 100% {
+              transform: translateY(0);
+            }
+            50% {
+              transform: translateY(-20px);
+            }
+          }
+        `}
+      </style>
+
+      {/* SVG Grid Overlay */}
+      <div className="absolute inset-0 opacity-30 z-0 pointer-events-none">
+        <svg className="w-full h-full" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+              <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" strokeOpacity="0.05" strokeWidth="1" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#grid)" />
+        </svg>
+      </div>
+
+      {/* Hero Content */}
+      <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 max-w-7xl mx-auto px-6 md:px-10 items-center">
+        {/* Text Content */}
+        <div className="space-y-6">
+        <h2 className="text-[30px] font-bold mb-4">
       WE OFFER A PLATFORM FOR{" "}
       <span className="text-[#60B5FF]">HACKATHON</span>
     </h2>
-    <p className="text-xl mb-10">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit...
-    </p>
-    <a
-      href="#host-hackathon"
-      className="cursor-pointer hover:shadow-[0px_0px_7px_#60B5FF] bg-gradient-to-r from-[#60B5FF] to-[#8DD8FF] text-white py-3 px-6 rounded-lg text-base md:text-lg"
-    >
-      Host a hackathon →
-    </a>
-  </div>
+          <p className="text-lg leading-relaxed">
+       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat sint tempore esse, suscipit iusto laudantium, distinctio natus recusandae earum amet eos facilis laboriosam repellendus, magnam quam. Deserunt fuga vitae minus.
+        </p>
+          <div className="flex flex-wrap gap-4">
+            <button className="bg-gradient-to-r from-[#60B5FF] to-[#8DD8FF] font-bold py-3 px-6 rounded-xl shadow-lg hover:-translate-y-1 transition transform">
+               Host a hackathon →
+            </button>
+           
+          </div>
+        </div>
 
-  {/* Right Image */}
-
-    
-  </div>
+        {/* Game Preview with float animation */}
+        <div className="flex justify-center items-center">
+          <div
+            className="relative rounded-2xl overflow-hidden backdrop-blur-md bg-white/5 border border-white/20 shadow-2xl max-w-md transition duration-300 hover:scale-105"
+            style={{
+              animation: "floatY 4s ease-in-out infinite",
+            }}
+          >
+            <img
+              src="https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=300&fit=crop"
+              alt="Featured Game"
+              className="w-full h-[300px] object-cover"
+            />
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/70 to-transparent p-6 text-white">
+              <h3 className="text-xl font-bold">Space Explorer</h3>
+              <p className="text-yellow-400 font-medium">Action • Adventure</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
         {/* Features Section */}
         <div className="bg-white p-6 flex flex-col items-center">
