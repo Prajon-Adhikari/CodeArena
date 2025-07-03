@@ -160,7 +160,7 @@ export default function home() {
           <div className="flex gap-10 text-white pt-14">
             <Link
               to="/join/hackathon"
-              className="hover:shadow-[0px_0px_7px_#60B5FF] cursor-pointer bg-gradient-to-r from-[#60B5FF] to-[#8DD8FF] px-7 py-3 text-lg rounded-md"
+              className="hover:shadow-[0px_0px_7px_#60B5FF] cursor-pointer  bg-gradient-to-r from-[#60B5FF] to-[#8DD8FF] px-7 py-3 text-lg rounded-md"
             >
               Join a Hackathon &rarr;
             </Link>

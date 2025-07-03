@@ -15,16 +15,18 @@
     "@fortawesome/free-regular-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@react-three/drei": "^10.3.0",
+    "@react-three/fiber": "^9.1.2",
     "@tailwindcss/vite": "^4.1.4",
     "axios": "^1.9.0",
     "flowbite": "^3.1.2",
     "lucide-react": "^0.507.0",
-    "ngrok": "^5.0.0-beta.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hot-toast": "^2.5.2",
     "react-router-dom": "^7.5.3",
-    "tailwindcss": "^4.1.4"
+    "tailwindcss": "^4.1.4",
+    "three": "^0.177.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
