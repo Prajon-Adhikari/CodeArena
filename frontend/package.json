@@ -19,6 +19,7 @@
     "axios": "^1.9.0",
     "flowbite": "^3.1.2",
     "lucide-react": "^0.507.0",
+    "ngrok": "^5.0.0-beta.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hot-toast": "^2.5.2",
