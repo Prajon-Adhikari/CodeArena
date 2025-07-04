@@ -5,11 +5,13 @@ import {
   faGlobe,
   faStarOfLife,
   faMagnifyingGlass,
+  faPeopleGroup,
+  faGraduationCap,
 } from "@fortawesome/free-solid-svg-icons";
+import { faCalendarDays } from "@fortawesome/free-regular-svg-icons";
 import dragon from "../assets/dragon.jpg";
 import coding1 from "../assets/coding1.jpg";
 import coding2 from "../assets/coding2.jpg";
-import coding3 from "../assets/coding3.jpg";
 import coding4 from "../assets/coding4.jpg";
 import coding5 from "../assets/coding5.jpg";
 import homeimg1 from "../assets/homeimg1.jpg";
@@ -17,6 +19,7 @@ import homeimg2 from "../assets/homeimg2.jpg";
 import homeimg3 from "../assets/homeimg3.jpg";
 import homeimg4 from "../assets/homeimg4.jpg";
 import homeimg5 from "../assets/homeimg5.jpg";
+import meeting from "../assets/meeting.webp";
 
 export default function home() {
   const [hackathons, setHackathons] = useState([]);
@@ -343,32 +346,33 @@ export default function home() {
           </table>
         </div>
       </div>
-      <div className="bg-[#254D70]  text-white h-[780px] my-20 px-[100px] py-[100px] flex gap-30 ">
+
+      <div className="  h-[690px] my-30 px-[100px] py-[70px]  flex gap-30 bg-[#4DA1A9] text-white">
         <div className="w-[600px] relative">
           <img
             src={coding1}
             alt=""
-            className="h-[440px] w-[360px] object-cover absolute top-10 left-30  rounded-4xl z-10 shadow-[0px_0px_10px_#79D7BE]"
+            className="h-[420px] w-[340px] object-cover absolute top-10 left-30  rounded-4xl z-10 shadow-[0px_0px_8px_gray]"
           />
           <img
             src={coding4}
             alt=""
-            className="h-[100px] absolute top-18 left-0  rounded-2xl shadow-[0px_0px_10px_#79D7BE]"
+            className="h-[100px] absolute top-20 left-0  rounded-2xl shadow-[0px_0px_8px_gray]"
           />
           <img
             src={coding5}
             alt=""
-            className="h-[80px] w-[80px] object-cover absolute top-40 right-5  rounded-2xl z-10 shadow-[0px_0px_10px_#79D7BE]"
+            className="h-[78px] w-[78px] object-cover absolute top-40 right-12  rounded-2xl z-10 shadow-[0px_0px_8px_gray]"
           />
           <img
             src={coding2}
             alt=""
-            className="h-[160px] w-[220px] object-cover absolute bottom-5 left-0  rounded-4xl shadow-[0px_0px_10px_#4DA1A9]"
+            className="h-[150px] w-[210px] object-cover absolute bottom-5 left-0  rounded-4xl shadow-[0px_0px_8px_gray]"
           />
           <img
-            src={coding3}
+            src={meeting}
             alt=""
-            className="h-[230px] w-[300px] object-cover absolute bottom-0 right-0 z-20  rounded-4xl shadow-[0px_0px_10px_#4DA1A9]"
+            className="h-[210px] w-[290px] object-cover absolute bottom-0 right-5 z-20  rounded-4xl shadow-[0px_0px_8px_gray]"
           />
         </div>
         <div className="w-[600px] flex flex-col justify-center text-center gap-10">
@@ -387,11 +391,119 @@ export default function home() {
           </p>
           <Link
             to="/about"
-            className="hover:shadow-[0px_0px_7px_#FF9D3D] mx-auto cursor-pointer bg-[#FF9D3D] w-[200px] px-7 py-3 text-lg rounded-md"
+            className="hover:shadow-[0px_0px_7px_#FF9D3D] mx-auto cursor-pointer text-white bg-[#FF9D3D] w-[200px] px-7 py-3 text-lg rounded-md"
           >
             Explore More &rarr;
           </Link>
         </div>
+      </div>
+      <div className="px-[140px]">
+        <h1 className="text-[3.4rem] font-bold text-center mb-20 text-[#F79327]">
+          Level up with <span className="text-black">CodeArena</span>
+        </h1>
+        <div className="flex justify-between">
+          <div>
+            <div className="flex gap-5 bg-white w-[680px] px-8 py-6 shadow-[0px_0px_12px_gray] rounded-2xl ">
+              <FontAwesomeIcon
+                icon={faCalendarDays}
+                className=" text-2xl border-[2px] border-[#d9d3d3] p-2 rounded-xl "
+              />
+              <div>
+                <h1 className="font-semibold text-xl mb-3">Special Events</h1>
+                <p className="text-gray-500">
+                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                  Nesciunt non vitae modi, consequuntur recusandae iste maiores
+                  deserunt! Obcaecati, quidem explicabo.Obcaecati, quidem
+                  explicabo.Obcaecati, quidem explicabo.Obcaecati, quidem
+                  explicabo.
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-10 mt-8">
+              <div className=" bg-white w-[320px] px-8 py-6 shadow-[0px_0px_12px_gray] rounded-2xl ">
+                <FontAwesomeIcon
+                  icon={faGraduationCap}
+                  className="mb-[16px] bg-[#FF9D23] text-white text-3xl  px-3 py-4 rounded-xl"
+                />
+                <div>
+                  <h1 className="font-semibold text-xl mb-3">
+                    Student Friendly
+                  </h1>
+                  <p className="text-gray-500">
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                    Nesciunt non vitae modi, consequuntur recusandae iste
+                    maiores deserunt! Obcaecati, quidem explicabo.
+                  </p>
+                </div>
+              </div>
+              <div className=" bg-white w-[320px] px-8 py-6 shadow-[0px_0px_12px_gray] rounded-2xl ">
+                <FontAwesomeIcon
+                  icon={faPeopleGroup}
+                  className="mb-[16px] text-3xl  border-[2px] border-[#d9d3d3] px-3 py-4 rounded-xl"
+                />
+                <div>
+                  <h1 className="font-semibold text-xl mb-3 ">
+                    Community Building
+                  </h1>
+                  <p className="text-gray-500">
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                    Nesciunt non vitae modi, consequuntur recusandae iste
+                    maiores deserunt! Obcaecati, quidem explicabo.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className="bg-white w-[510px] p-3 shadow-[0px_0px_12px_gray] rounded-3xl ">
+              <img
+                src={meeting}
+                alt=""
+                className="rounded-2xl h-[320px] w-full object-cover"
+              />
+              <div className="mx-4 mt-6 mb-2">
+                <h1 className="font-semibold text-2xl mb-5">
+                  All-in-One Hakathon Platform
+                </h1>
+                <p className="text-gray-500">
+                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                  Nesciunt non vitae modi, consequuntur recusandae iste maiores
+                  deserunt! Obcaecati, quidem explicabo.quidem explicabo.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="mx-[100px] flex bg-[#4f8bb3] mt-30 rounded-2xl">
+        <h1 className="text-[36px] bg-[#5EABD6] py-[36px] w-[290px] px-12 rounded-l-2xl text-white text-left font-bold">
+          <span className="text-xl font-semibold text-[#feaf4f]">
+            SOME NUMBERS
+          </span>{" "}
+          <br />
+          What we did so far
+        </h1>
+        <div className="flex items-center gap-22 px-[100px]">
+          <div className="text-center">
+            <div className="text-[50px] font-bold text-[#feaf4f]">350 +</div>
+            <div className="text-white font-semibold text-lg">
+              COMPLETED HACKATHONS
+            </div>
+          </div>
+          <div className="text-center">
+            <div className="text-[50px] font-bold text-[#feaf4f]">12 +</div>
+            <div className="text-white font-semibold text-lg">
+              YEAR EXPERIENCE
+            </div>
+          </div>
+          <div className="text-center">
+            <div className="text-[50px] font-bold text-[#feaf4f]">350 +</div>
+            <div className="text-white font-semibold text-lg">
+              COMPLETED HACKATHONS{" "}
+            </div>
+          </div>
+        </div>
+        <div></div>
       </div>
     </div>
   );
