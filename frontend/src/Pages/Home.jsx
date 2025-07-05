@@ -7,6 +7,9 @@ import {
   faMagnifyingGlass,
   faPeopleGroup,
   faGraduationCap,
+  faUser,
+  faBookmark,
+  faCalendar,
 } from "@fortawesome/free-solid-svg-icons";
 import { faCalendarDays } from "@fortawesome/free-regular-svg-icons";
 import dragon from "../assets/dragon.jpg";
@@ -20,6 +23,9 @@ import homeimg3 from "../assets/homeimg3.jpg";
 import homeimg4 from "../assets/homeimg4.jpg";
 import homeimg5 from "../assets/homeimg5.jpg";
 import meeting from "../assets/meeting.webp";
+import hackathon from "../assets/hackathon.jpg";
+import hackathon2 from "../assets/hackathon2.jpg";
+import chatting from "../assets/chatting.jpg";
 
 export default function home() {
   const [hackathons, setHackathons] = useState([]);
@@ -146,7 +152,7 @@ export default function home() {
       <div className="flex px-[100px] pt-[100px] pb-[80px] gap-20 items-center">
         <div className="w-[650px]">
           <h1
-            className="text-6xl pb-14 text-blue-300"
+            className="text-6xl pb-14 text-blue-400"
             style={{ WebkitTextStroke: "1px" }}
           >
             Unlock your Potential with{" "}
@@ -403,7 +409,7 @@ export default function home() {
         </h1>
         <div className="flex justify-between">
           <div>
-            <div className="flex gap-5 bg-white w-[680px] px-8 py-6 shadow-[0px_0px_12px_gray] rounded-2xl ">
+            <div className="flex gap-5 bg-white w-[680px] px-8 py-6 shadow-[5px_5px_10px_#d1d5db] rounded-2xl ">
               <FontAwesomeIcon
                 icon={faCalendarDays}
                 className=" text-2xl border-[2px] border-[#d9d3d3] p-2 rounded-xl "
@@ -420,7 +426,7 @@ export default function home() {
               </div>
             </div>
             <div className="flex gap-10 mt-8">
-              <div className=" bg-white w-[320px] px-8 py-6 shadow-[0px_0px_12px_gray] rounded-2xl ">
+              <div className=" bg-white w-[320px] px-8 py-6 shadow-[5px_5px_10px_#d1d5db] rounded-2xl ">
                 <FontAwesomeIcon
                   icon={faGraduationCap}
                   className="mb-[16px] bg-[#FF9D23] text-white text-3xl  px-3 py-4 rounded-xl"
@@ -436,7 +442,7 @@ export default function home() {
                   </p>
                 </div>
               </div>
-              <div className=" bg-white w-[320px] px-8 py-6 shadow-[0px_0px_12px_gray] rounded-2xl ">
+              <div className=" bg-white w-[320px] px-8 py-6 shadow-[5px_5px_10px_#d1d5db] rounded-2xl ">
                 <FontAwesomeIcon
                   icon={faPeopleGroup}
                   className="mb-[16px] text-3xl  border-[2px] border-[#d9d3d3] px-3 py-4 rounded-xl"
@@ -455,7 +461,7 @@ export default function home() {
             </div>
           </div>
           <div>
-            <div className="bg-white w-[510px] p-3 shadow-[0px_0px_12px_gray] rounded-3xl ">
+            <div className="bg-white w-[510px] p-3 shadow-[5px_5px_10px_#d1d5db] rounded-3xl ">
               <img
                 src={meeting}
                 alt=""
@@ -503,7 +509,103 @@ export default function home() {
             </div>
           </div>
         </div>
-        <div></div>
+      </div>
+      <div className="px-[100px] py-[100px]">
+        <h1 className="text-[#4f8bb3] text-[50px] flex flex-col text-center font-bold mb-20">
+          Services That Fits <span className="text-[#feaf4f]">Your Needs</span>
+        </h1>
+        <div className="flex justify-evenly">
+          <div className="shadow-[5px_5px_10px_#d1d5db] w-[340px] rounded-xl mt-12 h-[460px]">
+            <div className="h-[220px] relative overflow-hidden ">
+              <div className="relative h-[86%] w-full">
+                <img
+                  src={hackathon}
+                  alt=""
+                  className="h-full w-full object-cover rounded-t-xl"
+                />
+                {/* Blue gradient overlay directly on image */}
+                <div className="absolute inset-0 bg-[linear-gradient(to_top,_#27548A_0%,_transparent,_transparent,_transparent)] rounded-t-xl" />
+              </div>
+              <FontAwesomeIcon
+                icon={faBookmark}
+                className="absolute bottom-0 left-5 px-[19px] py-4 text-2xl bg-[#27548A] text-white border-4 border-white rounded-full"
+              />
+            </div>
+            <div className="p-4">
+              <h1 className="text-blue-900 text-2xl mb-2 font-bold">
+                Join Hackathon
+              </h1>
+              <p className="text-gray-700 mb-3">
+                Lorem ipsum dolor sit amet elit. Illo accusamus est nihil cumque
+                ipsa consequatur assumenda aperiam assumenda aperiam assumenda
+                aperiam
+              </p>
+              <button className="text-lg text-orange-400 mb-2">
+                Learn More &rarr;
+              </button>
+            </div>
+          </div>
+          <div className="shadow-[5px_5px_10px_#d1d5db] w-[340px] rounded-xl h-[460px]">
+            <div className="h-[220px] relative overflow-hidden ">
+              <div className="relative h-[86%] w-full">
+                <img
+                  src={hackathon2}
+                  alt=""
+                  className="h-full w-full object-cover rounded-t-xl"
+                />
+                {/* Blue gradient overlay directly on image */}
+                <div className="absolute inset-0 bg-[linear-gradient(to_top,_#27548A_0%,_transparent,_transparent,_transparent)] rounded-t-xl" />
+              </div>
+              <FontAwesomeIcon
+                icon={faCalendar}
+                className="absolute bottom-0 left-5 px-[18px] py-4 text-2xl bg-[#27548A] text-white border-4 border-white rounded-full"
+              />
+            </div>{" "}
+            <div className="p-4">
+              <h1 className="text-blue-900 text-2xl mb-2 font-bold">
+                Host Hackathon
+              </h1>
+              <p className="text-gray-700 mb-3">
+                Lorem ipsum dolor sit amet elit. Illo accusamus est nihil cumque
+                ipsa consequatur assumenda aperiam assumenda aperiam assumenda
+                aperiam
+              </p>
+              <button className="text-lg text-orange-400 mb-2">
+                Learn More &rarr;
+              </button>
+            </div>
+          </div>
+          <div className="shadow-[5px_5px_10px_#d1d5db] w-[340px] rounded-xl mt-12 h-[460px]">
+            <div className="h-[220px] relative overflow-hidden ">
+              <div className="relative h-[86%] w-full">
+                <img
+                  src={chatting}
+                  alt=""
+                  className="h-full w-full object-cover rounded-t-xl"
+                />
+                {/* Blue gradient overlay directly on image */}
+                <div className="absolute inset-0 bg-[linear-gradient(to_top,_#27548A_0%,_transparent,_transparent,_transparent)] rounded-t-xl" />
+              </div>
+              <FontAwesomeIcon
+                icon={faUser}
+                className="absolute bottom-0 left-5 px-4 py-[14px] text-2xl bg-[#27548A] text-white border-4 border-white rounded-full"
+              />
+            </div>
+            <div className="p-4">
+              <h1 className="text-blue-900 text-2xl mb-2 font-bold">
+                Team Messaging
+              </h1>
+              <p className="text-gray-700 mb-3">
+                Lorem ipsum dolor sit amet elit. Illo accusamus est nihil cumque
+                ipsa consequatur assumenda aperiam assumenda aperiam assumenda
+                aperiam
+              </p>
+              <button className="text-lg text-orange-400 mb-2">
+                Learn More &rarr;
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
