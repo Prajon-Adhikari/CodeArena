@@ -9,6 +9,7 @@ import {
   faEye,
   faEyeSlash,
 } from "@fortawesome/free-solid-svg-icons";
+import google from "../assets/google.png";
 
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
@@ -91,6 +92,10 @@ export default function Signup() {
               <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
             </button>
           </div>
+          <p className="text-center text-white">----- or ------</p>
+          <button className=" text-white border-2 rounded-xl w-full py-3 flex justify-center items-center">
+            <img src={google} alt="" className="w-5 mr-3" /> Sign Up with Google
+          </button>
           <button
             type="submit"
             className="w-full bg-white text-indigo-600 font-semibold py-3 px-4 rounded-lg text-lg hover:bg-gray-300 transition"

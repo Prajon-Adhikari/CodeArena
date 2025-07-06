@@ -9,6 +9,8 @@ import {
   faEyeSlash,
 } from "@fortawesome/free-solid-svg-icons";
 
+import google from "../assets/google.png";
+
 export default function Signin() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
@@ -77,6 +79,13 @@ export default function Signin() {
               <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
             </button>
           </div>
+          <p className="text-right text-yellow-300 font-medium">
+            Forget Password ?{" "}
+          </p>
+          <p className="text-center text-white">----- or ------</p>
+          <button className=" text-white border-2 rounded-xl w-full py-3 flex justify-center items-center">
+            <img src={google} alt="" className="w-5 mr-3" /> Login with Google
+          </button>
           <button
             type="submit"
             className="w-full bg-white text-indigo-600 font-semibold py-3 px-4 rounded-lg text-lg hover:bg-gray-300 transition"

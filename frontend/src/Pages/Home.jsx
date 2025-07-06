@@ -409,7 +409,7 @@ export default function home() {
         </h1>
         <div className="flex justify-between">
           <div>
-            <div className="flex gap-5 bg-white w-[680px] px-8 py-6 shadow-[5px_5px_10px_#d1d5db] rounded-2xl ">
+            <div className="flex gap-5 bg-white w-[680px] px-8 py-6 shadow-[5px_5px_10px_#d1d5db,-1px_-1px_2px_#d1d5db] rounded-2xl ">
               <FontAwesomeIcon
                 icon={faCalendarDays}
                 className=" text-2xl border-[2px] border-[#d9d3d3] p-2 rounded-xl "
@@ -426,7 +426,7 @@ export default function home() {
               </div>
             </div>
             <div className="flex gap-10 mt-8">
-              <div className=" bg-white w-[320px] px-8 py-6 shadow-[5px_5px_10px_#d1d5db] rounded-2xl ">
+              <div className=" bg-white w-[320px] px-8 py-6 shadow-[5px_5px_10px_#d1d5db,-1px_-1px_2px_#d1d5db] rounded-2xl ">
                 <FontAwesomeIcon
                   icon={faGraduationCap}
                   className="mb-[16px] bg-[#FF9D23] text-white text-3xl  px-3 py-4 rounded-xl"
@@ -442,7 +442,7 @@ export default function home() {
                   </p>
                 </div>
               </div>
-              <div className=" bg-white w-[320px] px-8 py-6 shadow-[5px_5px_10px_#d1d5db] rounded-2xl ">
+              <div className=" bg-white w-[320px] px-8 py-6 shadow-[5px_5px_10px_#d1d5db,-1px_-1px_2px_#d1d5db] rounded-2xl ">
                 <FontAwesomeIcon
                   icon={faPeopleGroup}
                   className="mb-[16px] text-3xl  border-[2px] border-[#d9d3d3] px-3 py-4 rounded-xl"
@@ -461,7 +461,7 @@ export default function home() {
             </div>
           </div>
           <div>
-            <div className="bg-white w-[510px] p-3 shadow-[5px_5px_10px_#d1d5db] rounded-3xl ">
+            <div className="bg-white w-[510px] p-3 shadow-[5px_5px_10px_#d1d5db,-1px_-1px_2px_#d1d5db] rounded-3xl ">
               <img
                 src={meeting}
                 alt=""
@@ -515,7 +515,7 @@ export default function home() {
           Services That Fits <span className="text-[#feaf4f]">Your Needs</span>
         </h1>
         <div className="flex justify-evenly">
-          <div className="shadow-[5px_5px_10px_#d1d5db] w-[340px] rounded-xl mt-12 h-[460px]">
+          <div className="shadow-[5px_5px_10px_#d1d5db] w-[340px] rounded-xl mt-16 h-[460px]">
             <div className="h-[220px] relative overflow-hidden ">
               <div className="relative h-[86%] w-full">
                 <img
@@ -575,7 +575,7 @@ export default function home() {
               </button>
             </div>
           </div>
-          <div className="shadow-[5px_5px_10px_#d1d5db] w-[340px] rounded-xl mt-12 h-[460px]">
+          <div className="shadow-[5px_5px_10px_#d1d5db] w-[340px] rounded-xl mt-16 h-[460px]">
             <div className="h-[220px] relative overflow-hidden ">
               <div className="relative h-[86%] w-full">
                 <img

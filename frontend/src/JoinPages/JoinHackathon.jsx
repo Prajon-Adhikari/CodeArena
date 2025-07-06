@@ -6,6 +6,9 @@ import {
   faGlobe,
   faFilter,
   faMagnifyingGlass,
+  faTags,
+  faFlag,
+  faCalendar,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
@@ -14,7 +17,7 @@ const JoinHackathon = () => {
 
   const hackthonData = [
     {
-      theme: "Beginner Friendly",
+      theme: "IoT",
       hackathonNumber: 53,
       totalPrizes: 1749000,
     },
@@ -83,7 +86,10 @@ const JoinHackathon = () => {
   }, []);
   return (
     <div>
-      <div className="text-center py-24 text-4xl bg-[#254D70] text-white mb-16">
+      <div
+        className="text-center py-32 text-[45px] font-extrabold bg-cover bg-center  text-white mb-16"
+        style={{ backgroundImage: "url('/src/assets/join-heroimage.jpg')" }}
+      >
         Join the world best online and in persons hackathon
       </div>
 
@@ -96,14 +102,14 @@ const JoinHackathon = () => {
           <input
             type="text"
             placeholder="Serach for your dream hackathon"
-            className=" w-[640px] text-xl  outline-none"
+            className=" w-[640px] text-xl outline-none"
           />
         </div>
         <button className="bg-blue-400 hover:bg-blue-500 cursor-pointer text-xl text-white px-8 rounded-sm">
           Search Hackathon
         </button>
       </div>
-      <div className="flex mx-[100px] gap-30">
+      <div className="flex mx-[90px] gap-30">
         <div>
           <h3 className="text-xl text-gray-500 pt-2">
             Search by filters{" "}
@@ -163,10 +169,8 @@ const JoinHackathon = () => {
               <span>Sort :</span>
               <div className="flex gap-10 text-md border-2 px-10 py-2 rounded-sm border-blue-200">
                 <li className="text-blue-300 cursor-pointer">Most recent</li>
-                <li className="text-gray-600 cursor-pointer">
-                  Submission Date
-                </li>
-                <li>Prize amount</li>
+                <li className=" cursor-pointer">Submission Date</li>
+                <li className=" cursor-pointer">Prize amount</li>
               </div>
             </div>
           </div>
@@ -176,14 +180,14 @@ const JoinHackathon = () => {
                 <Link to={`/${hackathon._id}`}>
                   <div
                     key={hackathon._id}
-                    className="group relative bg-transparent pr-[50px] py-[2px] w-[940px] h-[250px] mb-6 overflow-hidden"
+                    className="group relative bg-transparent pr-[50px] py-[2px] w-[1010px] h-[250px] mb-6 overflow-hidden"
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-blue-300 to-blue-300 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-400 ease-in-out z-0"></div>
 
                     {/* Content Layer */}
                     <div
                       style={{ backgroundImage: `url(${dragon})` }}
-                      className="relative z-10 mb-4  bg-cover bg-center flex w-[900px] h-full border border-l-8 cursor-pointer border-blue-300"
+                      className="relative z-10 mb-4  bg-cover bg-center flex w-[980px] h-full border border-l-8 cursor-pointer border-blue-300"
                     >
                       <div className="flex gap-8 p-6 w-full">
                         <div className="bg-[url('./src/assets/demo-logo.jpg')] h-24 w-24 bg-cover bg-center"></div>
@@ -228,6 +232,40 @@ const JoinHackathon = () => {
                               </span>
                             </p>
                           </div>
+                        </div>
+                      </div>
+                      <div className="my-6 py-2 px-7 w-[400px] flex flex-col gap-5 border-l border-gray-500">
+                        <div className="flex items-center justify-start gap-5 text-lg">
+                          <FontAwesomeIcon
+                            icon={faFlag}
+                            className="text-slate-700 text-xl"
+                          />
+                          <span>Google</span>
+                        </div>
+                        <div className="flex items-center justify-start gap-5 text-lg">
+                          <FontAwesomeIcon
+                            icon={faCalendar}
+                            className="text-slate-700 text-xl"
+                          />
+                          <span>
+                            {new Date(hackathon.endDate).toLocaleDateString()} -{" "}
+                            {new Date(hackathon.endDate).toLocaleDateString()}
+                          </span>
+                        </div>
+                        <div className="flex justify-start gap-5 text-sm">
+                          <FontAwesomeIcon
+                            icon={faTags}
+                            className="text-slate-700 text-xl pt-1"
+                          />
+                          <span>
+                            {hackthonData.slice(0, 3).map((data, index) => {
+                              return (
+                                <div className="bg-orange-200 mb-1 mr-1 inline-block  px-4 py-1">
+                                  {data.theme}
+                                </div>
+                              );
+                            })}
+                          </span>
                         </div>
                       </div>
                     </div>
