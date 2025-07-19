@@ -46,7 +46,8 @@ const Navbar = () => {
   const navLinkClass =
     "text-base font-medium hover:underline transition-colors duration-150 text-xl";
 
-  const authButtonClass = "px-4 py-2 rounded text-sm font-medium transition-all duration-200  bg-orange-500 text-white hover:bg-blue-600";
+  const authButtonClass =
+    "px-4 py-2 rounded text-sm font-medium transition-all duration-200  bg-orange-500 text-white hover:bg-blue-600";
 
   useEffect(() => {
     const fetchLoggedInUser = async () => {
@@ -72,17 +73,15 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav
-      className="bg-white shadow text-gray-800"
-    >
+    <nav className="bg-white shadow text-gray-800">
       <div className="max-w-screen-xl mx-[80px] px-4 md:px-8 py-4 flex justify-between items-center">
         {/* Logo */}
-      <Link
-  to="/"
-  className="text-2xl font-bold px-5 py-2 rounded text-blue-900 bg-cyan-500"
->
-  CodeArena
-</Link>
+        <Link
+          to="/"
+          className="text-2xl font-bold px-5 py-2 rounded logo"
+        >
+          CodeArena
+        </Link>
 
         {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-14  relative">

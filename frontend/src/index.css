@@ -1,6 +1,6 @@
 @import "tailwindcss";
 *{
-    font-family: Merienda;
+    font-family: Nunito Sans;
 }
 
 /* @keyframes marquee {
@@ -12,3 +12,5 @@
   white-space: nowrap;
   position: absolute;
 } */
+
+
