@@ -152,7 +152,7 @@ export default function home() {
       <div className="flex px-[100px] pt-[100px] pb-[80px] gap-20 items-center">
         <div className="w-[650px]">
           <h1
-            className="text-6xl pb-14 text-blue-400"
+            className="text-6xl pb-14 text-[#1E90FF]"
             style={{ WebkitTextStroke: "3px" }}
           >
             Unlock your potential with{" "}
@@ -169,13 +169,13 @@ export default function home() {
           <div className="flex gap-10 text-white pt-14">
             <Link
               to="/join/hackathon"
-              className="hover:shadow-[0px_0px_7px_#60B5FF] cursor-pointer  bg-gradient-to-r from-[#60B5FF] to-[#8DD8FF] px-7 py-3 text-lg rounded-md"
+              className="hover:shadow-[0px_0px_7px_#60B5FF] cursor-pointer  bg-gradient-to-r from-[#1E90FF] to-[#60B5FF] px-7 py-3 text-lg rounded-md"
             >
               Join a Hackathon &rarr;
             </Link>
             <Link
               to="/hackathon"
-              className="hover:shadow-[0px_0px_7px_#60B5FF] cursor-pointer bg-gradient-to-r from-[#60B5FF] to-[#8DD8FF] px-7 py-3 text-lg rounded-md"
+              className="hover:shadow-[0px_0px_7px_#60B5FF] cursor-pointer bg-gradient-to-r from-[#1E90FF] to-[#60B5FF] px-7 py-3 text-lg rounded-md"
             >
               Host a Hackathon &rarr;
             </Link>
