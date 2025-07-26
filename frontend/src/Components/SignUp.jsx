@@ -10,8 +10,8 @@ import {
   faEyeSlash,
 } from "@fortawesome/free-solid-svg-icons";
 import login from "../assets/login-img.png";
-
 import google from "../assets/google.png";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
@@ -33,10 +33,12 @@ export default function Signup() {
           password,
         }
       );
-      console.log(data);
       navigate("/api/auth/signin");
     } catch (error) {
-      console.log("Error on signing up", error);
+      toast.dismiss();
+      const errorMsg =
+        error.response?.data?.message || "Login failed. Please try again.";
+      toast.error(errorMsg);
     }
   };
 
@@ -70,6 +72,7 @@ export default function Signup() {
                   placeholder="Full Name"
                   value={fullName}
                   name="fullName"
+                  autoComplete="off"
                   onChange={(e) => setFullName(e.target.value)}
                   className="bg-transparent focus:outline-none w-full text-white placeholder-white"
                 />
@@ -84,6 +87,7 @@ export default function Signup() {
                   placeholder="Email"
                   value={email}
                   name="email"
+                  autoComplete="off"
                   onChange={(e) => setEmail(e.target.value)}
                   className="bg-transparent focus:outline-none w-full text-white placeholder-white"
                 />
@@ -95,6 +99,7 @@ export default function Signup() {
                   placeholder="Password"
                   value={password}
                   name="password"
+                  autoComplete="off"
                   onChange={(e) => setPassword(e.target.value)}
                   className="bg-transparent focus:outline-none w-full text-white placeholder-white"
                 />
@@ -107,13 +112,13 @@ export default function Signup() {
                 </button>
               </div>
               <p className="text-center text-white">----- or ------</p>
-              <button className=" text-white border-2 rounded-xl w-full py-3 flex justify-center items-center">
+              <button className=" text-white cursor-pointer border-2 rounded-xl w-full py-3 flex justify-center items-center">
                 <img src={google} alt="" className="w-5 mr-3" /> Sign Up with
                 Google
               </button>
               <button
                 type="submit"
-                className="w-full bg-white text-indigo-600 font-semibold py-3 px-4 rounded-lg text-lg hover:bg-gray-300 transition"
+                className="w-full bg-white cursor-pointer text-indigo-600 font-semibold py-3 px-4 rounded-lg text-lg hover:bg-gray-300 transition"
               >
                 Create Account
               </button>
@@ -121,6 +126,11 @@ export default function Signup() {
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={true}
+      />
     </div>
   );
 }

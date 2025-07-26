@@ -197,11 +197,11 @@ export default function home() {
             alt=""
             className="w-[160px] h-[120px] object-cover rounded-xl absolute top-10 right-0 z-20"
           />
-          <div class="bg-white/20 text-xl text-orange-500 backdrop-blur-md border font-semibold border-white/20 rounded-xl px-6 py-4 shadow-lg absolute top-20 left-0 z-20 ">
+          <div class="bg-white/20 text-xl text-black backdrop-blur-md border font-semibold border-white/20 rounded-xl px-6 py-4 shadow-lg absolute top-20 left-0 z-20 ">
             {" "}
             {tagline1}
           </div>
-          <div class="bg-white/20 text-xl text-orange-500 backdrop-blur-md border font-semibold border-white/20 rounded-xl px-6 py-4 shadow-lg absolute bottom-10 z-20 right-0 ">
+          <div class="bg-white/20 text-xl text-black backdrop-blur-md border font-semibold border-white/20 rounded-xl px-6 py-4 shadow-lg absolute bottom-10 z-20 right-0 ">
             {tagline2}
           </div>
         </div>

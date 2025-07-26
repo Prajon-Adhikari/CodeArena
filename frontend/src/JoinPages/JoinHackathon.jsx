@@ -14,6 +14,12 @@ import { Link } from "react-router-dom";
 
 const JoinHackathon = () => {
   const [hackathons, setHackathons] = useState([]);
+  const [filters, setFilters] = useState({
+    mode: [],
+    length: [],
+    theme: [],
+  });
+  const [sortBy, setSortBy] = useState("recent"); // Options: "recent", "deadline", "prize"
 
   const hackthonData = [
     {
@@ -84,6 +90,71 @@ const JoinHackathon = () => {
     };
     fetchHackathons();
   }, []);
+
+  const handleCheckboxChange = (category, value) => {
+    setFilters((prevFilters) => {
+      const currentValues = prevFilters[category];
+      if (currentValues.includes(value)) {
+        // Remove if already selected
+        return {
+          ...prevFilters,
+          [category]: currentValues.filter((v) => v !== value),
+        };
+      } else {
+        // Add if not selected
+        return {
+          ...prevFilters,
+          [category]: [...currentValues, value],
+        };
+      }
+    });
+  };
+
+  const filteredHackathons = hackathons.filter((hackathon) => {
+    // Mode filter
+    if (
+      filters.mode.length > 0 &&
+      !filters.mode.includes(hackathon.mode.toLowerCase())
+    ) {
+      return false;
+    }
+
+    // Length filter
+    if (filters.length.length > 0) {
+      const daysDiff =
+        (new Date(hackathon.endDate) - new Date(hackathon.startDate)) /
+        (1000 * 3600 * 24);
+
+      // Map your length filters to ranges in days
+      const lengthMatches = filters.length.some((length) => {
+        if (length === "days") return daysDiff >= 1 && daysDiff <= 6;
+        if (length === "weeks") return daysDiff >= 7 && daysDiff <= 28;
+        if (length === "months") return daysDiff > 28;
+        return false;
+      });
+
+      if (!lengthMatches) return false;
+    }
+
+    // Theme filter
+    if (filters.theme.length > 0 && !filters.theme.includes(hackathon.theme)) {
+      return false;
+    }
+
+    return true;
+  });
+
+  const sortedHackathons = [...filteredHackathons].sort((a, b) => {
+    if (sortBy === "deadline") {
+      return (
+        new Date(a.registrationDeadline) - new Date(b.registrationDeadline)
+      );
+    }
+    if (sortBy === "prize") {
+      return (a.totalPrizes || 0) - (b.totalPrizes || 0); // handle missing field
+    }
+  });
+
   return (
     <div>
       <div
@@ -115,31 +186,76 @@ const JoinHackathon = () => {
             Search by filters{" "}
             <FontAwesomeIcon icon={faFilter} className="pl-2" />
           </h3>
-          <div className="pt-9">
+          <div className="pt-12">
             <h3 className="text-xl font-semibold pb-3">Mode</h3>
             <div>
-              <input type="checkbox" name="mode" id="online" value="online" />{" "}
-              <label className=" pl-2">Online</label>
+              <input
+                type="checkbox"
+                name="mode"
+                id="online"
+                value="online"
+                checked={filters.mode.includes("online")}
+                onChange={() => handleCheckboxChange("mode", "online")}
+              />{" "}
+              <label className=" pl-2" htmlFor="online">
+                Online
+              </label>
             </div>
             <div className="pt-2">
-              <input type="checkbox" name="mode" id="offline" value="offline" />{" "}
-              <label className=" pl-2">Offline</label>
+              <input
+                type="checkbox"
+                name="mode"
+                id="offline"
+                value="offline"
+                checked={filters.mode.includes("offline")}
+                onChange={() => handleCheckboxChange("mode", "offline")}
+              />{" "}
+              <label className=" pl-2" htmlFor="offline">
+                Offline
+              </label>
             </div>
           </div>
 
           <div className="pt-9">
             <h3 className="text-xl font-semibold pb-3">Length</h3>
             <div>
-              <input type="checkbox" name="length" id="days" value="days" />{" "}
-              <label className=" pl-2">1-6 days</label>
+              <input
+                type="checkbox"
+                name="length"
+                id="days"
+                value="days"
+                checked={filters.mode.includes("days")}
+                onChange={() => handleCheckboxChange("length", "days")}
+              />{" "}
+              <label className=" pl-2" htmlFor="days">
+                1-6 days
+              </label>
             </div>
             <div className="pt-2">
-              <input type="checkbox" name="length" id="weeks" value="weeks" />{" "}
-              <label className=" pl-2">1-4 weeks</label>
+              <input
+                type="checkbox"
+                name="length"
+                id="weeks"
+                value="weeks"
+                checked={filters.mode.includes("weeks")}
+                onChange={() => handleCheckboxChange("length", "weeks")}
+              />{" "}
+              <label className=" pl-2" htmlFor="weeks">
+                1-4 weeks
+              </label>
             </div>
             <div className="pt-2">
-              <input type="checkbox" name="length" id="months" value="months" />{" "}
-              <label className=" pl-2">1+ month</label>
+              <input
+                type="checkbox"
+                name="length"
+                id="months"
+                value="months"
+                checked={filters.mode.includes("months")}
+                onChange={() => handleCheckboxChange("length", "months")}
+              />{" "}
+              <label className=" pl-2" htmlFor="months">
+                1+ month
+              </label>
             </div>
           </div>
           <div className="pt-9">
@@ -153,8 +269,12 @@ const JoinHackathon = () => {
                     name="theme"
                     id={hack.theme}
                     value={hack.theme}
+                    checked={filters.mode.includes(hack.theme)}
+                    onChange={() => handleCheckboxChange("theme", hack.theme)}
                   />{" "}
-                  <label className="pl-2 ">{hack.theme}</label>
+                  <label className="pl-2 " htmlFor={hack.theme}>
+                    {hack.theme}
+                  </label>
                 </div>
               );
             })}
@@ -168,14 +288,35 @@ const JoinHackathon = () => {
             <div className="flex list-none gap-5 text-lg mr-14 items-center">
               <span>Sort :</span>
               <div className="flex gap-10 text-md border-2 px-10 py-2 rounded-sm border-blue-200">
-                <li className="text-blue-300 cursor-pointer">Most recent</li>
-                <li className=" cursor-pointer">Submission Date</li>
-                <li className=" cursor-pointer">Prize amount</li>
+                <li
+                  className={`cursor-pointer ${
+                    sortBy === "recent" ? "text-blue-300" : ""
+                  }`}
+                  onClick={() => setSortBy("recent")}
+                >
+                  Most recent
+                </li>
+                <li
+                  className={`cursor-pointer ${
+                    sortBy === "deadline" ? "text-blue-300" : ""
+                  }`}
+                  onClick={() => setSortBy("deadline")}
+                >
+                  Submission Date
+                </li>
+                <li
+                  className={`cursor-pointer ${
+                    sortBy === "prize" ? "text-blue-300" : ""
+                  }`}
+                  onClick={() => setSortBy("prize")}
+                >
+                  Prize amount
+                </li>
               </div>
             </div>
           </div>
           <div>
-            {hackathons.map((hackathon, index) => {
+            {sortedHackathons.map((hackathon, index) => {
               return (
                 <Link to={`/${hackathon._id}`}>
                   <div

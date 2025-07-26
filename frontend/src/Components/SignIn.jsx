@@ -9,8 +9,8 @@ import {
   faEyeSlash,
 } from "@fortawesome/free-solid-svg-icons";
 import login from "../assets/login-img.png";
-
 import google from "../assets/google.png";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function Signin() {
   const [showPassword, setShowPassword] = useState(false);
@@ -34,7 +34,10 @@ export default function Signin() {
       );
       navigate("/");
     } catch (error) {
-      console.log("Error on logging in", error);
+      toast.dismiss();
+      const errorMsg =
+        error.response?.data?.message || "Login failed. Please try again.";
+      toast.error(errorMsg);
     }
   };
 
@@ -71,6 +74,7 @@ export default function Signin() {
                   placeholder="Email"
                   value={email}
                   name="email"
+                  autoComplete="off"
                   onChange={(e) => setEmail(e.target.value)}
                   className="bg-transparent focus:outline-none w-full text-white placeholder-white"
                 />
@@ -83,6 +87,7 @@ export default function Signin() {
                   placeholder="Password"
                   name="password"
                   value={password}
+                  autoComplete="off"
                   onChange={(e) => setPassword(e.target.value)}
                   className="bg-transparent focus:outline-none w-full text-white placeholder-white"
                 />
@@ -94,17 +99,20 @@ export default function Signin() {
                   <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
                 </button>
               </div>
-              <p className="text-right text-yellow-300 font-medium">
+              <p className="text-right text-yellow-300 font-medium cursor-pointer">
                 Forget Password ?{" "}
               </p>
               <p className="text-center text-white">----- or ------</p>
-              <button className=" text-white border-2 rounded-xl w-full py-3 flex justify-center items-center">
+              <button
+                type="button"
+                className=" text-white border-2 cursor-pointer rounded-xl w-full py-3 flex justify-center items-center"
+              >
                 <img src={google} alt="" className="w-5 mr-3" /> Login with
                 Google
               </button>
               <button
                 type="submit"
-                className="w-full bg-white text-indigo-600 font-semibold py-3 px-4 rounded-lg text-lg hover:bg-gray-300 transition"
+                className="w-full bg-white cursor-pointer text-indigo-600 font-semibold py-3 px-4 rounded-lg text-lg hover:bg-gray-300 transition"
               >
                 Sign In
               </button>
@@ -112,6 +120,11 @@ export default function Signin() {
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={true}
+      />
     </div>
   );
 }
