@@ -76,7 +76,7 @@ export default function Overview() {
           </button>
         </div>
         <div>
-          <div className="bg-green-200 p-4  w-[400px] ">
+          <div className="bg-[#e7eff8] p-6  w-[400px] rounded-lg">
             <p className="bg-orange-200 w-45 text-center py-1 rounded-3xl">
               {" "}
               {(() => {
@@ -97,9 +97,13 @@ export default function Overview() {
               {" "}
               {(() => {
                 const deadline = new Date(hackathon.registrationDeadline);
-                const date = deadline.toLocaleDateString();
+                const formattedDate = deadline.toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                });
 
-                return `${date}`;
+                return formattedDate;
               })()}
             </p>
             <div className="flex justify-between px-4 py-8 text-lg border-b-1 border-gray-400">
@@ -153,6 +157,103 @@ export default function Overview() {
             </div>
           </div>
         </div>
+      </div>
+      <div className="px-[108px] font-bold text-[50px] pb-10 pt-6 text-slate-800">
+        Time Schedule
+      </div>
+      <div className="px-[100px] flex justify-center text-xl">
+        <table className=" ">
+          <thead className="bg-orange-300 text-left">
+            <tr>
+              <th className=" py-2 px-4">PERIOD</th>
+              <th className=" py-2 px-4">BEGINS</th>
+              <th className=" py-2 px-4">ENDS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="bg-white">
+              <td className=" py-2 px-4">Registration</td>
+              <td className=" py-2 px-4 ">
+                {(() => {
+                  const deadline = new Date(hackathon.registrationDeadline);
+                  const formattedDate = deadline.toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  });
+
+                  return formattedDate;
+                })()}
+              </td>
+              <td className="py-2 px-4">
+                {(() => {
+                  const deadline = new Date(hackathon.registrationDeadline);
+                  const formattedDate = deadline.toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  });
+
+                  return formattedDate;
+                })()}
+              </td>
+            </tr>
+            <tr className="bg-gray-100">
+              <td className=" w-[430px] py-2 px-4">Submissions</td>
+              <td className=" py-2 px-4 w-[430px]">
+                {(() => {
+                  const deadline = new Date(hackathon.startDate);
+                  const formattedDate = deadline.toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  });
+
+                  return formattedDate;
+                })()}
+              </td>
+              <td className="py-2 px-4 w-[430px]">
+                {(() => {
+                  const deadline = new Date(hackathon.endDate);
+                  const formattedDate = deadline.toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  });
+
+                  return formattedDate;
+                })()}
+              </td>
+            </tr>
+            <tr className="bg-white">
+              <td className=" py-2 px-4 ">Judging</td>
+              <td className=" py-2 px-4">
+                {(() => {
+                  const deadline = new Date(hackathon.endDate);
+                  const formattedDate = deadline.toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  });
+
+                  return formattedDate;
+                })()}
+              </td>
+              <td className="py-2 px-4">
+                {(() => {
+                  const deadline = new Date(hackathon.endDate);
+                  const formattedDate = deadline.toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  });
+
+                  return formattedDate;
+                })()}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   );

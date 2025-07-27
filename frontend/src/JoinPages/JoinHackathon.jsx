@@ -158,10 +158,10 @@ const JoinHackathon = () => {
   return (
     <div className=" pt-[50px]">
       <div
-        className="text-center py-32 text-[45px] font-extrabold bg-cover bg-center  text-white mb-16"
+        className="text-center py-32 text-[50 px] font-extrabold bg-cover bg-center  text-white mb-16"
         style={{ backgroundImage: "url('/src/assets/join-heroimage.jpg')" }}
       >
-        Join the world best online and in persons hackathon
+        Join the best hackathon that matches your passion
       </div>
 
       <div className="flex justify-center gap-4 pb-10 mb-10 border-b-1 border-gray-300">
@@ -321,14 +321,14 @@ const JoinHackathon = () => {
                 <Link to={`/${hackathon._id}/overview`}>
                   <div
                     key={hackathon._id}
-                    className="group relative bg-transparent pr-[50px] py-[2px] w-[1010px] h-[250px] mb-6 overflow-hidden"
+                    className="group relative bg-transparent pr-[50px] py-[2px] w-[1030px] h-[250px] mb-6 overflow-hidden"
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-blue-300 to-blue-300 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-400 ease-in-out z-0"></div>
 
                     {/* Content Layer */}
                     <div
                       style={{ backgroundImage: `url(${dragon})` }}
-                      className="relative z-10 mb-4  bg-cover bg-center flex w-[980px] h-full border border-l-8 cursor-pointer border-blue-300"
+                      className="relative z-10 mb-4  bg-cover bg-center flex w-[990px] h-full border border-l-8 cursor-pointer border-blue-300"
                     >
                       <div className="flex gap-8 p-6 w-full">
                         <div className="bg-[url('./src/assets/demo-logo.jpg')] h-24 w-24 bg-cover bg-center"></div>
@@ -375,7 +375,7 @@ const JoinHackathon = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="my-6 py-2 px-7 w-[400px] flex flex-col gap-5 border-l border-gray-500">
+                      <div className="my-6 py-2 px-7 w-[428px] flex flex-col gap-5 border-l border-gray-500">
                         <div className="flex items-center justify-start gap-5 text-lg">
                           <FontAwesomeIcon
                             icon={faFlag}
