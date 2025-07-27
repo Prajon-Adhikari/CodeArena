@@ -148,7 +148,7 @@ export default function home() {
   }, []);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen pt-[50px]">
       <div className="flex px-[100px] pt-[100px] pb-[80px] gap-20 items-center">
         <div className="w-[650px]">
           <h1

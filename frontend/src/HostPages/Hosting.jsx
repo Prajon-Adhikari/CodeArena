@@ -63,7 +63,7 @@ export default function Hosting() {
   };
 
   return (
-    <div className="flex justify-center my-14">
+    <div className="flex justify-center my-14  pt-[50px]">
       <form className="space-y-7 w-[1000px]" onSubmit={handleSubmit}>
         {/* Title Input */}
         <div className="flex gap-[70px] w-full justify-center ">

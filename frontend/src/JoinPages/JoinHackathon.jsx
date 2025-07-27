@@ -156,7 +156,7 @@ const JoinHackathon = () => {
   });
 
   return (
-    <div>
+    <div className=" pt-[50px]">
       <div
         className="text-center py-32 text-[45px] font-extrabold bg-cover bg-center  text-white mb-16"
         style={{ backgroundImage: "url('/src/assets/join-heroimage.jpg')" }}
@@ -318,7 +318,7 @@ const JoinHackathon = () => {
           <div>
             {sortedHackathons.map((hackathon, index) => {
               return (
-                <Link to={`/${hackathon._id}`}>
+                <Link to={`/${hackathon._id}/overview`}>
                   <div
                     key={hackathon._id}
                     className="group relative bg-transparent pr-[50px] py-[2px] w-[1010px] h-[250px] mb-6 overflow-hidden"

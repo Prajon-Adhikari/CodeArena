@@ -73,13 +73,10 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="bg-white shadow text-gray-800">
+    <nav className="bg-white shadow text-gray-800 fixed left-0 right-0 z-100">
       <div className="max-w-screen-xl mx-[80px] px-4 md:px-8 py-4 flex justify-between items-center">
         {/* Logo */}
-        <Link
-          to="/"
-          className="text-2xl font-bold px-5 py-2 rounded logo"
-        >
+        <Link to="/" className="text-2xl font-bold px-5 py-2 rounded logo">
           CodeArena
         </Link>
 
