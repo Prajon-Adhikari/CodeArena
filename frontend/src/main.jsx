@@ -10,8 +10,7 @@ import {
 
 import App from "./App.jsx";
 import AuthLayout from "./AuthLayout/AuthLayout.jsx";
-
-import Signup from "./Components/Signup.jsx";
+import Signup from "./Components/SignUp.jsx";
 import Signin from "./Components/Signin.jsx";
 import ForgotPassword from "./Components/ForgotPassword.jsx";
 import ResetPassword from "./Components/ResetPassword.jsx";

@@ -315,6 +315,19 @@ export default function Overview() {
               Others
             </label>
           </div>
+          <div className="pt-8">
+            <label className="font-semibold text-xl ">
+              <span className="text-red-600">*</span> Email :{" "}
+            </label>
+            <br />
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+              className="border-1 border-gray-400 rounded-md w-[300px] px-4 py-1 mt-2"
+              required
+            />
+          </div>
           <div className=" flex pt-8 border-t-1 border-gray-400 mt-8">
             <div>
               <input
