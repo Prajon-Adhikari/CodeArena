@@ -253,7 +253,7 @@ export default function home() {
           </h1>
           {hackathons.map((hackathon, index) => {
             return (
-              <Link to={`/${hackathon._id}`}>
+              <Link to={`/${hackathon._id}/overview`}>
                 <div
                   key={hackathon._id}
                   className="group relative bg-transparent pr-[50px] py-[2px] w-[700px] h-[250px] mb-6 overflow-hidden"
