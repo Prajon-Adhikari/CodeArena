@@ -99,9 +99,11 @@ export default function Signin() {
                   <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
                 </button>
               </div>
-              <p className="text-right text-yellow-300 font-medium cursor-pointer">
-                Forget Password ?{" "}
-              </p>
+              <Link to="/api/auth/forgotpassword">
+                <p className="text-right text-yellow-300 font-medium cursor-pointer">
+                  Forget Password ?{" "}
+                </p>
+              </Link>
               <p className="text-center text-white">----- or ------</p>
               <button
                 type="button"

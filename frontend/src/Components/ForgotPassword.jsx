@@ -1,20 +1,23 @@
-import axios from 'axios';
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage('');
-    setError('');
+    setMessage("");
+    setError("");
 
     try {
-      const res = await axios.post("http://localhost:8080/api/auth/forgotpassword", { email });
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/auth/forgotpassword`,
+        { email }
+      );
       if (res.data.status === "success") {
         setMessage(`Reset link sent to ${email}`);
       } else {
@@ -29,9 +32,14 @@ const ForgotPassword = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-lg">
-        <h2 className="text-2xl font-semibold text-center mb-6">Forgot Password</h2>
+        <h2 className="text-2xl font-semibold text-center mb-6">
+          Forgot Password
+        </h2>
         <form onSubmit={handleSubmit}>
-          <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-700">
+          <label
+            htmlFor="email"
+            className="block mb-2 text-sm font-medium text-gray-700"
+          >
             Email address
           </label>
           <input

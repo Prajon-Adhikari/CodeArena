@@ -8,6 +8,7 @@ import {
   faFlag,
   faTags,
 } from "@fortawesome/free-solid-svg-icons";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function Overview() {
   const { id } = useParams();
@@ -40,7 +41,6 @@ export default function Overview() {
         );
         const data = await response.json();
         setHackathon(data.hackathon);
-        console.log(data.isRegistered);
         setIsRegistered(data.isRegistered);
       } catch (error) {
         console.log("Failed to fetch hackathon", error);
@@ -62,12 +62,11 @@ export default function Overview() {
           withCredentials: true,
         }
       );
-      alert("Registration successful!");
-      console.log(response.data);
+      toast.success("Registration successful!");
       setIsRegistered(true);
     } catch (error) {
       console.error("Registration failed", error);
-      alert("Something went wrong. Please try again.");
+      toast.error("Something went wrong. Please try again.");
     }
   };
   return (
@@ -107,7 +106,7 @@ export default function Overview() {
               </button>
             </a>
           ) : (
-            <button className="bg-orange-500 text-white py-2.5 px-8 my-14 text-xl rounded-[4px] hover:bg-red-400">
+            <button className="bg-orange-500 text-white py-2.5 px-8 my-14 text-xl rounded-[4px] hover:bg-orange-400">
               Unregister
             </button>
           )}
@@ -434,6 +433,11 @@ export default function Overview() {
           </div>
         </div>
       )}
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={true}
+      />
     </div>
   );
 }

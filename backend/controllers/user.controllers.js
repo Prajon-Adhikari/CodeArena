@@ -119,7 +119,7 @@ export const forgotpassword = async (req, res) => {
       from: process.env.MY_GMAIL,
       to: email,
       subject: "Password Reset",
-      text: `http://localhost:5173/api/auth/resetpassword/${token}`,
+      text: `${CLIENT_URL}/resetpassword/${token}`,
     };
 
     await transporter.sendMail(receiver);

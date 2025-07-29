@@ -148,7 +148,6 @@ export const joinedHackathon = async (req, res) => {
 
     await joined.save();
 
-    console.log("User registered");
     return res
       .status(200)
       .json({ message: "Successfully registered to hackathon" });
