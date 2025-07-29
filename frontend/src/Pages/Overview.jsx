@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -12,6 +13,9 @@ export default function Overview() {
   const { id } = useParams();
   const location = useLocation(); // 👉 Get current location
   const [hackathon, setHackathon] = useState("");
+  const [teamStatus, setTeamStatus] = useState("");
+  const [referer, setReferer] = useState("");
+  const [isRegistered, setIsRegistered] = useState(false);
 
   const tabs = [
     { path: "overview", label: "Overview" },
@@ -31,21 +35,46 @@ export default function Overview() {
             headers: {
               "Content-Type": "application/json",
             },
+            credentials: "include",
           }
         );
         const data = await response.json();
         setHackathon(data.hackathon);
+        console.log(data.isRegistered);
+        setIsRegistered(data.isRegistered);
       } catch (error) {
         console.log("Failed to fetch hackathon", error);
       }
     };
     fetchHackathonDetails();
   }, [id]);
+
+  const handleHackathonRegistration = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/home/${id}/overview`,
+        {
+          teamStatus,
+          referer,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      alert("Registration successful!");
+      console.log(response.data);
+      setIsRegistered(true);
+    } catch (error) {
+      console.error("Registration failed", error);
+      alert("Something went wrong. Please try again.");
+    }
+  };
   return (
     <div className="pt-[60px]">
       <div>
-        {hackathon.bannerUrl ? (
-          <img src={bannerUrl} />
+        {hackathon && hackathon.bannerUrl ? (
+          <img src={hackathon.bannerUrl} />
         ) : (
           <div className="flex justify-center items-center text-white bg-gray-700 h-[220px] font-semibold text-3xl">
             {hackathon.title}
@@ -71,11 +100,17 @@ export default function Overview() {
         <div className="w-[800px] ">
           <h1 className="text-4xl font-bold">{hackathon.title}</h1>
           <p className="text-[22px] pt-8">{hackathon.description}</p>
-          <a href="#registration">
-            <button className="bg-blue-400 cursor-pointer text-white py-2.5 px-8 my-14 text-xl rounded-[4px] hover:bg-blue-300">
-              Join Hackathon
+          {!isRegistered ? (
+            <a href="#registration">
+              <button className="bg-blue-400 cursor-pointer text-white py-2.5 px-8 my-14 text-xl rounded-[4px] hover:bg-blue-300">
+                Join Hackathon
+              </button>
+            </a>
+          ) : (
+            <button className="bg-orange-500 text-white py-2.5 px-8 my-14 text-xl rounded-[4px] hover:bg-red-400">
+              Unregister
             </button>
-          </a>
+          )}
         </div>
         <div>
           <div className="bg-[#F8F8F8] border-1 border-gray-400 p-6  w-[400px] rounded-lg">
@@ -258,124 +293,147 @@ export default function Overview() {
         </table>
       </div>
       <div id="registration"></div>
-      <div className="px-[100px] py-26 flex gap-30 items-center">
-        <form
-          action=""
-          className="shadow-[0px_0px_10px_#B6B09F] rounded-2xl w-[660px] p-10"
-        >
-          <h1 className="font-bold text-4xl">Register</h1>
-          <p className="text-xl pt-2 pb-6 border-b-1 border-gray-400 text-gray-500">
-            Please support our community guidelines
-          </p>
-          <p className="pt-6 font-semibold text-xl pb-2">
-            <span className="text-red-600">*</span> Are you working solo or with
-            a team?
-          </p>
-          <div className="flex items-center text-lg">
-            <input
-              type="radio"
-              name="teamStatus"
-              value="solo"
-              id="solo"
-              required
-            />
-            <label className="pl-2 pr-18 cursor-pointer" htmlFor="solo">
-              Working solo
-            </label>
-            <input type="radio" name="teamStatus" value="team" id="team" />
-            <label className="pl-2 cursor-pointer" htmlFor="team">
-              Already have team
-            </label>
-          </div>
-          <p className="pt-8 pb-3 text-xl font-semibold">
-            <span className="text-red-600">*</span> Who told you about{" "}
-            {hackathon.title}?
-          </p>
-          <div className="flex items-center text-lg">
-            <input
-              type="radio"
-              name="referer"
-              value="codearena"
-              id="codearena"
-              required
-            />
-            <label className="pl-2 pr-18 cursor-pointer" htmlFor="codearena">
-              CodeArena
-            </label>
-            <input type="radio" name="referer" value="college" id="college" />
-            <label className="pl-2 pr-18 cursor-pointer" htmlFor="college">
-              College
-            </label>
-            <input type="radio" name="referer" value="friend" id="friend" />
-            <label className="pl-2  pr-18 cursor-pointer" htmlFor="friend">
-              Friends
-            </label>
-            <input type="radio" name="referer" value="other" id="other" />
-            <label className="pl-2 cursor-pointer" htmlFor="other">
-              Others
-            </label>
-          </div>
-          <div className="pt-8">
-            <label className="font-semibold text-xl ">
-              <span className="text-red-600">*</span> Email :{" "}
-            </label>
-            <br />
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              className="border-1 border-gray-400 rounded-md w-[300px] px-4 py-1 mt-2"
-              required
-            />
-          </div>
-          <div className=" flex pt-8 border-t-1 border-gray-400 mt-8">
-            <div>
+      {!isRegistered && (
+        <div className="px-[100px] py-26 flex gap-30 items-center">
+          <form
+            action=""
+            onSubmit={handleHackathonRegistration}
+            className="shadow-[0px_0px_10px_#B6B09F] rounded-2xl w-[660px] p-10"
+          >
+            <h1 className="font-bold text-4xl">Register</h1>
+            <p className="text-xl pt-2 pb-6 border-b-1 border-gray-400 text-gray-500">
+              Please support our community guidelines
+            </p>
+            <p className="pt-6 font-semibold text-xl pb-2">
+              <span className="text-red-600">*</span> Are you working solo or
+              with a team?
+            </p>
+            <div className="flex items-center text-lg">
               <input
-                type="checkbox"
-                name="termsAndConditions"
-                value="termsandconditions"
-                id="terms"
+                type="radio"
+                name="teamStatus"
+                value="solo"
+                checked={teamStatus === "solo"}
+                onChange={(e) => setTeamStatus(e.target.value)}
+                id="solo"
                 required
               />
+              <label className="pl-2 pr-18 cursor-pointer" htmlFor="solo">
+                Working solo
+              </label>
+              <input
+                type="radio"
+                name="teamStatus"
+                value="team"
+                id="team"
+                checked={teamStatus === "team"}
+                onChange={(e) => setTeamStatus(e.target.value)}
+              />
+              <label className="pl-2 cursor-pointer" htmlFor="team">
+                Already have team
+              </label>
             </div>
-            <label
-              htmlFor="terms"
-              className="pl-2 text-xl font-semibold mb-8 cursor-pointer"
-            >
-              <span className="text-red-600">*</span> I have read and agree to
-              your Community Guidelines and CodeArena Terms of Service
-            </label>
+            <p className="pt-8 pb-3 text-xl font-semibold">
+              <span className="text-red-600">*</span> Who told you about{" "}
+              {hackathon.title}?
+            </p>
+            <div className="flex items-center text-lg">
+              <input
+                type="radio"
+                name="referer"
+                value="codearena"
+                id="codearena"
+                checked={referer === "codearena"}
+                onChange={(e) => setReferer(e.target.value)}
+                required
+              />
+              <label className="pl-2 pr-18 cursor-pointer" htmlFor="codearena">
+                CodeArena
+              </label>
+              <input
+                type="radio"
+                name="referer"
+                value="college"
+                id="college"
+                checked={referer === "college"}
+                onChange={(e) => setReferer(e.target.value)}
+              />
+              <label className="pl-2 pr-18 cursor-pointer" htmlFor="college">
+                College
+              </label>
+              <input
+                type="radio"
+                name="referer"
+                value="friend"
+                id="friend"
+                checked={referer === "friend"}
+                onChange={(e) => setReferer(e.target.value)}
+              />
+              <label className="pl-2  pr-18 cursor-pointer" htmlFor="friend">
+                Friends
+              </label>
+              <input
+                type="radio"
+                name="referer"
+                value="other"
+                id="other"
+                checked={referer === "other"}
+                onChange={(e) => setReferer(e.target.value)}
+              />
+              <label className="pl-2 cursor-pointer" htmlFor="other">
+                Others
+              </label>
+            </div>
+
+            <div className=" flex pt-8 border-t-1 border-gray-400 mt-8">
+              <div>
+                <input
+                  type="checkbox"
+                  name="termsAndConditions"
+                  value="termsandconditions"
+                  id="terms"
+                  required
+                />
+              </div>
+              <label
+                htmlFor="terms"
+                className="pl-2 text-xl font-semibold mb-8 cursor-pointer"
+              >
+                <span className="text-red-600">*</span> I have read and agree to
+                your Community Guidelines and CodeArena Terms of Service
+              </label>
+            </div>
+            <input
+              type="submit"
+              value="Register"
+              className=" bg-blue-400 text-white text-xl py-1 px-6 rounded-sm"
+            />
+          </form>
+          <div>
+            <h1 className="text-4xl font-bold ml-2 underline mb-8 text-red-400">
+              Rules to Consider
+            </h1>
+            <ol className="list-decimal pl-6 space-y-2 text-2xl flex flex-col gap-6">
+              <li>
+                Please fill in all fields marked with an asterisk (
+                <span className="font-bold text-red-600">*</span>).
+              </li>
+              <li>
+                If you already have a team, make sure all members are registered
+                bt their account before the deadline.
+              </li>
+              <li>
+                Only one team leader should submit the project and invite the
+                rest of the team during submission.
+              </li>
+              <li>
+                If any team member is involved in multiple project submissions,
+                the entire team will be disqualified.
+              </li>
+            </ol>
           </div>
-          <input
-            type="submit"
-            value="Register"
-            className=" bg-blue-400 text-white text-xl py-1 px-6 rounded-sm"
-          />
-        </form>
-        <div>
-          <h1 className="text-4xl font-bold ml-2 underline mb-8 text-red-400">
-            Rules to Consider
-          </h1>
-          <ol className="list-decimal pl-6 space-y-2 text-2xl flex flex-col gap-6">
-            <li>
-              Please fill in all fields marked with an asterisk (
-              <span className="font-bold">*</span>).
-            </li>
-            <li>
-              If you already have a team, make sure all members are registered
-              bt their account before the deadline.
-            </li>
-            <li>
-              Only one team leader should submit the project and invite the rest
-              of the team during submission.
-            </li>
-            <li>
-              If any team member is involved in multiple project submissions,
-              the entire team will be disqualified.
-            </li>
-          </ol>
         </div>
-      </div>
+      )}
     </div>
   );
 }
