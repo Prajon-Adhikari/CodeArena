@@ -7,6 +7,7 @@ import {
   joinedHackathon,
 } from "../controllers/hackathon.controller.js";
 import { protectRoute } from "../middlewares/auth.middleware.js";
+import { getMyJoinedHackathon } from "../controllers/myhackathon.controller.js";
 
 const router = express.Router();
 
@@ -15,6 +16,8 @@ router.post("/host/hackathon", protectRoute, hackathon);
 router.get("/join/hackathon", protectRoute, getHackathonTournament);
 
 router.get("/", protectRoute, getTopHackathon);
+
+router.get("/myjoinedhackathon", protectRoute, getMyJoinedHackathon);
 
 router.get("/:id", protectRoute, getSpecificHackathonDetails);
 

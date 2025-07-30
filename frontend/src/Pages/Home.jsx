@@ -138,7 +138,6 @@ export default function home() {
           }
         );
         const data = await response.json();
-        console.log(data.hackathons);
         setHackathons(data.hackathons || []);
       } catch (error) {
         console.log("Error while fetching hackathon tournaments", error);

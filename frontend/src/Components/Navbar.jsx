@@ -12,7 +12,8 @@ const Navbar = () => {
   const navLinks = [
     { to: "/join/hackathon", label: "Join a hackathon" },
     { to: "/hackathon", label: "Host a hackathon" },
-    { to: "/resources", label: "Resources" }, // This one has a dropdown
+    { to: "/resources", label: "Resources" },
+    { to: "/myjoinedhackathon", label: "My hackathon" },
   ];
 
   const resources = [
@@ -63,7 +64,6 @@ const Navbar = () => {
           }
         );
         const data = await response.json();
-        console.log(data.user);
         setUser(data.user);
       } catch (error) {
         console.log("");
