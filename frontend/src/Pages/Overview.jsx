@@ -12,7 +12,7 @@ import { ToastContainer, toast } from "react-toastify";
 
 export default function Overview() {
   const { id } = useParams();
-  const location = useLocation(); // 👉 Get current location
+  const location = useLocation();
   const [hackathon, setHackathon] = useState("");
   const [teamStatus, setTeamStatus] = useState("");
   const [referer, setReferer] = useState("");
