@@ -7,7 +7,10 @@ import {
   joinedHackathon,
 } from "../controllers/hackathon.controller.js";
 import { protectRoute } from "../middlewares/auth.middleware.js";
-import { getMyJoinedHackathon } from "../controllers/myhackathon.controller.js";
+import {
+  deleteAlreadyJoinedHackathon,
+  getMyJoinedHackathon,
+} from "../controllers/myhackathon.controller.js";
 
 const router = express.Router();
 
@@ -22,5 +25,7 @@ router.get("/myjoinedhackathon", protectRoute, getMyJoinedHackathon);
 router.get("/:id", protectRoute, getSpecificHackathonDetails);
 
 router.post("/:id/overview", protectRoute, joinedHackathon);
+
+router.delete("/:id/overview", protectRoute, deleteAlreadyJoinedHackathon);
 
 export default router;

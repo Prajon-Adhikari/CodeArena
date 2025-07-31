@@ -20,11 +20,38 @@ export const getMyJoinedHackathon = async (req, res) => {
 
     const hackathons = await Hackathon.find({ _id: { $in: hackathonIDs } });
 
-    return res.status(200).json({hackathons});
+    return res.status(200).json({ hackathons });
   } catch (error) {
     console.log("Internal error while fetching joined hackathons", error);
     return res
       .status(500)
       .json({ message: "Internal error while fetching joined hackathons" });
+  }
+};
+
+export const deleteAlreadyJoinedHackathon = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { id: hackathonId } = req.params;
+
+    if (!userId) {
+      return res.status(400).json({ message: "User Id is missing" });
+    }
+
+    const deleteHackathon = await JoinedHackathon.findOneAndDelete({
+      userId,
+      hackathonId,
+    });
+
+    if (!deleteHackathon) {
+      return res.status(400).json({ message: "Hackathon not found" });
+    }
+
+    return res.status(200).json({ message: "Unregistered successfully" });
+  } catch (error) {
+    console.log("Internal error while unregistering", error);
+    return res
+      .status(500)
+      .json({ message: "Internal error while unregistering" });
   }
 };

@@ -17,6 +17,7 @@ export default function Overview() {
   const [teamStatus, setTeamStatus] = useState("");
   const [referer, setReferer] = useState("");
   const [isRegistered, setIsRegistered] = useState(false);
+  const [showUnregisterConfirm, setShowUnregisterConfirm] = useState(false);
 
   const tabs = [
     { path: "overview", label: "Overview" },
@@ -69,6 +70,25 @@ export default function Overview() {
       toast.error("Something went wrong. Please try again.");
     }
   };
+
+  const handleUnregister = async () => {
+    try {
+      await axios.delete(
+        `${import.meta.env.VITE_API_BASE_URL}/home/${id}/overview`,
+
+        {
+          withCredentials: true,
+        }
+      );
+      toast.success("Unregistered successfully");
+      setIsRegistered(false);
+      setShowUnregisterConfirm(false);
+    } catch (error) {
+      toast.error("Failed to unregister");
+      console.error("Unregister failed:", error);
+    }
+  };
+
   return (
     <div className="pt-[60px]">
       <div>
@@ -106,7 +126,10 @@ export default function Overview() {
               </button>
             </a>
           ) : (
-            <button className="bg-orange-500 text-white py-2.5 px-8 my-14 text-xl rounded-[4px] hover:bg-orange-400">
+            <button
+              onClick={() => setShowUnregisterConfirm(true)}
+              className="bg-orange-500 text-white cursor-pointer py-2.5 px-8 my-14 text-xl rounded-[4px] hover:bg-orange-400"
+            >
               Unregister
             </button>
           )}
@@ -405,7 +428,7 @@ export default function Overview() {
             <input
               type="submit"
               value="Register"
-              className=" bg-blue-400 text-white text-xl py-1 px-6 rounded-sm"
+              className=" bg-blue-400 text-white text-xl py-2 px-8 cursor-pointer rounded-sm"
             />
           </form>
           <div>
@@ -438,6 +461,30 @@ export default function Overview() {
         autoClose={2000}
         hideProgressBar={true}
       />
+      {showUnregisterConfirm && (
+        <div className="fixed inset-0 flex justify-center items-center backdrop-blur-sm bg-black/20 z-50">
+          <div className="bg-white p-8 rounded-lg shadow-lg text-center w-[400px]">
+            <h2 className="text-2xl font-bold mb-4">Confirm Unregister</h2>
+            <p className="mb-6 text-gray-600">
+              Are you sure you want to unregister from this hackathon?
+            </p>
+            <div className="flex justify-center gap-6">
+              <button
+                onClick={handleUnregister}
+                className="bg-red-500 cursor-pointer text-white px-6 py-2 rounded hover:bg-red-400"
+              >
+                Yes
+              </button>
+              <button
+                onClick={() => setShowUnregisterConfirm(false)}
+                className="bg-gray-300 text-gray-800 cursor-pointer px-6 py-2 rounded hover:bg-gray-200"
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
