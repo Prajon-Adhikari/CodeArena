@@ -100,8 +100,9 @@ export const forgotpassword = async (req, res) => {
     if (!checkUser) {
       return res.status(400).json({ message: "User not found" });
     }
+
     const token = jwt.sign(
-      { email: checkUser.email }, // ✅ include email
+      { email: checkUser.email },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
@@ -119,7 +120,7 @@ export const forgotpassword = async (req, res) => {
       from: process.env.MY_GMAIL,
       to: email,
       subject: "Password Reset",
-      text: `${CLIENT_URL}/resetpassword/${token}`,
+      text: `${process.env.CLIENT_URL}/resetpassword/${token}`, // ✅ fixed line
     };
 
     await transporter.sendMail(receiver);
@@ -130,8 +131,10 @@ export const forgotpassword = async (req, res) => {
     });
   } catch (error) {
     console.log("Error on forgot password", error);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 
 ///// Reset Password
 export const resetPassword = async (req, res) => {
@@ -142,15 +145,26 @@ export const resetPassword = async (req, res) => {
     if (!password)
       return res.status(400).send({ message: "Password is required" });
 
+    if (password.length < 6)
+      return res.status(400).send({ message: "Password must be at least 6 characters long" });
+
     let decoded;
     try {
       decoded = jwt.verify(token, process.env.JWT_SECRET);
     } catch (err) {
-      return res.status(401).send({ message: "Invalid or expired token" });
+      if (err.name === "TokenExpiredError") {
+        return res.status(401).send({ message: "Token has expired" });
+      }
+      return res.status(401).send({ message: "Invalid token" });
     }
 
     const user = await User.findOne({ email: decoded.email });
     if (!user) return res.status(404).send({ message: "User not found" });
+
+    const isSame = await bcrypt.compare(password, user.password);
+    if (isSame) {
+      return res.status(400).send({ message: "New password must be different from the old one" });
+    }
 
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
@@ -158,7 +172,7 @@ export const resetPassword = async (req, res) => {
 
     return res.status(200).send({ message: "Password reset successfully" });
   } catch (error) {
-    console.error("Reset password error:", error);
+    console.error("Reset password error:", error.message);
     return res.status(500).send({ message: "Something went wrong" });
   }
 };
