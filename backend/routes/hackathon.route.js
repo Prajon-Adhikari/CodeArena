@@ -11,6 +11,7 @@ import {
   deleteAlreadyJoinedHackathon,
   getMyJoinedHackathon,
 } from "../controllers/myhackathon.controller.js";
+import { submitProject } from "../controllers/submittedProject.controller.js";
 
 const router = express.Router();
 
@@ -25,6 +26,8 @@ router.get("/myjoinedhackathon", protectRoute, getMyJoinedHackathon);
 router.get("/:id", protectRoute, getSpecificHackathonDetails);
 
 router.post("/:id/overview", protectRoute, joinedHackathon);
+
+router.post("/:id/myproject", protectRoute, submitProject);
 
 router.delete("/:id/overview", protectRoute, deleteAlreadyJoinedHackathon);
 

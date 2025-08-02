@@ -12,7 +12,6 @@ const submittedProjectSchema = new mongoose.Schema(
     },
     tech: {
       type: [String],
-      required: true,
     },
     // Video Field: Support multiple video uploads
     videos: [
@@ -30,16 +29,25 @@ const submittedProjectSchema = new mongoose.Schema(
       type: [String], // e.g., ["AI", "HealthTech"]
       default: [],
     },
-
-    // Optional: Reference to the user who submitted
-    submittedBy: {
+    userName: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+    },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    hackathonId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Hackathon",
     },
   },
   { timestamps: true }
 );
 
-const submittedProject = mongoose.model("sumittedProject", submittedProjectSchema);
+const SubmittedProject = mongoose.model(
+  "sumittedProject",
+  submittedProjectSchema
+);
 
-export default submittedProject;
+export default SubmittedProject;
