@@ -1,9 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import cloudinary from "cloudinary";
-import {CloudinaryStorage} from "multer-storage-cloudinary";
-import multer from "multer";
 import cors from "cors";
 import { connectDB } from "./libs/db.js";
 
@@ -14,25 +11,6 @@ dotenv.config();
 const app = express();
 
 const PORT = process.env.PORT;
-
-cloudinary.v2.config();
-
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary.v2,
-  params: {
-    folder: "videos", // your folder name
-    resource_type: "video", // required for video upload
-  },
-});
-
-const upload = multer({ storage });
-
-app.post("/upload", upload.single("video"), (req, res) => {
-  res.status(200).json({
-    message: "Video uploaded to Cloudinary",
-    url: req.file.path,
-  });
-});
 
 app.use(
   cors({

@@ -2,12 +2,19 @@ import { useState, useEffect } from "react";
 import { Link, useParams, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideo } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
 export default function Project() {
   const { id } = useParams();
   const location = useLocation();
   const [hackathon, setHackathon] = useState("");
   const [selectedVideo, setSelectedVideo] = useState(null);
+
+  const [projectTitle, setProjectTitle] = useState("");
+  const [projectDescription, setProjectDescription] = useState("");
+  const [tech, setTech] = useState("");
+  const [tags, setTags] = useState("");
+  const [video, setVideo] = useState("");
 
   const tabs = [
     { path: "overview", label: "Overview" },
@@ -39,6 +46,39 @@ export default function Project() {
     };
     fetchHackathonDetails();
   }, [id]);
+
+  const handleProjectSubmission = async (e) => {
+    e.preventDefault();
+
+    try {
+      console.log("heelo");
+      const formData = new FormData();
+      formData.append("projectTitle", projectTitle);
+      formData.append("projectDescription", projectDescription);
+      formData.append("tech", tech);
+      formData.append("tags", tags);
+
+      if (selectedVideo) {
+        formData.append("video", selectedVideo);
+      }
+
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/home/${id}/myproject`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
+      );
+
+      console.log("Project submitted successfully", response.data);
+    } catch (error) {
+      console.error("Failed to submit project", error);
+    }
+  };
+
   return (
     <div className="pt-[60px]">
       <div>
@@ -67,7 +107,11 @@ export default function Project() {
       </div>
       <div className="px-[100px] py-16">
         <h1 className="text-4xl font-bold">Submit Your Project</h1>
-        <form action="" className="mt-16 text-2xl">
+        <form
+          action=""
+          onSubmit={handleProjectSubmission}
+          className="mt-16 text-2xl"
+        >
           <div className="flex flex-col ">
             <label htmlFor="projectTitle" className="font-semibold px-4 py-1">
               Project Title :
@@ -77,7 +121,9 @@ export default function Project() {
               id="projectTitle"
               placeholder="Enter your project title"
               name="projectTitle"
-              className="border-2 border-gray-400 w-[1200px] text-xl px-4 py-2 rounded-xl"
+              value={projectTitle}
+              onChange={(e) => setProjectTitle(e.target.value)}
+              className="border-2 border-gray-400 w-[1300px] text-xl px-4 py-2 rounded-xl"
             />
           </div>
           <div className="flex gap-30">
@@ -92,6 +138,8 @@ export default function Project() {
                 <textarea
                   name="projectDescription"
                   id="projectDescription"
+                  value={projectDescription}
+                  onChange={(e) => setProjectDescription(e.target.value)}
                   placeholder="Write a description about project"
                   className="border-2 border-gray-400 w-[560px] min-h-[260px] text-xl px-4 py-2 rounded-xl"
                 ></textarea>
@@ -103,6 +151,8 @@ export default function Project() {
                 <textarea
                   name="tech"
                   id="tech"
+                  value={tech}
+                  onChange={(e) => setTech(e.target.value)}
                   placeholder=""
                   className="border-2 border-gray-400 w-[560px]  text-xl px-4 py-2 rounded-xl"
                 ></textarea>
@@ -114,6 +164,8 @@ export default function Project() {
                 <textarea
                   name="tags"
                   id="tags"
+                  value={tags}
+                  onChange={(e) => setTags(e.target.value)}
                   placeholder=""
                   className="border-2 border-gray-400 w-[560px]  text-xl px-4 py-2 rounded-xl"
                 ></textarea>
@@ -145,6 +197,10 @@ export default function Project() {
               )}
             </div>
           </div>
+          <input
+            type="submit"
+            className="mt-12 bg-blue-400 text-white py-1.5 px-8 rounded-sm"
+          />
         </form>
       </div>
     </div>

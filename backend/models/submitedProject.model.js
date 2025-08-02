@@ -30,8 +30,8 @@ const submittedProjectSchema = new mongoose.Schema(
       default: [],
     },
     userName: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      type: "String",
+      required: true,
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,

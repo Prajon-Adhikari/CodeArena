@@ -12,6 +12,7 @@ import {
   getMyJoinedHackathon,
 } from "../controllers/myhackathon.controller.js";
 import { submitProject } from "../controllers/submittedProject.controller.js";
+import upload from "../middlewares/video.js";
 
 const router = express.Router();
 
@@ -27,7 +28,7 @@ router.get("/:id", protectRoute, getSpecificHackathonDetails);
 
 router.post("/:id/overview", protectRoute, joinedHackathon);
 
-router.post("/:id/myproject", protectRoute, submitProject);
+router.post("/:id/myproject", protectRoute, upload, submitProject);
 
 router.delete("/:id/overview", protectRoute, deleteAlreadyJoinedHackathon);
 

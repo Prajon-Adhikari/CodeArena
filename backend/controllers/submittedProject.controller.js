@@ -4,8 +4,15 @@ import User from "../models/user.model.js";
 export const submitProject = async (req, res) => {
   try {
     const userId = req.user._id;
-    const { id } = req.params;
-    const { projectTitle, projectDescription, tech, videos, tags } = req.body;
+    const { id: hackathonId } = req.params;
+
+    // Defensive fallback for req.body
+    const {
+      projectTitle = "",
+      projectDescription = "",
+      tech = "",
+      tags = "",
+    } = req.body || {};
 
     if (!userId) {
       return res.status(400).json({ message: "User Id is missing" });
@@ -23,22 +30,34 @@ export const submitProject = async (req, res) => {
     }
 
     const user = await User.findById(userId);
-
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
     const userName = user.fullName;
 
-    const newProject = await SubmittedProject({
+    // Convert comma separated strings to arrays
+    const techArray = tech ? tech.split(",").map((t) => t.trim()) : [];
+    const tagsArray = tags ? tags.split(",").map((t) => t.trim()) : [];
+
+    // Video info from multer-cloudinary
+    const videoUrl = req.file?.path || "";
+    const videoPublicId = req.file?.filename || req.file?.public_id || "";
+
+    const newProject = new SubmittedProject({
       projectTitle,
       projectDescription,
-      tech,
-      videos,
-      tags,
-      userName,
+      tech: techArray,
+      videos: [
+        {
+          url: videoUrl,
+          public_id: videoPublicId,
+        },
+      ],
+      tags: tagsArray,
+      userName, // should be String in schema, not ObjectId
       userId,
-      hackathonId: id,
+      hackathonId,
     });
 
     await newProject.save();
