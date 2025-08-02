@@ -18,15 +18,15 @@ const ResetPassword = () => {
     setLoading(true);
 
     try {
-    const res = await axios.post(
-  `http://localhost:8000/api/auth/resetpassword/${token}`,
+     const res = await axios.post(
+  `${import.meta.env.VITE_API_BASE_URL}/api/auth/resetpassword/${token}`,
   { password }
 );
 
       setMessage(res.data.message);
       setPassword("");
       setTimeout(() => {
-        navigate("/api/authsignin");
+        navigate("/api/auth/signin");
       }, 2000);
     } catch (err) {
       setError(err.response?.data?.message || "Something went wrong");
