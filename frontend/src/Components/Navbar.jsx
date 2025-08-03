@@ -5,75 +5,45 @@ import { Menu, X } from "lucide-react";
 const Navbar = () => {
   const { pathname } = useLocation();
   const [isOpen, setIsOpen] = useState(false);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
 
   const isHostPage = pathname === "/hackathon";
 
   const navLinks = [
     { to: "/join/hackathon", label: "Join a hackathon" },
     { to: "/hackathon", label: "Host a hackathon" },
-    { to: "/resources", label: "Resources" },
     { to: "/myjoinedhackathon", label: "My hackathon" },
-  ];
-
-  const resources = [
-    {
-      title: "Blog",
-      description: "Insights into hackathon planning",
-      to: "/blogpage",
-    },
-    {
-      title: "Customer stories",
-      description: "Inspiration from industry leaders",
-      to: "/resources/stories",
-    },
-    {
-      title: "Planning guides",
-      description: "Best practices for events",
-      to: "/guides",
-    },
-    {
-      title: "Webinars & events",
-      description: "Upcoming and on-demand",
-      to: "/resources/webinars",
-    },
-    {
-      title: "Help desk",
-      description: "Support documentation",
-      to: "/resources/help",
-    },
   ];
 
   const navLinkClass =
     "text-base font-medium hover:underline transition-colors duration-150 text-xl";
 
   const authButtonClass =
-    "px-4 py-2 rounded text-sm font-medium transition-all duration-200  bg-orange-500 text-white hover:bg-blue-600";
+    "px-4 py-2 rounded text-sm font-medium transition-all duration-200 bg-orange-500 text-white hover:bg-blue-600";
 
   useEffect(() => {
     const fetchLoggedInUser = async () => {
       try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/home`,
-          {
-            method: "GET",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/home`, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         const data = await response.json();
-        setUser(data.user);
+        if (data?.user) {
+          setUser(data.user);
+        }
       } catch (error) {
-        console.log("");
+        console.error("Failed to fetch user:", error);
       }
     };
     fetchLoggedInUser();
   }, []);
 
   return (
-    <nav className="bg-white shadow text-gray-800 fixed left-0 right-0 z-100">
+    <nav className="bg-white shadow text-gray-800 fixed left-0 right-0 top-0 z-50">
       <div className="max-w-screen-xl mx-[80px] px-4 md:px-8 py-4 flex justify-between items-center">
         {/* Logo */}
         <Link to="/" className="text-2xl font-bold px-5 py-2 rounded logo">
@@ -81,49 +51,19 @@ const Navbar = () => {
         </Link>
 
         {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-14  relative">
-          {navLinks.map(({ to, label }) =>
-            label === "Resources" ? (
-              <div key={to} className="relative group">
-                <span className={`${navLinkClass} cursor-pointer text-xl`}>
-                  {label}
-                </span>
-
-                {/* Dropdown */}
-                <div
-                  className="absolute left-0 top-full mt-2 w-[320px] bg-white rounded-xl shadow-xl p-4 space-y-3
-                  opacity-0 invisible group-hover:visible group-hover:opacity-100 
-                  transition-all duration-200 z-50 "
-                >
-                  {resources.map((item, idx) => (
-                    <Link
-                      to={item.to}
-                      key={idx}
-                      className="block border rounded-xl p-4 hover:border-blue-500 hover:bg-blue-50 active:scale-[0.98] transition-all"
-                    >
-                      <h3 className="text-blue-600 font-semibold">
-                        {item.title}
-                      </h3>
-                      <p className="text-gray-600 text-sm mt-1">
-                        {item.description}
-                      </p>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <Link key={to} to={to} className={navLinkClass}>
-                {label}
-              </Link>
-            )
-          )}
+        <div className="hidden md:flex items-center gap-14">
+          {navLinks.map(({ to, label }) => (
+            <Link key={to} to={to} className={navLinkClass}>
+              {label}
+            </Link>
+          ))}
         </div>
 
         {/* Auth Buttons */}
-        {user ? (
+        {user?.fullName ? (
           <Link to="/profile">
             <div className="w-[52px] h-[50px] rounded-full bg-indigo-900 text-white flex items-center justify-center font-bold text-xl">
-              {user.fullName[0].toUpperCase()}
+              {user.fullName.charAt(0).toUpperCase()}
             </div>
           </Link>
         ) : (
@@ -136,6 +76,7 @@ const Navbar = () => {
             </Link>
           </div>
         )}
+
         {/* Mobile Menu Button */}
         <button
           className="md:hidden"
@@ -148,40 +89,38 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu */}
-      <div
-        className={`md:hidden px-6 pb-4 pt-2 space-y-3 transition-all duration-300 ${
-          isOpen
-            ? isHostPage
-              ? "bg-black text-white"
-              : "bg-white text-gray-800"
-            : "hidden"
-        }`}
-      >
-        {navLinks.map(({ to, label }) => (
+      {isOpen && (
+        <div
+          className={`md:hidden px-6 pb-4 pt-2 space-y-3 transition-all duration-300 ${
+            isHostPage ? "bg-black text-white" : "bg-white text-gray-800"
+          }`}
+        >
+          {navLinks.map(({ to, label }) => (
+            <Link
+              key={to}
+              to={to}
+              onClick={() => setIsOpen(false)}
+              className={navLinkClass}
+            >
+              {label}
+            </Link>
+          ))}
           <Link
-            key={to}
-            to={to}
+            to="/api/auth/signin"
             onClick={() => setIsOpen(false)}
-            className={navLinkClass}
+            className="text-sm hover:underline"
           >
-            {label}
+            Sign in
           </Link>
-        ))}
-        <Link
-          to="/api/auth/signin"
-          onClick={() => setIsOpen(false)}
-          className="text-sm hover:underline"
-        >
-          Sign in
-        </Link>
-        <Link
-          to="/api/auth/signup"
-          onClick={() => setIsOpen(false)}
-          className={authButtonClass}
-        >
-          Sign up
-        </Link>
-      </div>
+          <Link
+            to="/api/auth/signup"
+            onClick={() => setIsOpen(false)}
+            className={authButtonClass}
+          >
+            Sign up
+          </Link>
+        </div>
+      )}
     </nav>
   );
 };
