@@ -10,10 +10,10 @@ import {
 
 import App from "./App.jsx";
 import AuthLayout from "./AuthLayout/AuthLayout.jsx";
-import Signup from "./Components/SignUp.jsx";
-import Signin from "./Components/Signin.jsx";
-import ForgotPassword from "./Components/ForgotPassword.jsx";
-import ResetPassword from "./Components/ResetPassword.jsx";
+import Signup from "./AuthLayout/SignUp.jsx";
+import Signin from "./AuthLayout/SignIn.jsx";
+import ForgotPassword from "./AuthLayout/ForgotPassword.jsx";
+import ResetPassword from "./AuthLayout/ResetPassword.jsx";
 import Home from "./Pages/Home.jsx";
 import HostHackathon from "./HostPages/HostHackathon.jsx";
 import JoinHackathon from "./JoinPages/JoinHackathon.jsx";
