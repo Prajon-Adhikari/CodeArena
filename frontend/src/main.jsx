@@ -10,16 +10,15 @@ import {
 
 import App from "./App.jsx";
 import AuthLayout from "./AuthLayout/AuthLayout.jsx";
-import Signup from "./Components/SignUp.jsx";
-import Signin from "./Components/Signin.jsx";
-import ForgotPassword from "./Components/ForgotPassword.jsx";
-import ResetPassword from "./Components/ResetPassword.jsx";
+import Signup from "./AuthLayout/SignUp.jsx";
+import Signin from "./AuthLayout/SignIn.jsx";
+import ForgotPassword from "./AuthLayout/ForgotPassword.jsx";
+import ResetPassword from "./AuthLayout/ResetPassword.jsx";
 import Home from "./Pages/Home.jsx";
 import HostHackathon from "./HostPages/HostHackathon.jsx";
 import JoinHackathon from "./JoinPages/JoinHackathon.jsx";
 import Hosting from "./HostPages/Hosting.jsx";
-import BlogPage from "./ResourcePages/BlogPage.jsx";
-import Resources from "./ResourcePages/Resources.jsx";
+import BlogPage from "./Pages/BlogPage.jsx";
 import About from "./Pages/About.jsx";
 import Contact from "./Pages/Contact.jsx";
 import Profile from "./Pages/Profile.jsx";
@@ -59,8 +58,7 @@ const router = createBrowserRouter(
         <Route path=":id/judges" element={<Judges />} />
         <Route path="host/hackathon" element={<Hosting />} />
         <Route path="profile" element={<Profile />} />
-        <Route path="resources" element={<Resources />} />
-        <Route path="blogPage" element={<BlogPage />} />
+        <Route path="blog" element={<BlogPage />} />
         <Route path="about" element={<About />} />
         <Route path="contact" element={<Contact />} />
       </Route>

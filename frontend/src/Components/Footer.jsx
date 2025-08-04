@@ -6,7 +6,7 @@ const Footer = () => {
     <footer className="bg-white border-t mt-10">
       <div className="max-w-6xl mx-auto pl-[120px] px-6 py-10 grid grid-cols-2 sm:grid-cols-4 gap-8 text-sm text-gray-700">
         <div>
-          <h4 className="font-semibold mb-2">CodeArena</h4>
+          <h4 className="font-bold mb-2">CodeArena</h4>
           <ul className="space-y-1">
             <li>
               <Link to="/about" className="hover:underline">
@@ -14,8 +14,8 @@ const Footer = () => {
               </Link>
             </li>
             <li>
-              <Link to="" className="hover:underline">
-                Careers
+              <Link to="/blog" className="hover:underline">
+                Blogs
               </Link>
             </li>
             <li>
@@ -37,20 +37,16 @@ const Footer = () => {
         </div>
 
         <div>
-          <h4 className="font-semibold mb-2">Hackathons</h4>
+          <h4 className="font-bold mb-2">Hackathons</h4>
           <ul className="space-y-1">
             <li>
-              <Link to="" className="hover:underline">
+              <Link to="joinHackathon" className="hover:underline">
                 Browse hackathons
               </Link>
             </li>
+    
             <li>
-              <Link to="" className="hover:underline">
-                Explore projects
-              </Link>
-            </li>
-            <li>
-              <Link to="" className="hover:underline">
+              <Link to="hostHackathon" className="hover:underline">
                 Host a hackathon
               </Link>
             </li>
@@ -63,7 +59,7 @@ const Footer = () => {
         </div>
 
         <div>
-          <h4 className="font-semibold mb-2">Portfolio</h4>
+          <h4 className="font-bold mb-2">Portfolio</h4>
           <ul className="space-y-1">
             <li>
               <a href="#" className="hover:underline">
@@ -84,7 +80,7 @@ const Footer = () => {
         </div>
 
         <div>
-          <h4 className="font-semibold mb-2">Connect</h4>
+          <h4 className="font-bold mb-2">Connect</h4>
           <ul className="space-y-1">
             <li>
               <a href="#" className="hover:underline">
