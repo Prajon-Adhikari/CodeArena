@@ -40,13 +40,13 @@ const Footer = () => {
           <h4 className="font-bold mb-2">Hackathons</h4>
           <ul className="space-y-1">
             <li>
-              <Link to="joinHackathon" className="hover:underline">
+              <Link to="join/hackathon" className="hover:underline">
                 Browse hackathons
               </Link>
             </li>
     
             <li>
-              <Link to="hostHackathon" className="hover:underline">
+              <Link to="hackathon" className="hover:underline">
                 Host a hackathon
               </Link>
             </li>
@@ -67,7 +67,7 @@ const Footer = () => {
               </a>
             </li>
             <li>
-              <a href="#" className="hover:underline">
+              <a href="myhostedhackathon" className="hover:underline">
                 Your hackathons
               </a>
             </li>
