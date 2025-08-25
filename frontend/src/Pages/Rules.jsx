@@ -29,7 +29,6 @@ export default function Rules() {
         );
         const data = await response.json();
         setHackathon(data.hackathon);
-        setIsRegistered(data.isRegistered);
       } catch (error) {
         console.log("Failed to fetch hackathon", error);
       }

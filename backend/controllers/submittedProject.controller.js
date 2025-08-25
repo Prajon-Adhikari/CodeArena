@@ -1,6 +1,40 @@
 import SubmittedProject from "../models/submitedProject.model.js";
 import User from "../models/user.model.js";
 
+export const getSubmittedProject = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { id: hackathonId } = req.params;
+
+    if (!userId) {
+      return res.status(400).json({ message: "User Id is missing" });
+    }
+
+    if (!hackathonId) {
+      return res.status(400).json({ message: "Hackathon Id is missing" });
+    }
+
+    const submittedProject = await SubmittedProject.findOne({
+      userId,
+      hackathonId,
+    });
+
+    if (!submittedProject) {
+      return res.json(null);
+    }
+
+    return res.status(200).json({
+      message: "Successfully fetched submitted Project",
+      submittedProject,
+    });
+  } catch (error) {
+    console.log("Error while fetching already submitted project", error);
+    res.status(500).json({
+      message: "Internal error while fetching already submitted project",
+    });
+  }
+};
+
 export const submitProject = async (req, res) => {
   try {
     const userId = req.user._id;
