@@ -3,12 +3,22 @@ import { Link, useParams, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideo } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import Select from "react-select";
+
+const skillsOptions = [
+  { value: "react", label: "React" },
+  { value: "javascript", label: "JavaScript" },
+  { value: "nodejs", label: "Node.js" },
+  { value: "mongodb", label: "MongoDB" },
+  { value: "express", label: "Express" },
+];
 
 export default function Project() {
   const { id } = useParams();
   const location = useLocation();
   const [hackathon, setHackathon] = useState("");
   const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedSkills, setSelectedSkills] = useState([]);
 
   const [projectTitle, setProjectTitle] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
@@ -80,7 +90,7 @@ export default function Project() {
   };
 
   return (
-    <div className="pt-[60px]">
+    <div className="pt-[60px] ">
       <div>
         {hackathon && hackathon.bannerUrl ? (
           <img src={hackathon.bannerUrl} />
@@ -105,12 +115,12 @@ export default function Project() {
           ))}
         </div>
       </div>
-      <div className="px-[100px] py-16">
-        <h1 className="text-4xl font-bold">Submit Your Project</h1>
+      <div className="px-[100px] py-16 ">
+        <h1 className="text-4xl font-bold pl-12">Submit Your Project</h1>
         <form
           action=""
           onSubmit={handleProjectSubmission}
-          className="mt-16 text-2xl"
+          className="mt-16 text-2xl flex flex-col items-center"
         >
           <div className="flex flex-col ">
             <label htmlFor="projectTitle" className="font-semibold px-4 py-1">
@@ -123,10 +133,11 @@ export default function Project() {
               name="projectTitle"
               value={projectTitle}
               onChange={(e) => setProjectTitle(e.target.value)}
-              className="border-2 border-gray-400 w-[1300px] text-xl px-4 py-2 rounded-xl"
+              autoComplete="off"
+              className="border-2 border-gray-400 w-[1140px] text-xl px-4 py-3 rounded-xl"
             />
           </div>
-          <div className="flex gap-30">
+          <div className="flex gap-15">
             <div>
               <div className="flex flex-col pt-12">
                 <label
@@ -148,14 +159,50 @@ export default function Project() {
                 <label htmlFor="tech" className="font-semibold px-4 py-1">
                   Technologies Used :
                 </label>
-                <textarea
+                <Select
+                  isMulti
                   name="tech"
-                  id="tech"
-                  value={tech}
-                  onChange={(e) => setTech(e.target.value)}
-                  placeholder=""
-                  className="border-2 border-gray-400 w-[560px]  text-xl px-4 py-2 rounded-xl"
-                ></textarea>
+                  options={skillsOptions}
+                  value={selectedSkills}
+                  onChange={setSelectedSkills}
+                  placeholder="Add your skills..."
+                  className="text-[18px] w-[560px]"
+                  styles={{
+                    control: (base) => ({
+                      ...base,
+                      borderWidth: "2px",
+                      borderRadius: "12px",
+                      borderColor: "#B7B7B7",
+                      padding: "7px 6px",
+                      boxShadow: "none",
+                      "&:hover": { borderColor: "#6B7280" },
+                    }),
+                    multiValue: (base) => ({
+                      ...base,
+                      borderWidth: "2px",
+                      borderRadius: "9999px",
+                      borderColor: "#000000",
+                      backgroundColor: "#FFFFFF",
+                      padding: "1px 8px",
+                      "&:hover": { backgroundColor: "#EEEEEE" },
+                    }),
+                    multiValueLabel: (base) => ({
+                      ...base,
+                      color: "#000000", // Tailwind blue-900
+                      fontWeight: "500",
+                    }),
+                    multiValueRemove: (base) => ({
+                      ...base,
+                      borderRadius: "9999px",
+                      color: "black",
+                      "&:hover": {
+                        backgroundColor: "#EEEEEE",
+                        cursor: "pointer",
+                        color: "#000000",
+                      },
+                    }),
+                  }}
+                />
               </div>
               <div className="flex flex-col pt-12">
                 <label htmlFor="tags" className="font-semibold px-4 py-1">
@@ -171,29 +218,43 @@ export default function Project() {
                 ></textarea>
               </div>
             </div>
-            <div className=" border-2 border-dotted border-gray-400 h-[450px] w-[600px] flex justify-center flex-col items-center p-10 mt-22 rounded-3xl">
-              <label
-                htmlFor="videoUpload"
-                className="cursor-pointer flex items-center gap-4 border-1 border-dotted px-6 py-6 rounded-full w-fit hover:bg-gray-50 "
-              >
-                <FontAwesomeIcon icon={faVideo} className="text-3xl" />
-              </label>
-              <input
-                type="file"
-                id="videoUpload"
-                name="video"
-                accept="video/*"
-                className="hidden"
-                onChange={(e) => setSelectedVideo(e.target.files[0])}
-              />
-              {selectedVideo && (
+            <div className="border-2 border-dotted border-gray-400 h-[380px] w-[480px] flex justify-center flex-col items-center p-10 mt-22 rounded-3xl relative">
+              {!selectedVideo ? (
                 <>
+                  <label
+                    htmlFor="videoUpload"
+                    className="cursor-pointer flex items-center gap-4 border-1 border-dotted px-5 py-5 rounded-full w-fit hover:bg-gray-50 "
+                  >
+                    <FontAwesomeIcon icon={faVideo} className="text-2xl" />
+                  </label>
+                  <p className="text-lg pt-3">Upload a video</p>
+                  <input
+                    type="file"
+                    id="videoUpload"
+                    name="video"
+                    accept="video/*"
+                    className="hidden"
+                    onChange={(e) => setSelectedVideo(e.target.files[0])}
+                  />
+                </>
+              ) : (
+                <div className="relative">
+                  {/* Cross button */}
+                  <button
+                    type="button"
+                    onClick={() => setSelectedVideo(null)}
+                    className="absolute -top-3 -right-3  text-black font-semibold bg-gray-200 rounded-full px-2 py-1 flex items-center justify-center text-sm"
+                  >
+                    ✕
+                  </button>
+
+                  {/* Video Preview */}
                   <video
                     src={URL.createObjectURL(selectedVideo)}
                     controls
-                    className="mt-4 w-[550px] h-[310px] rounded-xl border"
+                    className="mt-4 w-[500px] h-[280px] rounded-xl border"
                   />
-                </>
+                </div>
               )}
             </div>
           </div>
@@ -203,6 +264,7 @@ export default function Project() {
           />
         </form>
       </div>
+      <div className="w-80"></div>
     </div>
   );
 }
