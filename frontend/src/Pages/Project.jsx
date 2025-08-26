@@ -33,6 +33,7 @@ export default function Project() {
   const [loadingProject, setLoadingProject] = useState(true);
   const [selectedTags, setSelectedTags] = useState([]);
   const [submitting, setSubmitting] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
 
   const [projectTitle, setProjectTitle] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
@@ -59,6 +60,8 @@ export default function Project() {
           }
         );
         const data = await response.json();
+        console.log(data.isRegistered);
+        setIsRegistered(data.isRegistered);
         setHackathon(data.hackathon);
       } catch (error) {
         console.log("Failed to fetch hackathon", error);
@@ -78,7 +81,7 @@ export default function Project() {
         }
       );
       const data = await res.json();
-      setSubmittedProject(data.submittedProject);
+      setSubmittedProject(data?.submittedProject || null);
     } catch (err) {
       console.error("Failed to fetch project", err);
     } finally {
@@ -156,250 +159,267 @@ export default function Project() {
           ))}
         </div>
       </div>
-      <div className="px-[100px] py-20 ">
-        {loadingProject ? (
-          <p>Loading...</p>
-        ) : submittedProject ? (
-          <div className="flex gap-40">
-            <div className="w-[700px]">
-              {submittedProject?.videos?.map((video, index) => (
-                <video
-                  key={index}
-                  src={video.url}
-                  controls
-                  className="w-[640px] rounded-lg border mb-4"
-                />
-              ))}
-              <h2 className="font-bold text-4xl pt-4">
-                {submittedProject.projectTitle}
-              </h2>
-              <div className="text-xl pt-3 text-gray-800">
-                {submittedProject.projectDescription}
-              </div>
-            </div>
-            <div className="">
-              <h3 className="font-bold text-3xl">Technologies Used</h3>
-              <div className="pt-3 flex flex-wrap">
-                {submittedProject.tech.map((t, index) => {
-                  return (
-                    <span
-                      key={index}
-                      className="border-2 mr-4 px-6 py-1 mt-3 rounded-3xl text-xl"
-                    >
-                      {t}
-                    </span>
-                  );
-                })}
-              </div>
-              <h3 className="font-bold text-3xl mt-16">Tags</h3>
-              <div className="pt-3 flex flex-wrap">
-                {submittedProject.tags.map((t, index) => {
-                  return (
-                    <span
-                      key={index}
-                      className="border-2 mr-4 px-6 py-1 mt-3 rounded-3xl text-xl"
-                    >
-                      {t}
-                    </span>
-                  );
-                })}
-              </div>
-            </div>
+      {!isRegistered ? (
+        <div className="flex flex-col items-center  mt-30 mb-10">
+          <div className="text-5xl pb-10 font-bold text-gray-700">
+            You haven't joined hackathon yet.
           </div>
-        ) : (
-          <>
-            <h1 className="text-4xl font-bold pl-24">Submit Your Project</h1>
-            <form
-              action=""
-              onSubmit={handleProjectSubmission}
-              className="mt-16 text-2xl flex flex-col items-center"
-            >
-              <div className="flex flex-col">
-                <label
-                  htmlFor="projectTitle"
-                  className="font-semibold px-2 py-1"
-                >
-                  Project Title
-                </label>
-                <input
-                  type="text"
-                  id="projectTitle"
-                  placeholder="Enter your project title"
-                  name="projectTitle"
-                  value={projectTitle}
-                  onChange={(e) => setProjectTitle(e.target.value)}
-                  autoComplete="off"
-                  className="border-2 border-[#B7B7B7] w-[1100px] text-lg px-4 py-3 rounded-xl"
-                />
-              </div>
-              <div className="flex gap-15">
-                <div>
-                  <div className="flex flex-col pt-12">
-                    <label
-                      htmlFor="projectDescription"
-                      className="font-semibold px-1 py-1"
-                    >
-                      Description
-                    </label>
-                    <textarea
-                      name="projectDescription"
-                      id="projectDescription"
-                      value={projectDescription}
-                      onChange={(e) => setProjectDescription(e.target.value)}
-                      placeholder="Briefy describe your project's goals, your solutions and impact you made here ... "
-                      className="border-2 border-[#B7B7B7] w-[560px] min-h-[260px] text-xl px-4 py-2 rounded-xl"
-                    ></textarea>
-                  </div>
-                  <div className="flex flex-col pt-12">
-                    <label htmlFor="tech" className="font-semibold px-1 py-1">
-                      Technologies Used
-                    </label>
-                    <Select
-                      isMulti
-                      name="tech"
-                      options={skillsOptions}
-                      value={selectedSkills}
-                      onChange={setSelectedSkills}
-                      placeholder="Mention techs you used..."
-                      className="text-[18px] w-[560px]"
-                      styles={{
-                        control: (base) => ({
-                          ...base,
-                          borderWidth: "2px",
-                          borderRadius: "12px",
-                          borderColor: "#B7B7B7",
-                          padding: "7px 6px",
-                          boxShadow: "none",
-                          "&:hover": { borderColor: "#6B7280" },
-                        }),
-                        multiValue: (base) => ({
-                          ...base,
-                          borderWidth: "2px",
-                          borderRadius: "9999px",
-                          borderColor: "#000000",
-                          backgroundColor: "#FFFFFF",
-                          padding: "1px 8px",
-                          "&:hover": { backgroundColor: "#EEEEEE" },
-                        }),
-                        multiValueLabel: (base) => ({
-                          ...base,
-                          color: "#000000", // Tailwind blue-900
-                          fontWeight: "500",
-                        }),
-                        multiValueRemove: (base) => ({
-                          ...base,
-                          borderRadius: "9999px",
-                          color: "black",
-                          "&:hover": {
-                            backgroundColor: "#EEEEEE",
-                            cursor: "pointer",
-                            color: "#000000",
-                          },
-                        }),
-                      }}
-                    />
-                  </div>
-                  <div className="flex flex-col pt-12">
-                    <label htmlFor="tags" className="font-semibold px-1 py-1">
-                      Tags ( sent invite to your friends )
-                    </label>
-                    <Select
-                      isMulti
-                      name="tags"
-                      options={tagsOptions}
-                      value={selectedTags}
-                      onChange={setSelectedTags}
-                      placeholder="Mention your team members..."
-                      className="text-[18px] w-[560px]"
-                      styles={{
-                        control: (base) => ({
-                          ...base,
-                          borderWidth: "2px",
-                          borderRadius: "12px",
-                          borderColor: "#B7B7B7",
-                          padding: "7px 6px",
-                          boxShadow: "none",
-                          "&:hover": { borderColor: "#6B7280" },
-                        }),
-                        multiValue: (base) => ({
-                          ...base,
-                          borderWidth: "2px",
-                          borderRadius: "9999px",
-                          borderColor: "#000000",
-                          backgroundColor: "#FFFFFF",
-                          padding: "1px 8px",
-                          "&:hover": { backgroundColor: "#EEEEEE" },
-                        }),
-                        multiValueLabel: (base) => ({
-                          ...base,
-                          color: "#000000", // Tailwind blue-900
-                          fontWeight: "500",
-                        }),
-                        multiValueRemove: (base) => ({
-                          ...base,
-                          borderRadius: "9999px",
-                          color: "black",
-                          "&:hover": {
-                            backgroundColor: "#EEEEEE",
-                            cursor: "pointer",
-                            color: "#000000",
-                          },
-                        }),
-                      }}
-                    />{" "}
-                  </div>
+          <Link to={`/${id}/overview`}>
+            <button className="bg-blue-400 text-white px-8 py-3 text-2xl rounded-md cursor-pointer">
+              Join Hackathon Now
+            </button>
+          </Link>
+        </div>
+      ) : (
+        <div className="px-[100px] py-20 ">
+          {loadingProject ? (
+            <p>Loading...</p>
+          ) : submittedProject ? (
+            <div className="flex gap-40">
+              <div className="w-[700px]">
+                {submittedProject?.videos?.map((video, index) => (
+                  <video
+                    key={index}
+                    src={video.url}
+                    controls
+                    className="w-[640px] rounded-lg border mb-4"
+                  />
+                ))}
+                <h2 className="font-bold text-4xl pt-4">
+                  {submittedProject.projectTitle}
+                </h2>
+                <div className="text-xl pt-3 text-gray-800">
+                  {submittedProject.projectDescription}
                 </div>
-                <div className="border-2 border-dotted border-gray-400 h-[380px] w-[480px] flex justify-center flex-col items-center p-10 mt-22 rounded-3xl relative">
-                  {!selectedVideo ? (
-                    <>
+              </div>
+              <div className="">
+                <h3 className="font-bold text-3xl">Technologies Used</h3>
+                <div className="pt-3 flex flex-wrap">
+                  {submittedProject.tech.map((t, index) => {
+                    return (
+                      <span
+                        key={index}
+                        className="border-2 mr-4 px-6 py-1 mt-3 rounded-3xl text-xl"
+                      >
+                        {t}
+                      </span>
+                    );
+                  })}
+                </div>
+                <h3 className="font-bold text-3xl mt-16">Tags</h3>
+                <div className="pt-3 flex flex-wrap">
+                  {submittedProject.tags.map((t, index) => {
+                    return (
+                      <span
+                        key={index}
+                        className="border-2 mr-4 px-6 py-1 mt-3 rounded-3xl text-xl"
+                      >
+                        {t}
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <>
+              <h1 className="text-4xl font-bold pl-27">Submit Your Project</h1>
+              <form
+                action=""
+                onSubmit={handleProjectSubmission}
+                className="mt-16 text-2xl flex flex-col items-center"
+              >
+                <div className="flex flex-col">
+                  <label
+                    htmlFor="projectTitle"
+                    className="font-semibold px-2 py-1"
+                  >
+                    Project Title
+                  </label>
+                  <input
+                    type="text"
+                    id="projectTitle"
+                    placeholder="Enter your project title"
+                    name="projectTitle"
+                    value={projectTitle}
+                    onChange={(e) => setProjectTitle(e.target.value)}
+                    autoComplete="off"
+                    className="border-2 border-[#B7B7B7] w-[1100px] text-lg px-4 py-3 rounded-xl"
+                  />
+                </div>
+                <div className="flex gap-15">
+                  <div>
+                    <div className="flex flex-col pt-12">
                       <label
-                        htmlFor="videoUpload"
-                        className="cursor-pointer flex items-center gap-4 border-1 border-dotted px-5 py-5 rounded-full w-fit hover:bg-gray-50 "
+                        htmlFor="projectDescription"
+                        className="font-semibold px-1 py-1"
                       >
-                        <FontAwesomeIcon icon={faVideo} className="text-2xl" />
+                        Description
                       </label>
-                      <p className="text-lg pt-3">Upload a video</p>
-                      <input
-                        type="file"
-                        id="videoUpload"
-                        name="video"
-                        accept="video/*"
-                        className="hidden"
-                        onChange={(e) => setSelectedVideo(e.target.files[0])}
-                      />
-                    </>
-                  ) : (
-                    <div className="relative">
-                      {/* Cross button */}
-                      <button
-                        type="button"
-                        onClick={() => setSelectedVideo(null)}
-                        className="absolute -top-3 -right-3  text-black font-semibold bg-gray-200 rounded-full px-2 py-1 flex items-center justify-center text-sm"
-                      >
-                        ✕
-                      </button>
-
-                      {/* Video Preview */}
-                      <video
-                        src={URL.createObjectURL(selectedVideo)}
-                        controls
-                        className="mt-4 w-[500px] h-[280px] rounded-xl border"
+                      <textarea
+                        name="projectDescription"
+                        id="projectDescription"
+                        value={projectDescription}
+                        onChange={(e) => setProjectDescription(e.target.value)}
+                        placeholder="Briefy describe your project's goals, your solutions and impact you made here ... "
+                        className="border-2 border-[#B7B7B7] w-[560px] min-h-[260px] text-xl px-4 py-2 rounded-xl"
+                      ></textarea>
+                    </div>
+                    <div className="flex flex-col pt-12">
+                      <label htmlFor="tech" className="font-semibold px-1 py-1">
+                        Technologies Used
+                      </label>
+                      <Select
+                        isMulti
+                        name="tech"
+                        options={skillsOptions}
+                        value={selectedSkills}
+                        onChange={setSelectedSkills}
+                        placeholder="Mention techs you used..."
+                        className="text-[18px] w-[560px]"
+                        styles={{
+                          control: (base) => ({
+                            ...base,
+                            borderWidth: "2px",
+                            borderRadius: "12px",
+                            borderColor: "#B7B7B7",
+                            padding: "7px 6px",
+                            boxShadow: "none",
+                            "&:hover": { borderColor: "#6B7280" },
+                          }),
+                          multiValue: (base) => ({
+                            ...base,
+                            borderWidth: "2px",
+                            borderRadius: "9999px",
+                            borderColor: "#000000",
+                            backgroundColor: "#FFFFFF",
+                            padding: "1px 8px",
+                            "&:hover": { backgroundColor: "#EEEEEE" },
+                          }),
+                          multiValueLabel: (base) => ({
+                            ...base,
+                            color: "#000000", // Tailwind blue-900
+                            fontWeight: "500",
+                          }),
+                          multiValueRemove: (base) => ({
+                            ...base,
+                            borderRadius: "9999px",
+                            color: "black",
+                            "&:hover": {
+                              backgroundColor: "#EEEEEE",
+                              cursor: "pointer",
+                              color: "#000000",
+                            },
+                          }),
+                        }}
                       />
                     </div>
-                  )}
+                    <div className="flex flex-col pt-12">
+                      <label htmlFor="tags" className="font-semibold px-1 py-1">
+                        Tags ( sent invite to your friends )
+                      </label>
+                      <Select
+                        isMulti
+                        name="tags"
+                        options={tagsOptions}
+                        value={selectedTags}
+                        onChange={setSelectedTags}
+                        placeholder="Mention your team members..."
+                        className="text-[18px] w-[560px]"
+                        styles={{
+                          control: (base) => ({
+                            ...base,
+                            borderWidth: "2px",
+                            borderRadius: "12px",
+                            borderColor: "#B7B7B7",
+                            padding: "7px 6px",
+                            boxShadow: "none",
+                            "&:hover": { borderColor: "#6B7280" },
+                          }),
+                          multiValue: (base) => ({
+                            ...base,
+                            borderWidth: "2px",
+                            borderRadius: "9999px",
+                            borderColor: "#000000",
+                            backgroundColor: "#FFFFFF",
+                            padding: "1px 8px",
+                            "&:hover": { backgroundColor: "#EEEEEE" },
+                          }),
+                          multiValueLabel: (base) => ({
+                            ...base,
+                            color: "#000000", // Tailwind blue-900
+                            fontWeight: "500",
+                          }),
+                          multiValueRemove: (base) => ({
+                            ...base,
+                            borderRadius: "9999px",
+                            color: "black",
+                            "&:hover": {
+                              backgroundColor: "#EEEEEE",
+                              cursor: "pointer",
+                              color: "#000000",
+                            },
+                          }),
+                        }}
+                      />{" "}
+                    </div>
+                  </div>
+                  <div className="border-2 border-dotted border-gray-400 h-[380px] w-[480px] flex justify-center flex-col items-center p-10 mt-22 rounded-3xl relative">
+                    {!selectedVideo ? (
+                      <>
+                        <label
+                          htmlFor="videoUpload"
+                          className="cursor-pointer flex items-center gap-4 border-1 border-dotted px-5 py-5 rounded-full w-fit hover:bg-gray-50 "
+                        >
+                          <FontAwesomeIcon
+                            icon={faVideo}
+                            className="text-2xl"
+                          />
+                        </label>
+                        <p className="text-lg pt-3">Upload a video</p>
+                        <input
+                          type="file"
+                          id="videoUpload"
+                          name="video"
+                          accept="video/*"
+                          className="hidden"
+                          onChange={(e) => setSelectedVideo(e.target.files[0])}
+                        />
+                      </>
+                    ) : (
+                      <div className="relative">
+                        {/* Cross button */}
+                        <button
+                          type="button"
+                          onClick={() => setSelectedVideo(null)}
+                          className="absolute -top-3 -right-3  text-black font-semibold bg-gray-200 rounded-full px-2 py-1 flex items-center justify-center text-sm"
+                        >
+                          ✕
+                        </button>
+
+                        {/* Video Preview */}
+                        <video
+                          src={URL.createObjectURL(selectedVideo)}
+                          controls
+                          className="mt-4 w-[500px] h-[280px] rounded-xl border"
+                        />
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className="flex justify-end px-30 pt-10 w-full">
-                <input
-                  type="submit"
-                  value="Submit Project"
-                  className="mt-12 bg-blue-400 text-white text-lg py-2 px-10 rounded-sm"
-                />
-              </div>
-            </form>
-          </>
-        )}
-      </div>
+                <div className="flex justify-end px-30 pt-10 w-full">
+                  <input
+                    type="submit"
+                    value="Submit Project"
+                    className="mt-12 cursor-pointer hover:bg-blue-300 bg-blue-400 text-white py-3 px-10 rounded-sm"
+                  />
+                </div>
+              </form>
+            </>
+          )}
+        </div>
+      )}
+      ;
       <ToastContainer
         position="top-center"
         autoClose={2000}
