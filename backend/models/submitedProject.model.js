@@ -29,6 +29,7 @@ const submittedProjectSchema = new mongoose.Schema(
       type: [String], // e.g., ["AI", "HealthTech"]
       default: [],
     },
+    
     userName: {
       type: "String",
       required: true,

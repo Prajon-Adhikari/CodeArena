@@ -3,6 +3,9 @@ import { Link, useParams, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideo } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
 
 const skillsOptions = [
@@ -13,21 +16,26 @@ const skillsOptions = [
   { value: "express", label: "Express" },
 ];
 
+const tagsOptions = [
+  { value: "sarthak", label: "Sarthak" },
+  { value: "sagar", label: "Sagar" },
+  { value: "ritik", label: "Ritik" },
+  { value: "prakash", label: "Prakash" },
+];
+
 export default function Project() {
   const { id } = useParams();
   const location = useLocation();
   const [hackathon, setHackathon] = useState("");
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [selectedSkills, setSelectedSkills] = useState([]);
-  const [isRegistered, setIsRegistered] = useState(false);
   const [submittedProject, setSubmittedProject] = useState(null);
   const [loadingProject, setLoadingProject] = useState(true);
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [submitting, setSubmitting] = useState(false);
 
   const [projectTitle, setProjectTitle] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
-  const [tech, setTech] = useState("");
-  const [tags, setTags] = useState("");
-  const [video, setVideo] = useState("");
 
   const tabs = [
     { path: "overview", label: "Overview" },
@@ -59,39 +67,39 @@ export default function Project() {
     fetchHackathonDetails();
   }, [id]);
 
-  useEffect(() => {
-    const fetchSubmittedProject = async () => {
-      try {
-        const res = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/home/${id}/myproject`,
-          {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
-          }
-        );
-        const data = await res.json();
-        setSubmittedProject(data.submittedProject);
-      } catch (err) {
-        console.error("Failed to fetch project", err);
-      } finally {
-        setLoadingProject(false);
-      }
-    };
+  const fetchSubmittedProject = async () => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/home/${id}/myproject`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+        }
+      );
+      const data = await res.json();
+      setSubmittedProject(data.submittedProject);
+    } catch (err) {
+      console.error("Failed to fetch project", err);
+    } finally {
+      setLoadingProject(false);
+    }
+  };
 
+  useEffect(() => {
     fetchSubmittedProject();
   }, [id]);
 
   const handleProjectSubmission = async (e) => {
     e.preventDefault();
+    setSubmitting(true);
 
     try {
-      console.log("heelo");
       const formData = new FormData();
       formData.append("projectTitle", projectTitle);
       formData.append("projectDescription", projectDescription);
-      formData.append("tech", tech);
-      formData.append("tags", tags);
+      formData.append("tech", selectedSkills.map((s) => s.value).join(","));
+      formData.append("tags", selectedTags.map((t) => t.value).join(","));
 
       if (selectedVideo) {
         formData.append("video", selectedVideo);
@@ -108,9 +116,17 @@ export default function Project() {
         }
       );
 
+      toast.success("Project submitted successfully 🎉");
+
+      setTimeout(() => {
+        fetchSubmittedProject();
+      }, 1200);
+
       console.log("Project submitted successfully", response.data);
     } catch (error) {
       console.error("Failed to submit project", error);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -140,12 +156,55 @@ export default function Project() {
           ))}
         </div>
       </div>
-      <div className="px-[100px] py-16 ">
+      <div className="px-[100px] py-20 ">
         {loadingProject ? (
           <p>Loading...</p>
         ) : submittedProject ? (
-          <div className="mt-10 bg-gray-100 p-6 rounded-xl">
-            Already submitted
+          <div className="flex gap-40">
+            <div className="w-[700px]">
+              {submittedProject?.videos?.map((video, index) => (
+                <video
+                  key={index}
+                  src={video.url}
+                  controls
+                  className="w-[640px] rounded-lg border mb-4"
+                />
+              ))}
+              <h2 className="font-bold text-4xl pt-4">
+                {submittedProject.projectTitle}
+              </h2>
+              <div className="text-xl pt-3 text-gray-800">
+                {submittedProject.projectDescription}
+              </div>
+            </div>
+            <div className="">
+              <h3 className="font-bold text-3xl">Technologies Used</h3>
+              <div className="pt-3 flex flex-wrap">
+                {submittedProject.tech.map((t, index) => {
+                  return (
+                    <span
+                      key={index}
+                      className="border-2 mr-4 px-6 py-1 mt-3 rounded-3xl text-xl"
+                    >
+                      {t}
+                    </span>
+                  );
+                })}
+              </div>
+              <h3 className="font-bold text-3xl mt-16">Tags</h3>
+              <div className="pt-3 flex flex-wrap">
+                {submittedProject.tags.map((t, index) => {
+                  return (
+                    <span
+                      key={index}
+                      className="border-2 mr-4 px-6 py-1 mt-3 rounded-3xl text-xl"
+                    >
+                      {t}
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         ) : (
           <>
@@ -178,9 +237,9 @@ export default function Project() {
                   <div className="flex flex-col pt-12">
                     <label
                       htmlFor="projectDescription"
-                      className="font-semibold px-4 py-1"
+                      className="font-semibold px-1 py-1"
                     >
-                      Description :
+                      Description
                     </label>
                     <textarea
                       name="projectDescription"
@@ -192,8 +251,8 @@ export default function Project() {
                     ></textarea>
                   </div>
                   <div className="flex flex-col pt-12">
-                    <label htmlFor="tech" className="font-semibold px-4 py-1">
-                      Technologies Used :
+                    <label htmlFor="tech" className="font-semibold px-1 py-1">
+                      Technologies Used
                     </label>
                     <Select
                       isMulti
@@ -241,17 +300,53 @@ export default function Project() {
                     />
                   </div>
                   <div className="flex flex-col pt-12">
-                    <label htmlFor="tags" className="font-semibold px-4 py-1">
-                      Tags ( sent invite to your friends ) :
+                    <label htmlFor="tags" className="font-semibold px-1 py-1">
+                      Tags ( sent invite to your friends )
                     </label>
-                    <textarea
+                    <Select
+                      isMulti
                       name="tags"
-                      id="tags"
-                      value={tags}
-                      onChange={(e) => setTags(e.target.value)}
-                      placeholder=""
-                      className="border-2 border-gray-400 w-[560px]  text-xl px-4 py-2 rounded-xl"
-                    ></textarea>
+                      options={tagsOptions}
+                      value={selectedTags}
+                      onChange={setSelectedTags}
+                      placeholder="Mention your team members..."
+                      className="text-[18px] w-[560px]"
+                      styles={{
+                        control: (base) => ({
+                          ...base,
+                          borderWidth: "2px",
+                          borderRadius: "12px",
+                          borderColor: "#B7B7B7",
+                          padding: "7px 6px",
+                          boxShadow: "none",
+                          "&:hover": { borderColor: "#6B7280" },
+                        }),
+                        multiValue: (base) => ({
+                          ...base,
+                          borderWidth: "2px",
+                          borderRadius: "9999px",
+                          borderColor: "#000000",
+                          backgroundColor: "#FFFFFF",
+                          padding: "1px 8px",
+                          "&:hover": { backgroundColor: "#EEEEEE" },
+                        }),
+                        multiValueLabel: (base) => ({
+                          ...base,
+                          color: "#000000", // Tailwind blue-900
+                          fontWeight: "500",
+                        }),
+                        multiValueRemove: (base) => ({
+                          ...base,
+                          borderRadius: "9999px",
+                          color: "black",
+                          "&:hover": {
+                            backgroundColor: "#EEEEEE",
+                            cursor: "pointer",
+                            color: "#000000",
+                          },
+                        }),
+                      }}
+                    />{" "}
                   </div>
                 </div>
                 <div className="border-2 border-dotted border-gray-400 h-[380px] w-[480px] flex justify-center flex-col items-center p-10 mt-22 rounded-3xl relative">
@@ -305,6 +400,11 @@ export default function Project() {
           </>
         )}
       </div>
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={true}
+      />
     </div>
   );
 }
