@@ -46,6 +46,8 @@ export const submitProject = async (req, res) => {
       projectDescription = "",
       tech = "",
       tags = "",
+      githubLink = "",
+      projectLink = "",
     } = req.body || {};
 
     if (!userId) {
@@ -89,9 +91,11 @@ export const submitProject = async (req, res) => {
         },
       ],
       tags: tagsArray,
-      userName, // should be String in schema, not ObjectId
+      userName,
       userId,
       hackathonId,
+      githubLink,
+      projectLink,
     });
 
     await newProject.save();

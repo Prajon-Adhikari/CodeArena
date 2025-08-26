@@ -29,18 +29,30 @@ const submittedProjectSchema = new mongoose.Schema(
       type: [String], // e.g., ["AI", "HealthTech"]
       default: [],
     },
-    
+
     userName: {
       type: "String",
       required: true,
     },
+
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+
     hackathonId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Hackathon",
+    },
+
+    githubLink: {
+      type: String,
+      required: true,
+    },
+
+    projectLink: {
+      type: String,
+      required: true,
     },
   },
   { timestamps: true }

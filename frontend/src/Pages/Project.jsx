@@ -37,6 +37,8 @@ export default function Project() {
 
   const [projectTitle, setProjectTitle] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
+  const [githubLink, setGithubLink] = useState("");
+  const [projectLink, setProjectLink] = useState("");
 
   const tabs = [
     { path: "overview", label: "Overview" },
@@ -103,6 +105,8 @@ export default function Project() {
       formData.append("projectDescription", projectDescription);
       formData.append("tech", selectedSkills.map((s) => s.value).join(","));
       formData.append("tags", selectedTags.map((t) => t.value).join(","));
+      formData.append("githubLink", githubLink);
+      formData.append("projectLink", projectLink);
 
       if (selectedVideo) {
         formData.append("video", selectedVideo);
@@ -223,7 +227,7 @@ export default function Project() {
             </div>
           ) : (
             <>
-              <h1 className="text-4xl font-bold pl-27">Submit Your Project</h1>
+              <h1 className="text-4xl font-bold pl-22">Submit Your Project</h1>
               <form
                 action=""
                 onSubmit={handleProjectSubmission}
@@ -265,55 +269,7 @@ export default function Project() {
                         className="border-2 border-[#B7B7B7] w-[560px] min-h-[260px] text-xl px-4 py-2 rounded-xl"
                       ></textarea>
                     </div>
-                    <div className="flex flex-col pt-12">
-                      <label htmlFor="tech" className="font-semibold px-1 py-1">
-                        Technologies Used
-                      </label>
-                      <Select
-                        isMulti
-                        name="tech"
-                        options={skillsOptions}
-                        value={selectedSkills}
-                        onChange={setSelectedSkills}
-                        placeholder="Mention techs you used..."
-                        className="text-[18px] w-[560px]"
-                        styles={{
-                          control: (base) => ({
-                            ...base,
-                            borderWidth: "2px",
-                            borderRadius: "12px",
-                            borderColor: "#B7B7B7",
-                            padding: "7px 6px",
-                            boxShadow: "none",
-                            "&:hover": { borderColor: "#6B7280" },
-                          }),
-                          multiValue: (base) => ({
-                            ...base,
-                            borderWidth: "2px",
-                            borderRadius: "9999px",
-                            borderColor: "#000000",
-                            backgroundColor: "#FFFFFF",
-                            padding: "1px 8px",
-                            "&:hover": { backgroundColor: "#EEEEEE" },
-                          }),
-                          multiValueLabel: (base) => ({
-                            ...base,
-                            color: "#000000", // Tailwind blue-900
-                            fontWeight: "500",
-                          }),
-                          multiValueRemove: (base) => ({
-                            ...base,
-                            borderRadius: "9999px",
-                            color: "black",
-                            "&:hover": {
-                              backgroundColor: "#EEEEEE",
-                              cursor: "pointer",
-                              color: "#000000",
-                            },
-                          }),
-                        }}
-                      />
-                    </div>
+
                     <div className="flex flex-col pt-12">
                       <label htmlFor="tags" className="font-semibold px-1 py-1">
                         Tags ( sent invite to your friends )
@@ -392,19 +348,107 @@ export default function Project() {
                         <button
                           type="button"
                           onClick={() => setSelectedVideo(null)}
-                          className="absolute -top-3 -right-3  text-black font-semibold bg-gray-200 rounded-full px-2 py-1 flex items-center justify-center text-sm"
+                          className="absolute -top-3 -right-3 cursor-pointer  text-black font-semibold bg-gray-200 rounded-full px-2 py-1 flex items-center justify-center text-sm"
                         >
                           ✕
                         </button>
 
-                        {/* Video Preview */}
-                        <video
-                          src={URL.createObjectURL(selectedVideo)}
-                          controls
-                          className="mt-4 w-[500px] h-[280px] rounded-xl border"
-                        />
+                        <div className="w-[400px] h-[300px] rounded-xl border overflow-hidden">
+                          <video
+                            src={URL.createObjectURL(selectedVideo)}
+                            controls
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
                       </div>
                     )}
+                  </div>
+                </div>
+                <div className="flex flex-col pt-12">
+                  <label htmlFor="tech" className="font-semibold px-1 py-1">
+                    Technologies Used
+                  </label>
+                  <Select
+                    isMulti
+                    name="tech"
+                    options={skillsOptions}
+                    value={selectedSkills}
+                    onChange={setSelectedSkills}
+                    placeholder="Mention techs you used..."
+                    className="text-[18px] w-[1100px]"
+                    styles={{
+                      control: (base) => ({
+                        ...base,
+                        borderWidth: "2px",
+                        borderRadius: "12px",
+                        borderColor: "#B7B7B7",
+                        padding: "7px 6px",
+                        boxShadow: "none",
+                        "&:hover": { borderColor: "#6B7280" },
+                      }),
+                      multiValue: (base) => ({
+                        ...base,
+                        borderWidth: "2px",
+                        borderRadius: "9999px",
+                        borderColor: "#000000",
+                        backgroundColor: "#FFFFFF",
+                        padding: "1px 8px",
+                        "&:hover": { backgroundColor: "#EEEEEE" },
+                      }),
+                      multiValueLabel: (base) => ({
+                        ...base,
+                        color: "#000000", // Tailwind blue-900
+                        fontWeight: "500",
+                      }),
+                      multiValueRemove: (base) => ({
+                        ...base,
+                        borderRadius: "9999px",
+                        color: "black",
+                        "&:hover": {
+                          backgroundColor: "#EEEEEE",
+                          cursor: "pointer",
+                          color: "#000000",
+                        },
+                      }),
+                    }}
+                  />
+                </div>
+                <div className="flex pt-12 gap-10">
+                  <div className="flex flex-col">
+                    <label
+                      htmlFor="githublink"
+                      className="font-semibold px-2 py-1"
+                    >
+                      Github Link
+                    </label>
+                    <input
+                      type="text"
+                      id="githublink"
+                      placeholder="Ex- https://www.github.com/example"
+                      name="githubLink"
+                      value={githubLink}
+                      onChange={(e) => setGithubLink(e.target.value)}
+                      autoComplete="off"
+                      className="border-2 border-[#B7B7B7] w-[560px] text-lg px-4 py-3 rounded-xl"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <label
+                      htmlFor="projectLink"
+                      className="font-semibold px-2 py-1"
+                    >
+                      Project Link
+                    </label>
+                    <input
+                      type="text"
+                      id="projectLink"
+                      placeholder="Enter your live project link"
+                      name="projectLink"
+                      value={projectLink}
+                      onChange={(e) => setProjectLink(e.target.value)}
+                      autoComplete="off"
+                      className="border-2 border-[#B7B7B7] w-[500px] text-lg px-4 py-3 rounded-xl"
+                    />
                   </div>
                 </div>
                 <div className="flex justify-end px-30 pt-10 w-full">
