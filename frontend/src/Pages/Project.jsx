@@ -171,12 +171,12 @@ export default function Project() {
           </Link>
         </div>
       ) : (
-        <div className="px-[100px] py-20 ">
+        <div className="px-[120px] py-20 ">
           {loadingProject ? (
             <p>Loading...</p>
           ) : submittedProject ? (
-            <div className="flex gap-40">
-              <div className="w-[700px]">
+            <div className="flex gap-30">
+              <div className="w-[710px]">
                 {submittedProject?.videos?.map((video, index) => (
                   <video
                     key={index}
@@ -192,7 +192,7 @@ export default function Project() {
                   {submittedProject.projectDescription}
                 </div>
               </div>
-              <div className="">
+              <div className="pt-3">
                 <h3 className="font-bold text-3xl">Technologies Used</h3>
                 <div className="pt-3 flex flex-wrap">
                   {submittedProject.tech.map((t, index) => {
@@ -206,7 +206,7 @@ export default function Project() {
                     );
                   })}
                 </div>
-                <h3 className="font-bold text-3xl mt-16">Tags</h3>
+                <h3 className="font-bold text-3xl mt-12">Tags</h3>
                 <div className="pt-3 flex flex-wrap">
                   {submittedProject.tags.map((t, index) => {
                     return (

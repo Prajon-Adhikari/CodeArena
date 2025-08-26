@@ -15,8 +15,14 @@ const Navbar = () => {
     { to: "/myjoinedhackathon", label: "My hackathon" },
   ];
 
-  const navLinkClass =
-    "text-base font-medium hover:underline transition-colors duration-150 text-xl";
+  // ✅ Dynamic class with gradient sliding underline
+  const navLinkClass = (to) =>
+    `relative text-base font-medium transition-colors duration-150 text-xl pb-3 
+     ${pathname === to ? "text-blue-300" : "hover:text-blue-300"} 
+     after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[5px] 
+     after:bg-gradient-to-r after:from-blue-200 after:to-blue-500 
+     after:transition-all after:duration-500 after:rounded-full 
+     ${pathname === to ? "after:w-full" : "after:w-0 "}`;
 
   const authButtonClass =
     "px-4 py-2 rounded text-sm font-medium transition-all duration-200 bg-orange-500 text-white hover:bg-blue-600";
@@ -24,13 +30,16 @@ const Navbar = () => {
   useEffect(() => {
     const fetchLoggedInUser = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/home`, {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_API_BASE_URL}/home`,
+          {
+            method: "GET",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
         const data = await response.json();
         if (data?.user) {
           setUser(data.user);
@@ -53,7 +62,7 @@ const Navbar = () => {
         {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-14">
           {navLinks.map(({ to, label }) => (
-            <Link key={to} to={to} className={navLinkClass}>
+            <Link key={to} to={to} className={navLinkClass(to)}>
               {label}
             </Link>
           ))}
@@ -100,7 +109,7 @@ const Navbar = () => {
               key={to}
               to={to}
               onClick={() => setIsOpen(false)}
-              className={navLinkClass}
+              className={navLinkClass(to)}
             >
               {label}
             </Link>
