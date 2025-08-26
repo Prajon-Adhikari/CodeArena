@@ -14,7 +14,7 @@ export default function MyHostedHackathon() {
         <Link
           to="/myjoinedhackathon"
           className={`pb-2 ${
-            isJoinedActive ? "border-b-4 border-blue-600" : ""
+            isJoinedActive ? "border-b-4 border-blue-400" : ""
           }`}
         >
           Joined Hackathon
@@ -22,15 +22,13 @@ export default function MyHostedHackathon() {
         <Link
           to="/myhostedhackathon"
           className={`pb-2 ${
-            isHostedActive ? "border-b-4 border-blue-600" : ""
+            isHostedActive ? "border-b-4 border-blue-400" : ""
           }`}
         >
           Hosted Hackathon
         </Link>
       </div>
-      <div>
-        
-      </div>
+      <div></div>
     </div>
   );
 }
