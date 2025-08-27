@@ -1,59 +1,20 @@
 import mongoose from "mongoose";
 
-const hackathonSchema = new mongoose.Schema(
+const HackathonSchema = new mongoose.Schema(
   {
-    title: {
-      type: String,
-      required: true,
-    },
-    description: {
-      type: String,
-      required: true,
-    },
-    startDate: {
-      type: Date,
-      required: true,
-    },
-    endDate: {
-      type: Date,
-      required: true,
-    },
-    registrationDeadline: {
-      type: Date,
-      required: true,
-    },
-    location: {
-      type: String,
-      required: true,
-    },
-    mode: {
-      type: String,
-      enum: ["online", "offline", "hybrid"],
-      required: true,
-    },
-    organizer: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    prizeDetails: {
-      type: String,
-      required: true,
-    },
-    rules: {
-      type: String,
-    },
-    judgingCriteria: {
-      type: [String],
-      default: [],
-    },
-    bannerUrl: {
-      type: String,
-    },
+    title: { type: String, required: true },
+    description: { type: String },
+    organizerName: { type: String, required: true },
+    contactEmail: { type: String, required: true },
+    startDate: { type: Date },
+    endDate: { type: Date },
+    registrationDeadline: { type: Date },
+    mode: { type: String },
+    rules: { type: mongoose.Schema.Types.ObjectId, ref: "Rules" },
+    prizes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Prize" }],
+    judges: [{ type: mongoose.Schema.Types.ObjectId, ref: "Judge" }],
   },
   { timestamps: true }
 );
 
-const Hackathon = mongoose.model("Hackathon", hackathonSchema);
-
-export default Hackathon;
+export default mongoose.model("Hackathon", HackathonSchema);

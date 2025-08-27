@@ -2,45 +2,57 @@ import mongoose from "mongoose";
 import Hackathon from "../models/hackathon.model.js";
 import User from "../models/user.model.js";
 import JoinedHackathon from "../models/joinedHackathon.model.js";
+import Prize from "../models/prize.model.js";
+import Judge from "../models/judge.model.js";
+import Rules from "../models/rules.model.js";
 
 export const hackathon = async (req, res) => {
   const organizer = req.user._id;
   const {
     title,
     description,
+    organizerName,
+    contactEmail,
     startDate,
     endDate,
     registrationDeadline,
-    location,
     mode,
-    prizeDetails,
-    rules,
-    judgingCriteria,
-    bannerUrl,
+    rules: rulesData,
+    prizes: prizesData,
+    judges: judgesData,
   } = req.body;
+
   try {
+    const rules = await Rules.insertMany(rulesData);
+
+    // 1️⃣ Create Prize documents and get their IDs
+    const prizes = await Prize.insertMany(prizesData);
+
+    // 2️⃣ Create Judge documents and get their IDs
+    const judges = await Judge.insertMany(judgesData);
+
+    // 3️⃣ Create Hackathon with references
     const newHackathon = new Hackathon({
       title,
       description,
+      organizerName,
+      contactEmail,
       startDate,
       endDate,
       registrationDeadline,
-      location,
       mode,
+      rules: rules.map((r) => r._id),
+      prizes: prizes.map((p) => p._id),
+      judges: judges.map((j) => j._id),
       organizer,
-      prizeDetails,
-      rules,
-      judgingCriteria,
-      bannerUrl,
     });
+
     await newHackathon.save();
 
-    res.status(200).json({ message: "Successfully hackathon created" });
+    res.status(200).json({ message: "Hackathon created successfully" });
   } catch (error) {
-    console.log("Error on creating hackathon", error);
-    res
-      .status(500)
-      .json({ message: "Internal error while creating hackathon" });
+    console.error("Error creating hackathon:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
