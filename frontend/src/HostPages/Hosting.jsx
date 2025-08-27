@@ -5,7 +5,6 @@ import {
   faCalendar,
   faMapMarkerAlt,
   faLink,
-  faUser,
   faGift,
   faList,
   faClock,
@@ -14,6 +13,9 @@ import {
 import axios from "axios";
 
 export default function Hosting() {
+  const [step, setStep] = useState(1); // track which section we are on
+
+  // form states
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -21,7 +23,6 @@ export default function Hosting() {
   const [registrationDeadline, setRegistrationDeadline] = useState("");
   const [location, setLocation] = useState("");
   const [mode, setMode] = useState("");
-  const [organizer, setOrganizer] = useState("");
   const [prizeDetails, setPrizeDetails] = useState("");
   const [rules, setRules] = useState("");
   const [judgingCriteria, setJudgingCriteria] = useState("");
@@ -62,180 +63,160 @@ export default function Hosting() {
     }
   };
 
+  const nextStep = () => setStep((prev) => prev + 1);
+  const prevStep = () => setStep((prev) => prev - 1);
+
   return (
-    <div className="flex justify-center my-14  pt-[50px]">
-      <form className="space-y-7 w-[1000px]" onSubmit={handleSubmit}>
-        {/* Title Input */}
-        <div className="flex gap-[70px] w-full justify-center ">
-          <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
-            <FontAwesomeIcon icon={faList} className="mr-3" />
-            <input
-              type="text"
-              placeholder="Title"
-              value={title}
-              name="title"
-              onChange={(e) => setTitle(e.target.value)}
-              className="bg-transparent focus:outline-none w-[400px]"
-            />
+    <div className="flex justify-center my-14 pt-[50px] mt-20">
+      <form className="space-y-7 w-[800px]" onSubmit={handleSubmit}>
+        {/* STEP 1: BASIC INFO */}
+        {step === 1 && (
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold mb-4">Basic Information</h2>
+            <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
+              <FontAwesomeIcon icon={faList} className="mr-3" />
+              <input
+                type="text"
+                placeholder="Title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="bg-transparent focus:outline-none w-full"
+              />
+            </div>
+            <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
+              <textarea
+                placeholder="Description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className="bg-transparent focus:outline-none w-full"
+              />
+            </div>
+            <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
+              <FontAwesomeIcon icon={faCalendar} className="mr-3" />
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                className="bg-transparent focus:outline-none w-full"
+              />
+            </div>
+            <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
+              <FontAwesomeIcon icon={faCalendar} className="mr-3" />
+              <input
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                className="bg-transparent focus:outline-none w-full"
+              />
+            </div>
+            <div className="flex justify-between">
+              <div />
+              <button
+                type="button"
+                onClick={nextStep}
+                className="bg-purple-500 text-white py-2 px-4 rounded-lg"
+              >
+                Next
+              </button>
+            </div>
           </div>
-          {/* Prize Details Input */}
-          <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg relative">
-            <FontAwesomeIcon icon={faGift} className="mr-3" />
-            <input
-              type="text"
-              placeholder="Prize Details"
-              value={prizeDetails}
-              name="prizeDetails"
-              onChange={(e) => setPrizeDetails(e.target.value)}
-              className="bg-transparent focus:outline-none w-[400px]"
-            />
-          </div>
-        </div>
+        )}
 
-        {/* Start Date Input */}
-        <div className="flex gap-[70px] w-full justify-center ">
-          <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg relative">
-            <FontAwesomeIcon icon={faCalendar} className="mr-3" />
-            <input
-              type="date"
-              placeholder="Start Date"
-              value={startDate}
-              name="startDate"
-              onChange={(e) => setStartDate(e.target.value)}
-              className="bg-transparent focus:outline-none w-[400px]"
-            />
+        {/* STEP 2: RULES */}
+        {step === 2 && (
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold mb-4">Rules</h2>
+            <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
+              <textarea
+                placeholder="Rules"
+                value={rules}
+                onChange={(e) => setRules(e.target.value)}
+                className="bg-transparent focus:outline-none w-full"
+              />
+            </div>
+            <div className="flex justify-between">
+              <button
+                type="button"
+                onClick={prevStep}
+                className="bg-gray-400 text-white py-2 px-4 rounded-lg"
+              >
+                Back
+              </button>
+              <button
+                type="button"
+                onClick={nextStep}
+                className="bg-purple-500 text-white py-2 px-4 rounded-lg"
+              >
+                Next
+              </button>
+            </div>
           </div>
+        )}
 
-          {/* End Date Input */}
-          <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg relative">
-            <FontAwesomeIcon icon={faCalendar} className="mr-3" />
-            <input
-              type="date"
-              placeholder="End Date"
-              value={endDate}
-              name="endDate"
-              onChange={(e) => setEndDate(e.target.value)}
-              className="bg-transparent focus:outline-none w-[400px]"
-            />
+        {/* STEP 3: PRIZES */}
+        {step === 3 && (
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold mb-4">Prizes</h2>
+            <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
+              <FontAwesomeIcon icon={faGift} className="mr-3" />
+              <input
+                type="text"
+                placeholder="Prize Details"
+                value={prizeDetails}
+                onChange={(e) => setPrizeDetails(e.target.value)}
+                className="bg-transparent focus:outline-none w-full"
+              />
+            </div>
+            <div className="flex justify-between">
+              <button
+                type="button"
+                onClick={prevStep}
+                className="bg-gray-400 text-white py-2 px-4 rounded-lg"
+              >
+                Back
+              </button>
+              <button
+                type="button"
+                onClick={nextStep}
+                className="bg-purple-500 text-white py-2 px-4 rounded-lg"
+              >
+                Next
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
-        <div className="flex gap-[70px] w-full justify-center ">
-          {/* Registration Date Input */}
-          <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg relative">
-            <FontAwesomeIcon icon={faClock} className="mr-3" />
-            <input
-              type="date"
-              placeholder="Registration Date"
-              value={registrationDeadline}
-              name="registrationDeadline"
-              onChange={(e) => setRegistrationDeadline(e.target.value)}
-              className="bg-transparent focus:outline-none w-[400px]"
-            />
+        {/* STEP 4: JUDGES */}
+        {step === 4 && (
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold mb-4">Judges</h2>
+            <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
+              <FontAwesomeIcon icon={faList} className="mr-3" />
+              <input
+                type="text"
+                placeholder="Judging Criteria"
+                value={judgingCriteria}
+                onChange={(e) => setJudgingCriteria(e.target.value)}
+                className="bg-transparent focus:outline-none w-full"
+              />
+            </div>
+            <div className="flex justify-between">
+              <button
+                type="button"
+                onClick={prevStep}
+                className="bg-gray-400 text-white py-2 px-4 rounded-lg"
+              >
+                Back
+              </button>
+              <button
+                type="submit"
+                className="bg-green-500 text-white py-2 px-4 rounded-lg"
+              >
+                Submit
+              </button>
+            </div>
           </div>
-
-          {/* Location Input */}
-          <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg relative">
-            <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-3" />
-            <input
-              type="text"
-              placeholder="Location"
-              value={location}
-              name="location"
-              onChange={(e) => setLocation(e.target.value)}
-              className="bg-transparent focus:outline-none w-[400px]"
-            />
-          </div>
-        </div>
-
-        <div className="flex gap-[70px] w-full justify-center ">
-          {/* Mode Input */}
-          <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg relative">
-            <FontAwesomeIcon icon={faDesktop} className="mr-3" />
-            <select
-              value={mode}
-              name="mode"
-              onChange={(e) => setMode(e.target.value)}
-              className="bg-transparent focus:outline-none w-[400px]"
-            >
-              <option value="online">Online</option>
-              <option value="offline">Offline</option>
-              <option value="hybrid">Hybrid</option>
-            </select>
-          </div>
-
-          {/* Organizer Input */}
-          <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg relative">
-            <FontAwesomeIcon icon={faUser} className="mr-3" />
-            <input
-              type="text"
-              placeholder="Organizer"
-              value={organizer}
-              name="organizer"
-              onChange={(e) => setOrganizer(e.target.value)}
-              className="bg-transparent focus:outline-none w-[400px]"
-            />
-          </div>
-        </div>
-
-        <div className="flex gap-[70px] w-full justify-center ">
-          {/* Judging Criteria Input */}
-          <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg relative">
-            <FontAwesomeIcon icon={faList} className="mr-3" />
-            <input
-              type="text"
-              placeholder="Judging Criteria"
-              value={judgingCriteria}
-              name="judgingCriteria"
-              onChange={(e) => setJudgingCriteria(e.target.value)}
-              className="bg-transparent focus:outline-none w-[400px]"
-            />
-          </div>
-
-          {/* Banner URL Input */}
-          <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg relative">
-            <FontAwesomeIcon icon={faLink} className="mr-3" />
-            <input
-              type="url"
-              placeholder="Banner URL"
-              value={bannerUrl}
-              name="bannerUrl"
-              onChange={(e) => setBannerUrl(e.target.value)}
-              className="bg-transparent focus:outline-none w-[400px]"
-            />
-          </div>
-        </div>
-
-        <div className="flex gap-[70px] w-full justify-center ">
-          {/* Description Input */}
-          <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
-            <textarea
-              placeholder="Description"
-              value={description}
-              name="description"
-              onChange={(e) => setDescription(e.target.value)}
-              className="bg-transparent focus:outline-none w-[432px]"
-            />
-          </div>
-
-          {/* Rules Input */}
-          <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg relative">
-            <textarea
-              placeholder="Rules"
-              value={rules}
-              name="rules"
-              onChange={(e) => setRules(e.target.value)}
-              className="bg-transparent focus:outline-none w-[432px]"
-            />
-          </div>
-        </div>
-
-        <button
-          type="submit"
-          className="w-full bg-[#D69ADE] text-white font-semibold py-3 px-4 mt-5 rounded-lg text-lg hover:bg-purple-400 transition"
-        >
-          Create Event
-        </button>
+        )}
       </form>
     </div>
   );

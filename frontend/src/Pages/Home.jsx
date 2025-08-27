@@ -151,7 +151,7 @@ export default function home() {
       <div className="flex px-[100px] pt-[100px] pb-[80px] gap-20 items-center">
         <div className="w-[650px]">
           <h1
-            className="text-6xl pb-14 text-[#1E90FF]"
+            className="text-6xl pb-10 text-[#1E90FF]"
             style={{ WebkitTextStroke: "3px" }}
           >
             Unlock your potential with{" "}

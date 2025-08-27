@@ -4,6 +4,7 @@ import User from "../models/user.model.js";
 import JoinedHackathon from "../models/joinedHackathon.model.js";
 
 export const hackathon = async (req, res) => {
+  const organizer = req.user._id;
   const {
     title,
     description,
@@ -12,7 +13,6 @@ export const hackathon = async (req, res) => {
     registrationDeadline,
     location,
     mode,
-    organizer,
     prizeDetails,
     rules,
     judgingCriteria,
