@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import Hackathon from "../models/hackathon.model.js";
 import User from "../models/user.model.js";
 import JoinedHackathon from "../models/joinedHackathon.model.js";

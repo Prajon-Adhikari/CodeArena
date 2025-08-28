@@ -62,7 +62,6 @@ export default function Project() {
           }
         );
         const data = await response.json();
-        console.log(data.isRegistered);
         setIsRegistered(data.isRegistered);
         setHackathon(data.hackathon);
       } catch (error) {

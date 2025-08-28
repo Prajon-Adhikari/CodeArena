@@ -5,6 +5,7 @@ export default function Rules() {
   const { id } = useParams();
   const location = useLocation();
   const [hackathon, setHackathon] = useState("");
+  const [hackathonRules, setHackathonRules] = useState("");
 
   const tabs = [
     { path: "overview", label: "Overview" },
@@ -35,6 +36,30 @@ export default function Rules() {
     };
     fetchHackathonDetails();
   }, [id]);
+
+  useEffect(() => {
+    const fetchHackathonRules = async () => {
+      try {
+        console.log("hello");
+        const response = await fetch(
+          `${import.meta.env.VITE_API_BASE_URL}/home/${id}/rules`,
+          {
+            method: "GET",
+            headers: {
+              "Content-type": "application/json",
+            },
+            credentials: "include",
+          }
+        );
+        const data = await response.json();
+        console.log("heelo");
+        console.log(data.rules);
+      } catch (error) {
+        console.log("Error while fetching hackathon rules", error);
+      }
+    };
+    fetchHackathonRules();
+  }, [id]);
   return (
     <div className="pt-[60px]">
       <div>
@@ -60,6 +85,9 @@ export default function Rules() {
             </Link>
           ))}
         </div>
+      </div>
+      <div className="px-[150px] py-20 ">
+        <h2 className="text-3xl font-bold">Rules</h2>
       </div>
     </div>
   );
