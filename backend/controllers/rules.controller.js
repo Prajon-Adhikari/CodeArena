@@ -16,6 +16,7 @@ export const getRules = async (req, res) => {
 
     const hackathon = await Hackathon.findOne({
       _id: hackathonId,
+      organizerId: userId,
     });
 
     if (!hackathon) {

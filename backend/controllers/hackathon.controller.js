@@ -6,7 +6,7 @@ import Judge from "../models/judge.model.js";
 import Rules from "../models/rules.model.js";
 
 export const hackathon = async (req, res) => {
-  const organizer = req.user._id;
+  const organizerId = req.user._id;
   const {
     title,
     description,
@@ -15,6 +15,7 @@ export const hackathon = async (req, res) => {
     startDate,
     endDate,
     registrationDeadline,
+    themes,
     mode,
     rules: rulesData,
     prizes: prizesData,
@@ -35,15 +36,16 @@ export const hackathon = async (req, res) => {
       title,
       description,
       organizerName,
+      organizerId,
       contactEmail,
       startDate,
       endDate,
       registrationDeadline,
+      themes,
       mode,
       rules: rules.map((r) => r._id),
       prizes: prizes.map((p) => p._id),
       judges: judges.map((j) => j._id),
-      organizer,
     });
 
     await newHackathon.save();

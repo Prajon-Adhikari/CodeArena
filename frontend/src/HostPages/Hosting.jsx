@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
-import {
-  faCalendar,
-  faMapMarkerAlt,
-  faLink,
-  faGift,
-  faList,
-  faClock,
-  faDesktop,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCalendar, faList } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import CreatableSelect from "react-select/creatable";
+
+const themeOptions = [
+  { value: "ai-ml", label: "AI/ML" },
+  { value: "blockchain", label: "Blockchain" },
+  { value: "iot", label: "IoT" },
+  { value: "beginner", label: "Beginner Friendly" },
+  { value: "fintech", label: "FinTech" },
+];
 
 export default function Hosting() {
   const [step, setStep] = useState(1); // track which section we are on
@@ -24,6 +25,7 @@ export default function Hosting() {
   const [mode, setMode] = useState("");
   const [organizerName, setOrganizerName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
+  const [selectedThemes, setSelectedThemes] = useState([]);
   const [rules, setRules] = useState({
     eligibility: "",
     teamFormation: "",
@@ -97,6 +99,7 @@ export default function Hosting() {
           rules,
           prizes,
           judges,
+          themes: selectedThemes.map((theme) => theme.value),
         },
         {
           headers: {
@@ -213,6 +216,58 @@ export default function Hosting() {
                   className="bg-transparent focus:outline-none w-full"
                 />
               </div>
+            </div>
+            <div className="flex flex-col ">
+              <label
+                htmlFor="themes"
+                className="font-semibold text-xl pl-2 pb-1"
+              >
+                Themes
+              </label>
+              <CreatableSelect
+                isMulti
+                name="themes"
+                options={themeOptions}
+                value={selectedThemes}
+                onChange={setSelectedThemes}
+                placeholder="Select or create themes..."
+                className="text-[18px]"
+                styles={{
+                  control: (base) => ({
+                    ...base,
+                    borderWidth: "2px",
+                    borderRadius: "12px",
+                    borderColor: "#000000",
+                    padding: "7px 6px",
+                    boxShadow: "none",
+                    "&:hover": { borderColor: "#6B7280" },
+                  }),
+                  multiValue: (base) => ({
+                    ...base,
+                    borderWidth: "2px",
+                    borderRadius: "9999px",
+                    borderColor: "#000000",
+                    backgroundColor: "#FFFFFF",
+                    padding: "1px 8px",
+                    "&:hover": { backgroundColor: "#EEEEEE" },
+                  }),
+                  multiValueLabel: (base) => ({
+                    ...base,
+                    color: "#000000",
+                    fontWeight: "500",
+                  }),
+                  multiValueRemove: (base) => ({
+                    ...base,
+                    borderRadius: "9999px",
+                    color: "black",
+                    "&:hover": {
+                      backgroundColor: "#EEEEEE",
+                      cursor: "pointer",
+                      color: "#000000",
+                    },
+                  }),
+                }}
+              />
             </div>
             <div>
               <h1 className="text-xl font-semibold pl-2 pb-1">Mode</h1>
