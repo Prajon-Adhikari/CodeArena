@@ -29,6 +29,37 @@ export const getMyJoinedHackathon = async (req, res) => {
   }
 };
 
+export const getHostedHackathon = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    if (!userId) {
+      return res.status(400).json({ message: "User Id not found" });
+    }
+
+    const hostedHackathons = await Hackathon.find({
+      organizerId: userId,
+    });
+
+    if (!hostedHackathons || hostedHackathons.length === 0) {
+      return res
+        .status(400)
+        .json({ message: "You haven't hosted any hackathons" });
+    }
+
+    const hackathonsIds = hostedHackathons.map((record) => record._id);
+
+    const hackathons = await Hackathon.find({ _id: { $in: hackathonsIds } });
+
+    res.status(200).json({ message: "Fetching hosted hackathons", hackathons });
+  } catch (error) {
+    console.log("Internal error while fetching hosted hackthons", error);
+    res
+      .status(500)
+      .json({ message: "Internal error while fetching hosted hackathons" });
+  }
+};
+
 export const deleteAlreadyJoinedHackathon = async (req, res) => {
   try {
     const userId = req.user._id;
