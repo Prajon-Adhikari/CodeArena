@@ -18,6 +18,7 @@ import {
 } from "../controllers/submittedProject.controller.js";
 import { getRules } from "../controllers/rules.controller.js";
 import upload from "../middlewares/video.js";
+import { getPrizeDetails } from "../controllers/prize.controller.js";
 
 const router = express.Router();
 
@@ -36,6 +37,8 @@ router.get("/:id", protectRoute, getSpecificHackathonDetails);
 router.get("/:id/myproject", protectRoute, getSubmittedProject);
 
 router.get("/:id/rules", protectRoute, getRules);
+
+router.get("/:id/prizes", protectRoute, getPrizeDetails);
 
 router.post("/:id/overview", protectRoute, joinedHackathon);
 
