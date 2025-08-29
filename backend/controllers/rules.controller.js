@@ -14,7 +14,7 @@ export const getRules = async (req, res) => {
       return res.status(400).json({ message: "Hackathon Id not found" });
     }
 
-    const hackathon = await Hackathon.findOne({
+    const hackathon = await Hackathon.findById({
       _id: hackathonId,
       organizerId: userId,
     });
@@ -25,7 +25,7 @@ export const getRules = async (req, res) => {
 
     const rulesId = hackathon.rules;
 
-    const rules = await Rules.findOne(rulesId);
+    const rules = await Rules.findById({ _id: rulesId });
 
     if (!rules) {
       return res.status(400).json({ message: "Rules not found" });

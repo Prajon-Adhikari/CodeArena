@@ -12,7 +12,7 @@ export default function Rules() {
   const { id } = useParams();
   const location = useLocation();
   const [hackathon, setHackathon] = useState("");
-  const [hackathonRules, setHackathonRules] = useState("");
+  const [hackathonRules, setHackathonRules] = useState({});
 
   const tabs = [
     { path: "overview", label: "Overview" },
@@ -103,7 +103,7 @@ export default function Rules() {
             Rules
           </h2>
 
-          {hackathonRules.eligibility && (
+          {hackathonRules?.eligibility && (
             <div style={ruleStyle}>
               <h3 className="text-2xl font-bold pb-2">Eligibility</h3>
               {hackathonRules.eligibility.split("\n").map((line, index) => (
@@ -113,8 +113,7 @@ export default function Rules() {
               ))}
             </div>
           )}
-
-          {hackathonRules.teamFormation && (
+          {hackathonRules?.teamFormation && (
             <div style={ruleStyle}>
               <h3 className="text-2xl font-bold pb-2 pt-6">Team Formation</h3>
               {hackathonRules.teamFormation.split("\n").map((line, index) => (
@@ -125,7 +124,7 @@ export default function Rules() {
             </div>
           )}
 
-          {hackathonRules.submissionRequirements && (
+          {hackathonRules?.submissionRequirements && (
             <div style={ruleStyle}>
               <h3 className="text-2xl font-bold pb-2 pt-6">
                 Submission Requirements
@@ -140,7 +139,7 @@ export default function Rules() {
             </div>
           )}
 
-          {hackathonRules.codeOfConduct && (
+          {hackathonRules?.codeOfConduct && (
             <div style={ruleStyle}>
               <h3 className="text-2xl font-bold pb-2 pt-6">Code of Conduct</h3>
               {hackathonRules.codeOfConduct.split("\n").map((line, index) => (
@@ -151,7 +150,7 @@ export default function Rules() {
             </div>
           )}
 
-          {hackathonRules.prohibited && (
+          {hackathonRules?.prohibited && (
             <div style={ruleStyle}>
               <h3 className="text-2xl font-bold pb-2 pt-6">Prohibited</h3>
               {hackathonRules.prohibited.split("\n").map((line, index) => (
@@ -162,7 +161,7 @@ export default function Rules() {
             </div>
           )}
 
-          {hackathonRules.disqualification && (
+          {hackathonRules?.disqualification && (
             <div style={ruleStyle}>
               <h3 className="text-2xl font-bold pb-2 pt-6">Disqualification</h3>
               {hackathonRules.disqualification

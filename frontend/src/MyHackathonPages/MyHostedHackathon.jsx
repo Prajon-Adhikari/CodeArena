@@ -63,9 +63,9 @@ export default function MyJoinedHackathon() {
             <div className="text-5xl pb-10 font-bold text-gray-700">
               You haven't hosted any hackathons yet.
             </div>
-            <Link to="/join/hackathon">
+            <Link to="/hackathon">
               <button className="bg-blue-400 text-white px-8 py-3 text-2xl rounded-md cursor-pointer">
-                Join Hackathon Now
+                Host Hackathon Now
               </button>
             </Link>
           </div>
