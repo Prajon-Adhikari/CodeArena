@@ -32,50 +32,55 @@ const Footer = () => {
           <h4 className="font-bold text-xl mb-2">CodeArena</h4>
           <ul className="space-y-1">
             <li>
+              <Link to="/" className="hover:underline">
+                <span className="pr-1 text-yellow-500">&gt;</span> Home
+              </Link>
+            </li>
+            <li>
               <Link to="/about" className="hover:underline">
-                About
+                <span className="pr-1 text-yellow-500">&gt;</span> About
               </Link>
             </li>
             <li>
               <Link to="/blog" className="hover:underline">
-                Blogs
+                <span className="pr-1 text-yellow-500">&gt;</span> Blogs
               </Link>
             </li>
             <li>
               <Link to="" className="hover:underline">
-                Press
+                <span className="pr-1 text-yellow-500">&gt;</span> Press
               </Link>
             </li>
             <li>
               <Link to="/contact" className="hover:underline">
-                Contact
+                <span className="pr-1 text-yellow-500">&gt;</span> Contact
               </Link>
             </li>
             <li>
               <Link to="" className="hover:underline">
-                Help
+                <span className="pr-1 text-yellow-500">&gt;</span> Help
               </Link>
             </li>
           </ul>
         </div>
 
         <div>
-          <h4 className="font-bold text-xl mb-2">Hackathons</h4>
+          <h4 className="font-bold text-xl mb-2">Hackathon Links</h4>
           <ul className="space-y-1">
             <li>
               <Link to="join/hackathon" className="hover:underline">
-                Browse hackathons
+                <span className="pr-1 text-yellow-500">&gt;</span> Join hackathon
               </Link>
             </li>
     
             <li>
               <Link to="hackathon" className="hover:underline">
-                Host a hackathon
+                <span className="pr-1 text-yellow-500">&gt;</span> Host  hackathon
               </Link>
             </li>
             <li>
               <Link to="" className="hover:underline">
-                Hackathon guides
+                <span className="pr-1 text-yellow-500">&gt;</span> My Hackathon
               </Link>
             </li>
           </ul>
