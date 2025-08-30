@@ -6,6 +6,10 @@ import aboutUsHeroImage from "../assets/aboutusheroimage.jpg";
 import aboutUsHeroImage2 from "../assets/aboutusheroimage2.jpg";
 import aboutUsCoding1 from "../assets/aboutuscoding1.jpg";
 import aboutUsCoding2 from "../assets/aboutuscoding2.jpg";
+import reward from "../assets/reward.jpg";
+import growth from "../assets/growrh.jpg";
+import collaboration from "../assets/collaboration.jpg";
+
 const About = () => {
   return (
     <>
@@ -48,7 +52,8 @@ const About = () => {
             </div>
           </div>
         </div>
-        <div className="px-[140px] flex gap-20 items-center pt-30 pb-24 h-[700px]">
+        <div className="px-[140px] flex gap-20 items-center py-24 h-[700px]">
+          
           <div className="w-[600px]">
             <div>
               <div className="text-5xl text-orange-400 font-bold">
@@ -150,7 +155,7 @@ const About = () => {
             }}
           >
             {/* Gray overlay */}
-            <div className="absolute inset-0 bg-black opacity-40"></div>
+            <div className="absolute inset-0 bg-black opacity-50"></div>
 
             {/* Content (stays above overlay) */}
             <div className="relative flex justify-center items-center h-full text-center">
@@ -169,6 +174,77 @@ const About = () => {
                       Explore Now &rarr;
                     </button>
                   </Link>{" "}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="px-[150px] py-10">
+          <h1 className="text-center text-5xl font-bold">Powerful Features to Enhance</h1>
+          <p className="text-center font-bold text-5xl pb-16 text-orange-400">Your Hackathon</p>
+          <div className="flex gap-5 pb-5 text-white">
+            {/* Card 1 */}
+            <div
+              className="relative group w-[820px] h-[280px] rounded-xl cursor-pointer bg-cover bg-center overflow-hidden"
+              style={{ backgroundImage: `url(${collaboration})` }}
+            >
+              {/* Overlay background that grows on hover */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/100 via-black/70 to-transparent translate-y-[60%] group-hover:translate-y-0 transition-all duration-500"></div>
+
+              {/* Text container sliding up */}
+              <div className="absolute bottom-3 left-0 w-full p-5 transform translate-y-[60%] group-hover:translate-y-0 transition-all duration-500">
+                <h2 className="font-bold text-xl">Community & Collaboration</h2>
+                <p className="text-sm mt-2 w-[500px]">
+                  Form teams, chat with peers, and collaborate in real-time. Message with team and collaborate globally
+                </p>
+              </div>
+            </div>
+
+            {/* Card 2 */}
+            <div
+              className="relative group w-[380px] h-[280px] rounded-xl cursor-pointer bg-cover bg-center overflow-hidden"
+              style={{ backgroundImage: `url(${reward})` }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-t from-black/100 via-black/70  to-transparent translate-y-[60%] group-hover:translate-y-0 transition-all duration-500"></div>
+
+              <div className="absolute bottom-3 left-0 w-full p-5 transform translate-y-[60%] group-hover:translate-y-0 transition-all duration-500">
+                <h2 className="font-bold text-xl">Engagement & Rewards</h2>
+                <p className="text-sm mt-2">
+                  Earn badges, prizes, and showcase your achievements.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex gap-5 pb-5 text-white">
+            {/* Card 3 */}
+            <div
+              className="relative group w-[380px] h-[280px] rounded-xl cursor-pointer bg-cover bg-center overflow-hidden"
+              style={{ backgroundImage: `url(${growth})` }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-t from-black/100 via-black/70 to-transparent translate-y-[60%] group-hover:translate-y-0 transition-all duration-500"></div>
+
+              <div className="absolute bottom-3 left-0 w-full p-5 transform translate-y-[60%] group-hover:translate-y-0 transition-all duration-500">
+                <h2 className="font-bold text-xl">Career Growth</h2>
+                <p className="text-sm mt-2">
+                  Get discovered by recruiters and add projects to your
+                  portfolio.
+                </p>
+              </div>
+            </div>
+
+            {/* Card 4 */}
+            <div
+              className="relative group w-[820px] h-[280px] rounded-xl cursor-pointer bg-cover bg-center overflow-hidden"
+              style={{ backgroundImage: `url(${aboutUsHeroImage2})` }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-t from-black/100 via-black/70 to-transparent translate-y-[60%] group-hover:translate-y-0 transition-all duration-500"></div>
+
+              <div className="absolute bottom-5 left-0 w-full p-5 transform translate-y-[60%] group-hover:translate-y-0 transition-all duration-500">
+                <h2 className="font-bold text-xl">Hackathon Ecosystem</h2>
+                <p className="text-sm mt-2 w-[500px]">
+                  Join global hackathons with multiple tracks and real-time
+                  judging.
                 </p>
               </div>
             </div>
