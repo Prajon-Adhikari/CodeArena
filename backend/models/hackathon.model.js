@@ -12,6 +12,7 @@ const HackathonSchema = new mongoose.Schema(
     registrationDeadline: { type: Date },
     themes: { type: [String], required: true },
     mode: { type: String },
+    bannerUrl: {type: String},
     rules: { type: mongoose.Schema.Types.ObjectId, ref: "Rules" },
     prizes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Prize" }],
     judges: [{ type: mongoose.Schema.Types.ObjectId, ref: "Judge" }],

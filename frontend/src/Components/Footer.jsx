@@ -1,12 +1,35 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFacebook, faXTwitter, faWhatsapp, faInstagram
+} from "@fortawesome/free-brands-svg-icons";
+import { faEnvelope, faPhone, faLocation } from "@fortawesome/free-solid-svg-icons";
 
 const Footer = () => {
   return (
-    <footer className="bg-white border-t mt-10">
-      <div className="max-w-6xl mx-auto pl-[120px] px-6 py-10 grid grid-cols-2 sm:grid-cols-4 gap-8 text-sm text-gray-700">
+    <footer className="bg-[#065084] mt-10 px-[120px]">
+      <div className=" px-10 pb-12 pt-16 flex justify-between text-sm text-white">
+        <div className="w-[300px]">
+           <h1 className="font-bold text-3xl pb-3 ">CODEARENA</h1>
+           <p> Maxime quaerat asperiores ab cumque labore eveniet facilis ducimus nemo autem aperiam. labore eveniet facilis ducimus nemo autem aperiam.</p>
+           <div className="pt-5 flex gap-5 items-center">
+              <span className="bg-yellow-500 px-2 pt-2 pb-1 rounded-full">
+                <FontAwesomeIcon icon={faFacebook} className="text-lg text-white"/>
+              </span>
+              <div className="bg-yellow-500 px-2 pt-2 pb-1 rounded-full">
+                <FontAwesomeIcon icon={faXTwitter} className="text-lg text-white"/>
+              </div>
+              <div className="bg-yellow-500 px-[9px] pt-2 pb-1 rounded-full">
+                <FontAwesomeIcon icon={faWhatsapp} className="text-lg text-white"/>
+              </div>
+              <div className="bg-yellow-500 px-[9px] pt-2 pb-1 rounded-full">
+                <FontAwesomeIcon icon={faInstagram} className="text-lg text-white"/>
+              </div>
+           </div>
+        </div>
         <div>
-          <h4 className="font-bold mb-2">CodeArena</h4>
+          <h4 className="font-bold text-xl mb-2">CodeArena</h4>
           <ul className="space-y-1">
             <li>
               <Link to="/about" className="hover:underline">
@@ -37,7 +60,7 @@ const Footer = () => {
         </div>
 
         <div>
-          <h4 className="font-bold mb-2">Hackathons</h4>
+          <h4 className="font-bold text-xl mb-2">Hackathons</h4>
           <ul className="space-y-1">
             <li>
               <Link to="join/hackathon" className="hover:underline">
@@ -57,56 +80,28 @@ const Footer = () => {
             </li>
           </ul>
         </div>
-
         <div>
-          <h4 className="font-bold mb-2">Portfolio</h4>
+          <h4 className="font-bold text-xl mb-2">Information</h4>
           <ul className="space-y-1">
             <li>
-              <a href="#" className="hover:underline">
-                Your projects
-              </a>
+              <FontAwesomeIcon icon={faPhone} className="text-yellow-500 pr-2" /> +977-9862783319
             </li>
+    
             <li>
-              <a href="myhostedhackathon" className="hover:underline">
-                Your hackathons
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:underline">
-                Settings
-              </a>
-            </li>
-          </ul>
-        </div>
+              <FontAwesomeIcon icon={faEnvelope} className="text-yellow-500 pr-2"/> codearena@gmail.com
 
-        <div>
-          <h4 className="font-bold mb-2">Connect</h4>
-          <ul className="space-y-1">
-            <li>
-              <a href="#" className="hover:underline">
-                Twitter
-              </a>
             </li>
             <li>
-              <a href="#" className="hover:underline">
-                LinkedIn
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:underline">
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:underline">
-                Facebook
-              </a>
+              <FontAwesomeIcon icon={faLocation} className="text-yellow-500 pr-2"/> Bharatpur-6, Chitwan
             </li>
           </ul>
+          <h4 className="font-bold text-xl mb-2 pt-5">Opening Hours</h4>
+              <div>Sunday-Friday ( 8:00 to 18:00 )</div>
+              <div>Saturday ( Closed )</div>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-6 border-t flex flex-col md:flex-row justify-between text-xs text-gray-500">
+      <div className=" px-10 py-6 border-t flex flex-col md:flex-row justify-between text-xs text-white">
         <p>© 2025 Code Arena, Inc. All rights reserved.</p>
         <div className="flex flex-wrap gap-4 mt-2 md:mt-0">
           <Link to="" className="hover:underline">

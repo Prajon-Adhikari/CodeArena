@@ -104,7 +104,7 @@ export default function Judges() {
                   ) : (
                     <FontAwesomeIcon
                       icon={faUser}
-                      className="text-5xl bg-gray-300 px-7 py-[24px] rounded-full"
+                      className="text-5xl bg-gray-400 text-white px-7 py-[24px] rounded-full"
                     />
                   )}
                   <div>
@@ -112,7 +112,7 @@ export default function Judges() {
                       {judge.name}
                     </div>
 
-                    <div className="text-lg pb-2 line-clamp-2 overflow-hidden break-words">
+                    <div className="text-lg pb-1.5 line-clamp-2 overflow-hidden break-words">
                       {judge.bio}
                     </div>
                     <div className="text-gray-700 pb-2 italic">
