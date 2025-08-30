@@ -352,7 +352,7 @@ export default function home() {
         </div>
       </div>
 
-      <div className="  h-[690px] my-30 px-[100px] py-[70px]  flex gap-30 bg-[#4DA1A9] text-white">
+      <div className="  h-[690px] my-30 px-[100px] py-[70px]  flex gap-30 bg-[#29597b] text-white">
         <div className="w-[600px] relative">
           <img
             src={coding1}

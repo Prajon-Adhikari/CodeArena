@@ -8,7 +8,7 @@ import { faEnvelope, faPhone, faLocation } from "@fortawesome/free-solid-svg-ico
 
 const Footer = () => {
   return (
-    <footer className="bg-[#065084] mt-10 px-[120px]">
+    <footer className="bg-[#0b395a] mt-10 px-[120px]">
       <div className=" px-10 pb-12 pt-16 flex justify-between text-sm text-white">
         <div className="w-[300px]">
            <h1 className="font-bold text-3xl pb-3 ">CODEARENA</h1>

@@ -1,101 +1,116 @@
-import React from 'react'
-import meeting3 from "../assets/meeting3.jpg";
-import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import React from "react";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import aboutUsHeroImage from "../assets/aboutusheroimage.jpg";
+import aboutUsCoding1 from "../assets/aboutuscoding1.jpg";
+import aboutUsCoding2 from "../assets/aboutuscoding2.jpg";
 const About = () => {
   return (
     <>
-      <div>
-        <h1 className="text-3xl font-bold text-center mt-10">About Us</h1>
-        <p className="text-lg text-center mt-4 max-w-2xl mx-auto">
-          Welcome to CodeArena, where innovation meets collaboration! We are a vibrant community of developers, designers, and tech enthusiasts dedicated to pushing the boundaries of creativity and technology. Our mission is to empower individuals and teams to turn their ideas into reality through hackathons, workshops, and collaborative projects. Join us on this exciting journey as we explore the limitless possibilities of code and creativity!
-        </p>
-
-
-  <div className="flex flex-col lg:flex-row items-center py-14 bg-[rgb(242,233,245)] gap-[100px] lg:gap-[200px] px-6 md:px-20 my-[100px]">
-        <img
-          src={meeting3}
-          alt="Meeting"
-          className="w-full lg:w-[440px] h-[400px] md:h-[600px] object-cover rounded-tr-[40px] rounded-bl-[40px] rounded-br-[40px] shadow-xl"
-        />
-        <div className="w-full">
-          <h4 className="text-blue-400 underline text-xl md:text-2xl mb-4 font-semibold">
-            ABOUT US
-          </h4>
-          <h2 className="text-2xl md:text-4xl font-bold mb-4">
-            Building More Business Competition
-          </h2>
-          <p className="text-base md:text-lg mb-6">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero
-            eligendi odio cupiditate, minus consectetur provident placeat, atque
-            magni libero culpa unde reprehenderit molestias vel repellat? Dolor
-            nulla quia eveniet quod.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 text-base md:text-lg">
-            {[...Array(2)].map((_, i) => (
-              <div key={i} className="flex items-center gap-3">
-                <FontAwesomeIcon
-                  icon={faCheckCircle}
-                  className="text-[#D69ADE]"
-                />
-                <p>Technology Services</p>
-              </div>
-            ))}
-          </div>
-          <div className="flex flex-col sm:flex-row gap-4 mb-6">
-            <div className="flex items-center border border-dotted border-black p-4 gap-4 w-full sm:w-[260px]">
-              <p className="text-2xl md:text-3xl font-bold">
-                10<sup>+</sup>
+      <div className="pt-[80px]">
+        <div
+          className="h-[600px] bg-gray-300"
+          style={{
+            clipPath: "polygon(0% 0%, 100% 0%, 100% 85%, 70% 100%, 0% 87.5%)",
+          }}
+        >
+          <div
+            className="bg-cover bg-center h-[520px] flex items-center px-[150px] text-white"
+            style={{
+              backgroundImage: `url(${aboutUsHeroImage})`,
+              clipPath:
+                "polygon(0% 0%, 100% 0%, 100% 90%, 70% 100%, 40% 90%, 0% 100%)",
+            }}
+          >
+            <div className="w-[500px]">
+              <p className="text-4xl underline font-bold pb-5 text-orange-300">
+                About Us
               </p>
-              <p className="text-sm md:text-lg font-medium">
-                Years of Experience
+              <p className="text-6xl pb-4">
+                Unleashing Potential, Building the Future of Tech
               </p>
-            </div>
-            <div className="flex items-center border border-dotted border-black p-4 gap-4 w-full sm:w-[260px]">
-              <p className="text-2xl md:text-3xl font-bold">
-                70<sup>k</sup>
+              <p className="text-gray-400 pb-5">
+                We believe that coding is more than just writing lines of
+                code—it's about creating, learning, and growing together. Join
+                us in shaping a better tomorrow through technology.
               </p>
-              <p className="text-sm md:text-lg font-medium">
-                Individual Customers
+              <p>
+                <Link to="/" className="pr-2 ">
+                  Home
+                </Link>{" "}
+                <span className="text-orange-300">&rarr;</span>{" "}
+                <Link to="/about" className="pl-2 text-orange-300">
+                  About
+                </Link>
               </p>
             </div>
           </div>
-          <button className="cursor-pointer bg-gradient-to-r from-[#D69ADE] to-[#AA60C8] text-white py-2 px-6 rounded-lg text-base md:text-lg">
-            Learn More &rarr;
-          </button>
+        </div>
+        <div className="px-[140px] flex gap-20 items-center py-30 h-[700px]">
+          <div className="w-[600px]">
+            <div>
+              <div className="text-5xl text-orange-400 font-bold">Providing full range </div>
+              <span className="text-5xl text-blue-300 font-bold">of transportation</span>
+            </div>
+            <div className="pt-8 text-xl pb-16">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci
+              quod consequatur temporibus provident numquam labore dolorem
+              laborum tempore distinctio autem, nobis architecto, sunt culpa
+              voluptatem?
+            </div>
+            <button className="bg-orange-400 text-white px-8 py-2 text-lg rounded-md">Learn More &rarr;</button>
+          </div>
+          <div className="relative w-[50%] h-full">
+            <img src={aboutUsCoding1} alt="" className="w-[400px] h-[300px] object-cover rounded-xl absolute left-0 top-0"/>
+            <img src={aboutUsCoding2} alt=""  className="w-[300px] h-[200px] object-cover rounded-xl absolute bottom-10 right-0" />
+            <div className="shadow-[0px_0px_5px_#7F8CAA] inline-block p-4 rounded-md  absolute top-65 right-62 bg-white">
+              <p className="text-orange-400 text-center text-3xl font-bold">20 +</p>
+              <p>Year Experience</p>
+            </div>
+          </div>
+        </div>
+        <div
+          className="py-20 bg-gray-300"
+          style={{
+            clipPath:
+              "polygon(0% 10%, 40% 0%, 100% 10%, 100% 10%, 100% 94%, 75% 88%, 0% 90%)",
+          }}
+        >
+          <div
+            className="bg-cover bg-center h-[580px] flex items-center px-[150px] text-white"
+            style={{
+              backgroundImage: `url(${aboutUsHeroImage})`,
+              clipPath:
+                "polygon(0% 5%, 40% 0%, 70% 5%, 100% 0%, 100% 100%, 75% 90%, 0% 100%)",
+            }}
+          >
+            <div className="w-[500px]">
+              <p className="text-4xl underline font-bold pb-5 text-orange-300">
+                About Us
+              </p>
+              <p className="text-6xl pb-4">
+                Unleashing Potential, Building the Future of Tech
+              </p>
+              <p className="text-gray-400 pb-5">
+                We believe that coding is more than just writing lines of
+                code—it's about creating, learning, and growing together. Join
+                us in shaping a better tomorrow through technology.
+              </p>
+              <p>
+                <Link to="/" className="pr-2 ">
+                  Home
+                </Link>{" "}
+                <span className="text-orange-300">&rarr;</span>{" "}
+                <Link to="/about" className="pl-2 text-orange-300">
+                  About
+                </Link>
+              </p>
+            </div>
+          </div>
         </div>
       </div>
-
-              <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-20 px-6 md:px-20 my-[100px]">
-          <div className="w-full lg:w-1/2">
-            <h2 className="text-2xl font-semibold mb-4">Our Mission</h2>
-            <p className="text-lg">
-              At CodeArena, our mission is to foster a culture of innovation and collaboration. We believe that by bringing together diverse minds, we can create solutions that make a difference in the world. Whether you're a seasoned developer or just starting your journey, we provide the resources and support you need to succeed.
-            </p>
-          </div>
-          <div className="w-full lg:w-1/2">
-            <h2 className="text-2xl font-semibold mb-4">Join Us</h2>
-            <p className="text-lg">
-              Ready to take your skills to the next level? Join us for our upcoming hackathons and workshops! Connect with like-minded individuals, learn from industry experts, and showcase your talents. Together, we can build amazing things!
-            </p>
-          </div>        
-      </div>
-
-      </div>
-        <div className="flex justify-center mt-10 mb-20">
-            <button className="bg-gradient-to-r from-[#D69ADE] to-[#AA60C8] text-white py-2 px-6 rounded-lg text-base md:text-lg">
-            Get Started &rarr;
-            </button>
-            </div>
-            <div>
-            <h2 className="text-2xl font-semibold mb-4 text-center">Our Values</h2>
-            <p className="text-lg text-center max-w-2xl mx-auto mb-10">
-              We value creativity, collaboration, and continuous learning. Our community is built on the principles of respect, inclusivity, and support. We believe that everyone has something valuable to contribute, and we encourage open communication and knowledge sharing.
-              </p>
-           </div>
     </>
   );
-}
+};
 
 export default About;
