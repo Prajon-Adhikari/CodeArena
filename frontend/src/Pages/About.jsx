@@ -1,7 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGlobe } from "@fortawesome/free-solid-svg-icons";
+import {
+  faGlobe,
+  faLightbulb,
+  faUsers,
+  faBullseye,
+} from "@fortawesome/free-solid-svg-icons";
 import aboutUsHeroImage from "../assets/aboutusheroimage.jpg";
 import aboutUsHeroImage2 from "../assets/aboutusheroimage2.jpg";
 import aboutUsCoding1 from "../assets/aboutuscoding1.jpg";
@@ -9,6 +14,9 @@ import aboutUsCoding2 from "../assets/aboutuscoding2.jpg";
 import reward from "../assets/reward.jpg";
 import growth from "../assets/growrh.jpg";
 import collaboration from "../assets/collaboration.jpg";
+import hackathon3 from "../assets/hackathon3.jpg";
+import chatting from "../assets/chatting.jpg";
+import innovation from "../assets/innovation.jpg";
 
 const About = () => {
   return (
@@ -53,7 +61,6 @@ const About = () => {
           </div>
         </div>
         <div className="px-[140px] flex gap-20 items-center py-24 h-[700px]">
-          
           <div className="w-[600px]">
             <div>
               <div className="text-5xl text-orange-400 font-bold">
@@ -72,7 +79,7 @@ const About = () => {
               quod consequatur temporibus provident numquam labore dolorem
               laborum tempore distinctio autem
             </div>
-            <button className="bg-orange-400 text-white px-8 py-2 text-lg rounded-md">
+            <button className="bg-orange-400 text-white px-8 py-2 cursor-pointer text-lg rounded-md">
               Learn More &rarr;
             </button>
           </div>
@@ -85,7 +92,7 @@ const About = () => {
             <img
               src={aboutUsCoding2}
               alt=""
-              className="w-[300px] h-[200px] object-cover rounded-xl absolute bottom-10 right-0"
+              className="w-[300px] h-[200px] object-cover rounded-xl absolute bottom-15 right-0"
             />
             <div className="shadow-[0px_0px_5px_#7F8CAA] inline-block p-4 rounded-md  absolute top-65 right-62 bg-white">
               <p className="text-orange-400 text-center text-3xl font-bold">
@@ -96,49 +103,64 @@ const About = () => {
           </div>
         </div>
         <div className="px-[140px] pb-20 flex justify-between">
-          <div className="w-[400px] shadow-[0px_0px_5px_#7F8CAA] py-4 px-8 rounded-lg">
-            <FontAwesomeIcon
-              icon={faGlobe}
-              className="text-orange-400 text-3xl pb-2"
-            />
-            <h4 className="text-2xl text-slate-600 font-bold pb-2">
-              Experiece & Expertise
-            </h4>
-            <p className="text-gray-700">
-              {" "}
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolores
-              nam explicabo placeat.
-            </p>
+          {/* Card 1 */}
+          <div className="relative w-[400px] overflow-hidden bg-white shadow-[0px_0px_5px_#7F8CAA] py-4 px-8 rounded-lg group cursor-pointer">
+            {/* Sliding background */}
+            <div className="absolute inset-0 w-0 bg-[#113F67] group-hover:w-full transition-all duration-500 ease-in-out"></div>
+
+            {/* Content */}
+            <div className="relative z-10">
+              <FontAwesomeIcon
+                icon={faGlobe}
+                className="text-orange-400 text-3xl pb-2 group-hover:text-white transition-colors duration-500"
+              />
+              <h4 className="text-2xl text-slate-600 font-bold pb-2 group-hover:text-white transition-colors duration-500">
+                Experience & Expertise
+              </h4>
+              <p className="text-gray-700 group-hover:text-white transition-colors duration-500">
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                Dolores nam explicabo placeat.
+              </p>
+            </div>
           </div>
-          <div className="w-[400px] shadow-[0px_0px_5px_#7F8CAA] py-4 px-8 rounded-lg">
-            <FontAwesomeIcon
-              icon={faGlobe}
-              className="text-orange-400 text-3xl pb-2"
-            />
-            <h4 className="text-2xl text-slate-600 font-bold pb-2">
-              Experiece & Expertise
-            </h4>
-            <p className="text-gray-700">
-              {" "}
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolores
-              nam explicabo placeat.
-            </p>
+
+          {/* Card 2 */}
+          <div className="relative w-[400px] overflow-hidden bg-white shadow-[0px_0px_5px_#7F8CAA] py-4 px-8 rounded-lg group cursor-pointer">
+            <div className="absolute inset-0 w-0 bg-[#113F67] group-hover:w-full transition-all duration-500 ease-in-out"></div>
+            <div className="relative z-10">
+              <FontAwesomeIcon
+                icon={faGlobe}
+                className="text-orange-400 text-3xl pb-2 group-hover:text-white transition-colors duration-500"
+              />
+              <h4 className="text-2xl text-slate-600 font-bold pb-2 group-hover:text-white transition-colors duration-500">
+                Innovation & Creativity
+              </h4>
+              <p className="text-gray-700 group-hover:text-white transition-colors duration-500">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Praesentium, repellat!
+              </p>
+            </div>
           </div>
-          <div className="w-[400px] shadow-[0px_0px_5px_#7F8CAA] py-4 px-8 rounded-lg">
-            <FontAwesomeIcon
-              icon={faGlobe}
-              className="text-orange-400 text-3xl pb-2"
-            />
-            <h4 className="text-2xl text-slate-600 font-bold pb-2">
-              Experiece & Expertise
-            </h4>
-            <p className="text-gray-700">
-              {" "}
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolores
-              nam explicabo placeat.
-            </p>
+
+          {/* Card 3 */}
+          <div className="relative w-[400px] overflow-hidden bg-white shadow-[0px_0px_5px_#7F8CAA] py-4 px-8 rounded-lg group cursor-pointer">
+            <div className="absolute inset-0 w-0 bg-[#113F67] group-hover:w-full transition-all duration-500 ease-in-out"></div>
+            <div className="relative z-10">
+              <FontAwesomeIcon
+                icon={faGlobe}
+                className="text-orange-400 text-3xl pb-2 group-hover:text-white transition-colors duration-500"
+              />
+              <h4 className="text-2xl text-slate-600 font-bold pb-2 group-hover:text-white transition-colors duration-500">
+                Trusted Solutions
+              </h4>
+              <p className="text-gray-700 group-hover:text-white transition-colors duration-500">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum,
+                ducimus.
+              </p>
+            </div>
           </div>
         </div>
+
         <div
           className="py-20 bg-gray-300"
           style={{
@@ -170,7 +192,7 @@ const About = () => {
                 </p>
                 <p>
                   <Link to="/blog">
-                    <button className="bg-orange-400 text-lg px-8 py-2 rounded-md cursor-pointer hover:bg-orange-300">
+                    <button className="bg-orange-400 text-lg px-8 py-2  rounded-md cursor-pointer hover:bg-orange-300">
                       Explore Now &rarr;
                     </button>
                   </Link>{" "}
@@ -179,9 +201,129 @@ const About = () => {
             </div>
           </div>
         </div>
+        <div className="flex items-center px-[150px] gap-30 py-22 ">
+          <div className="flex gap-7 text-white">
+            <div>
+              {/* Image 1 → Red Gradient Overlay */}
+              <div
+                className="relative w-[270px] h-[340px] mb-7 bg-cover bg-center rounded-md "
+                style={{ backgroundImage: `url(${innovation})` }}
+              >
+                <div className="absolute inset-0 rounded-md p-10 flex flex-col justify-center bg-[linear-gradient(to_top,rgba(255,128,64,0.9),rgba(255,128,64,0.9))]">
+                  <FontAwesomeIcon
+                    icon={faLightbulb}
+                    className="text-5xl pb-4"
+                  />
+                  <h1 className="text-center font-bold text-xl pb-2">
+                    Innovation & Ideas
+                  </h1>
+                  <p className="text-center text-sm">
+                    Lorem ipsum dolor sit, amet consectetur elit. Quasi
+                    repudiandae dolorem rerum
+                  </p>
+                </div>
+              </div>
+
+              {/* Image 2 → Blue Gradient Overlay */}
+              <div
+                className="relative w-[270px] h-[324px] bg-cover bg-center rounded-md"
+                style={{ backgroundImage: `url(${aboutUsCoding1})` }}
+              >
+                <div className="absolute inset-0 rounded-md p-10 flex flex-col justify-center bg-[linear-gradient(to_top,rgba(19,29,79,0.9),rgba(19,29,79,0.9))]">
+                  <FontAwesomeIcon
+                    icon={faBullseye}
+                    className="text-5xl pb-4"
+                  />
+                  <h1 className="text-center font-bold text-xl pb-2">
+                    Collaborate for Future
+                  </h1>
+                  <p className="text-center text-sm">
+                    Lorem ipsum dolor sit, amet consectetur elit. Quasi
+                    repudiandae dolorem rerum
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-10">
+              {/* Image 3 → Plain */}
+              <img
+                src={hackathon3}
+                alt=""
+                className="w-[270px] rounded-md h-[340px] object-cover mb-7"
+              />
+
+              {/* Image 4 → Green Gradient Overlay */}
+              <div
+                className="relative w-[270px] h-[340px] bg-cover bg-center rounded-md"
+                style={{ backgroundImage: `url(${chatting})` }}
+              >
+                <div className="absolute inset-0 rounded-md p-10 flex flex-col justify-center bg-[linear-gradient(to_top,rgba(22,163,74,0.9),rgba(22,163,74,0.9))]">
+                  <FontAwesomeIcon icon={faUsers} className="text-5xl pb-4" />
+                  <h1 className="text-center font-bold text-xl pb-2">
+                    Team Messaging
+                  </h1>
+                  <p className="text-center text-sm">
+                    Lorem ipsum dolor sit, amet consectetur elit. Quasi
+                    repudiandae dolorem rerum
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Section */}
+          <div>
+            <h2 className="text-5xl font-bold pb-4">
+              Who We <span className="text-orange-400">Are ?</span>
+            </h2>
+            <div className="text-lg pb-4">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores
+              at, a iure sint, cupiditate qui expedita amet dicta, sunt porro
+              quia quam nesciunt deserunt libero temporibus nihil nostrum ea ad!
+            </div>
+            <div className="pb-8 text-lg">
+               Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores
+              at, a iure sint, cupiditate qui expedita amet dicta, sunt porro
+              quia quam nesciunt deserunt libero temporibus nihil nostrum ea ad!
+            </div>
+            <div className="text-lg flex flex-col gap-3">
+              <p>
+                <span className="text-orange-400 font-bold mx-2 ">
+                  &#10003;
+                </span>{" "}
+                Offer Team Collaboration
+              </p>
+              <p>
+                <span className="text-orange-400 font-bold mx-2 ">
+                  &#10003;
+                </span>{" "}
+                Interaction with Global Mentors
+              </p>
+
+              <p>
+                <span className="text-orange-400 font-bold mx-2 ">
+                  &#10003;
+                </span>{" "}
+                Rewards for Your Ideas
+              </p>
+              <p>
+                <span className="text-orange-400 font-bold mx-2 ">
+                  &#10003;
+                </span>{" "}
+                Offer Team Collaboration
+              </p>
+            </div>
+            <button className="bg-orange-400 text-white px-8 py-2 cursor-pointer rounded-md mt-12 text-lg">Learn More <span>&rarr;</span></button>
+          </div>
+        </div>
         <div className="px-[150px] py-10">
-          <h1 className="text-center text-5xl font-bold">Powerful Features to Enhance</h1>
-          <p className="text-center font-bold text-5xl pb-16 text-orange-400">Your Hackathon</p>
+          <h1 className="text-center text-5xl font-bold">
+            Powerful Features to Enhance
+          </h1>
+          <p className="text-center font-bold text-5xl pb-16 text-orange-400">
+            Your Hackathon
+          </p>
           <div className="flex gap-5 pb-5 text-white">
             {/* Card 1 */}
             <div
@@ -195,7 +337,8 @@ const About = () => {
               <div className="absolute bottom-3 left-0 w-full p-5 transform translate-y-[60%] group-hover:translate-y-0 transition-all duration-500">
                 <h2 className="font-bold text-xl">Community & Collaboration</h2>
                 <p className="text-sm mt-2 w-[500px]">
-                  Form teams, chat with peers, and collaborate in real-time. Message with team and collaborate globally
+                  Form teams, chat with peers, and collaborate in real-time.
+                  Message with team and collaborate globally
                 </p>
               </div>
             </div>
