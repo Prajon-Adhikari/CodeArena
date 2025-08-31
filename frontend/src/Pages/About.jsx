@@ -17,6 +17,11 @@ import collaboration from "../assets/collaboration.jpg";
 import hackathon3 from "../assets/hackathon3.jpg";
 import chatting from "../assets/chatting.jpg";
 import innovation from "../assets/innovation.jpg";
+import person1 from "../assets/person1.jpeg";
+import person2 from "../assets/person2.jpg";
+import person3 from "../assets/person3.jpg";
+import person4 from "../assets/person4.jpg";
+import Teams from "../Components/Teams";
 
 const About = () => {
   return (
@@ -283,7 +288,7 @@ const About = () => {
               quia quam nesciunt deserunt libero temporibus nihil nostrum ea ad!
             </div>
             <div className="pb-8 text-lg">
-               Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores
               at, a iure sint, cupiditate qui expedita amet dicta, sunt porro
               quia quam nesciunt deserunt libero temporibus nihil nostrum ea ad!
             </div>
@@ -314,7 +319,9 @@ const About = () => {
                 Offer Team Collaboration
               </p>
             </div>
-            <button className="bg-orange-400 text-white px-8 py-2 cursor-pointer rounded-md mt-12 text-lg">Learn More <span>&rarr;</span></button>
+            <button className="bg-orange-400 text-white px-8 py-2 cursor-pointer rounded-md mt-12 text-lg">
+              Learn More <span>&rarr;</span>
+            </button>
           </div>
         </div>
         <div className="px-[150px] py-10">
@@ -391,6 +398,27 @@ const About = () => {
                 </p>
               </div>
             </div>
+          </div>
+        </div>
+        <div className="px-[240px] py-18">
+          <h1 className="text-5xl text-center pb-3 font-bold">Our Team Behind It</h1>
+          <p className="text-center pb-12 text-gray-600">
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum,
+            nemo.
+          </p>
+          <div className="flex justify-between">
+            <Teams
+              image={person1}
+              name="Prajon Adhikari"
+              role="Web Developer"
+            />
+            <Teams
+              image={person2}
+              name="Sarthak Adhikari"
+              role="Frontend Developer"
+            />
+            <Teams image={person3} name="Kshitij Adhikari" role="Designer" />
+            <Teams image={person4} name="Mary Jane" role="Operation Head" />
           </div>
         </div>
       </div>
