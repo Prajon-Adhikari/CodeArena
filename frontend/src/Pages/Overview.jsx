@@ -9,6 +9,11 @@ import {
   faTags,
 } from "@fortawesome/free-solid-svg-icons";
 import { ToastContainer, toast } from "react-toastify";
+import { Calendar, momentLocalizer } from "react-big-calendar";
+import moment from "moment";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+
+const localizer = momentLocalizer(moment);
 
 export default function Overview() {
   const { id } = useParams();
@@ -18,6 +23,8 @@ export default function Overview() {
   const [referer, setReferer] = useState("");
   const [isRegistered, setIsRegistered] = useState(false);
   const [showUnregisterConfirm, setShowUnregisterConfirm] = useState(false);
+  const [events, setEvents] = useState([]);
+  const [currentDate, setCurrentDate] = useState(null);
 
   const tabs = [
     { path: "overview", label: "Overview" },
@@ -49,6 +56,24 @@ export default function Overview() {
     };
     fetchHackathonDetails();
   }, [id]);
+
+  useEffect(() => {
+    if (hackathon?.startDate && hackathon?.endDate) {
+      setEvents([
+        {
+          title: "Registration Period",
+          start: moment(hackathon.registrationDeadline).toDate(),
+          end: moment(hackathon.startDate).subtract(1, "days").toDate(),
+        },
+        {
+          title: "Submission Period",
+          start: moment(hackathon.startDate).toDate(),
+          end: moment(hackathon.endDate).toDate(),
+        },
+      ]);
+      setCurrentDate(moment(hackathon.registrationDeadline).toDate());
+    }
+  }, [hackathon]);
 
   const handleHackathonRegistration = async (e) => {
     e.preventDefault();
@@ -220,100 +245,26 @@ export default function Overview() {
       <div className="px-[108px] font-bold text-[50px] pb-10 pt-2 text-slate-800">
         Time Schedule
       </div>
-      <div className="px-[100px] flex justify-center text-xl">
-        <table className=" ">
-          <thead className="bg-orange-300 text-left">
-            <tr>
-              <th className=" py-2 px-4">PERIOD</th>
-              <th className=" py-2 px-4">BEGINS</th>
-              <th className=" py-2 px-4">ENDS</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="bg-white">
-              <td className=" py-2 px-4">Registration</td>
-              <td className=" py-2 px-4 ">
-                {(() => {
-                  const deadline = new Date(hackathon.registrationDeadline);
-                  const formattedDate = deadline.toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  });
+      
+      {events.length > 0 && (
+        <div style={{ height: "600px" }} className="px-[140px]">
+          <Calendar
+            localizer={localizer}
+            events={events}
+            startAccessor="start"
+            endAccessor="end"
+            views={["month"]}
+            defaultView="month"
+            date={currentDate || new Date()} // show regDeadline if available
+            onNavigate={(date) => setCurrentDate(date)} // keeps navigation working
+            style={{
+              borderRadius: "12px",
+              boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+            }}
+          />
+        </div>
+      )}
 
-                  return formattedDate;
-                })()}
-              </td>
-              <td className="py-2 px-4">
-                {(() => {
-                  const deadline = new Date(hackathon.registrationDeadline);
-                  const formattedDate = deadline.toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  });
-
-                  return formattedDate;
-                })()}
-              </td>
-            </tr>
-            <tr className="bg-gray-100">
-              <td className=" w-[430px] py-2 px-4">Submissions</td>
-              <td className=" py-2 px-4 w-[430px]">
-                {(() => {
-                  const deadline = new Date(hackathon.startDate);
-                  const formattedDate = deadline.toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  });
-
-                  return formattedDate;
-                })()}
-              </td>
-              <td className="py-2 px-4 w-[430px]">
-                {(() => {
-                  const deadline = new Date(hackathon.endDate);
-                  const formattedDate = deadline.toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  });
-
-                  return formattedDate;
-                })()}
-              </td>
-            </tr>
-            <tr className="bg-white">
-              <td className=" py-2 px-4 ">Judging</td>
-              <td className=" py-2 px-4">
-                {(() => {
-                  const deadline = new Date(hackathon.endDate);
-                  const formattedDate = deadline.toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  });
-
-                  return formattedDate;
-                })()}
-              </td>
-              <td className="py-2 px-4">
-                {(() => {
-                  const deadline = new Date(hackathon.endDate);
-                  const formattedDate = deadline.toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  });
-
-                  return formattedDate;
-                })()}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
       <div id="registration"></div>
       {!isRegistered && (
         <div className="px-[100px] py-26 flex gap-30 items-center">
