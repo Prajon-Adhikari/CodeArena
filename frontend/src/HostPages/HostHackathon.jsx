@@ -1,12 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import coding1 from "../assets/coding1.jpg";
 import collaboration from "../assets/collaboration.jpg";
-import image2 from "../assets/aboutuscoding1.jpg"
+import image2 from "../assets/aboutuscoding1.jpg";
 import image3 from "../assets/coding3.jpg";
 import image4 from "../assets/design.jpg";
 import image5 from "../assets/homeimg4.jpg";
+import community from "../assets/community.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faListCheck, faFlag, faUsers } from "@fortawesome/free-solid-svg-icons";
 
 export default function HostHackathon() {
   const [hackathons, setHackathons] = useState([]);
@@ -44,11 +46,11 @@ export default function HostHackathon() {
             Inspire developers to build with your tools through hackathons
             managed by CodeArena
           </p>
-         <a href="#host-hackathon">
-           <button className="mt-10 bg-black text-white px-8 py-2 text-lg rounded-md">
-            Get Started
-          </button>
-         </a>
+          <a href="#host-hackathon">
+            <button className="mt-10 bg-black text-white px-8 py-2 text-lg rounded-md">
+              Get Started
+            </button>
+          </a>
         </div>
         <div className="relative h-[480px]">
           <div className=" w-[280px] max-h-[340px] pb-7 -rotate-7 bg-white shadow-[0px_0px_5px_gray] p-2 rounded-2xl absolute bottom-75 left-12">
@@ -58,7 +60,9 @@ export default function HostHackathon() {
               className="h-[200px] w-full object-cover rounded-xl "
             />
             <div className="pt-4 font-bold text-xl pl-1">Hackathon</div>
-            <p className="text-sm text-gray-600">Lorem ipsum dolor sit amet consectetur.</p>
+            <p className="text-sm pl-1 text-gray-600">
+              Lorem ipsum dolor sit amet consectetur.
+            </p>
           </div>
           <div className=" w-[280px] max-h-[340px] pb-7 rotate-7 bg-white  shadow-[0px_0px_5px_gray] p-2 rounded-2xl absolute bottom-30 left-75">
             <img
@@ -67,7 +71,9 @@ export default function HostHackathon() {
               className="h-[200px] w-full object-cover  rounded-xl "
             />
             <div className="pt-4 font-bold text-xl pl-1">Hackathon</div>
-            <p className="text-sm text-gray-600">Lorem ipsum dolor sit amet consectetur.</p>
+            <p className="text-sm pl-1 text-gray-600">
+              Lorem ipsum dolor sit amet consectetur.
+            </p>
           </div>
           <div className=" w-[280px] max-h-[340px] pb-7 bg-white shadow-[0px_0px_5px_gray] p-2 rounded-2xl absolute bottom-20 left-155">
             <img
@@ -76,7 +82,9 @@ export default function HostHackathon() {
               className="h-[200px] w-full object-cover  rounded-xl "
             />
             <div className="pt-4 font-bold text-xl pl-1">Hackathon</div>
-            <p className="text-sm text-gray-600">Lorem ipsum dolor sit amet consectetur.</p>
+            <p className="text-sm pl-1 text-gray-600">
+              Lorem ipsum dolor sit amet consectetur.
+            </p>
           </div>
           <div className=" w-[280px] max-h-[340px] pb-7 -rotate-7 bg-white shadow-[0px_0px_5px_gray] p-2 rounded-2xl absolute bottom-30 right-75">
             <img
@@ -85,7 +93,9 @@ export default function HostHackathon() {
               className="h-[200px] w-full object-cover  rounded-xl "
             />
             <div className="pt-4 font-bold text-xl pl-1">Hackathon</div>
-            <p className="text-sm text-gray-600">Lorem ipsum dolor sit amet consectetur.</p>
+            <p className="text-sm pl-1 text-gray-600">
+              Lorem ipsum dolor sit amet consectetur.
+            </p>
           </div>
           <div className=" w-[280px] max-h-[340px] pb-7 rotate-7 bg-white shadow-[0px_0px_5px_gray] p-2 rounded-2xl absolute bottom-70 right-10">
             <img
@@ -94,12 +104,51 @@ export default function HostHackathon() {
               className="h-[200px] w-full object-cover  rounded-xl "
             />
             <div className="pt-4 font-bold text-xl pl-1">Hackathon</div>
-            <p className="text-sm text-gray-600">Lorem ipsum dolor sit amet consectetur.</p>
+            <p className="text-sm text-gray-600 pl-1">
+              Lorem ipsum dolor sit amet consectetur.
+            </p>
           </div>
         </div>
       </div>
+      <div className="pl-[200px] pr-[160px] pb-30 flex justify-between">
+        <div className="w-[500px]">
+          <h2 className="text-2xl text-blue-500 pb-2 font-semibold">Developer Community</h2>
+          <p className="w-[380px] text-4xl">Reach an experienced, global community</p>
+          <p className="pt-6 text-lg text-gray-600">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto ad
+            saepe mollitia, expedita odio incidunt eos!
+          </p>
+          <div className="text-lg text-gray-600 pt-10 flex flex-col gap-6">
+              <p className="flex gap-4 items-center text-lg">
+                <span className="text-red-400 font-bold mx-2 text-xl">
+                  <FontAwesomeIcon icon={faUsers} />
+                </span>{" "}
+                4 million+ users
+              </p>
+              <p className="flex gap-5 items-center text-lg">
+                <span className="text-purple-300 font-bold mx-2 text-xl">
+                  <FontAwesomeIcon icon={faFlag} />
+                </span>{" "}
+                80 countries represented
+              </p>
+
+              <p className="flex gap-5 items-center text-lg">
+                 <span className="text-green-300 font-bold mx-2 text-xl">
+                  <FontAwesomeIcon icon={faListCheck} />
+                </span>{" "}
+                220,000+ projects submission
+              </p>
+            </div>        
+        </div>
+        <div>
+              <img src={community} alt="" className="w-[620px] h-[400px] object-cover"/>
+            </div>
+      </div>
       {/* Host Section */}
-      <div id="host-hackathon" className="bg-white p-6 flex flex-col items-center">
+      <div
+        id="host-hackathon"
+        className="bg-white p-6 flex flex-col items-center"
+      >
         <p className="text-sm text-gray-500 mb-2 uppercase font-medium tracking-wide">
           Start your hackathon today
         </p>
