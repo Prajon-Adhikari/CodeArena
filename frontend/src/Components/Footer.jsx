@@ -8,7 +8,7 @@ import { faEnvelope, faPhone, faLocation } from "@fortawesome/free-solid-svg-ico
 
 const Footer = () => {
   return (
-    <footer className="bg-[#0b395a] mt-10 px-[120px]">
+    <footer className="bg-[#196594] mt-10 px-[120px]">
       <div className=" px-10 pb-12 pt-16 flex justify-between text-sm text-white">
         <div className="w-[300px]">
            <h1 className="font-bold text-3xl pb-3 ">CODEARENA</h1>
@@ -33,32 +33,32 @@ const Footer = () => {
           <ul className="space-y-1">
             <li>
               <Link to="/" className="hover:underline">
-                <span className="pr-1 text-yellow-500">&gt;</span> Home
+                 Home
               </Link>
             </li>
             <li>
-              <Link to="/about" className="hover:underline">
-                <span className="pr-1 text-yellow-500">&gt;</span> About
+              <Link to="/about" className="hover:underline flex items-center">
+                About
               </Link>
             </li>
             <li>
               <Link to="/blog" className="hover:underline">
-                <span className="pr-1 text-yellow-500">&gt;</span> Blogs
+               Blogs
               </Link>
             </li>
             <li>
               <Link to="" className="hover:underline">
-                <span className="pr-1 text-yellow-500">&gt;</span> Press
+                 Press
               </Link>
             </li>
             <li>
               <Link to="/contact" className="hover:underline">
-                <span className="pr-1 text-yellow-500">&gt;</span> Contact
+                 Contact
               </Link>
             </li>
             <li>
               <Link to="" className="hover:underline">
-                <span className="pr-1 text-yellow-500">&gt;</span> Help
+                 Help
               </Link>
             </li>
           </ul>
@@ -69,18 +69,18 @@ const Footer = () => {
           <ul className="space-y-1">
             <li>
               <Link to="join/hackathon" className="hover:underline">
-                <span className="pr-1 text-yellow-500">&gt;</span> Join hackathon
+                 Join hackathon
               </Link>
             </li>
     
             <li>
               <Link to="hackathon" className="hover:underline">
-                <span className="pr-1 text-yellow-500">&gt;</span> Host  hackathon
+                 Host  hackathon
               </Link>
             </li>
             <li>
               <Link to="" className="hover:underline">
-                <span className="pr-1 text-yellow-500">&gt;</span> My Hackathon
+                My Hackathon
               </Link>
             </li>
           </ul>

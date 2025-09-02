@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import blogHeroImage from "../assets/blog-hero-image.jpg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 const categories = [
   "All posts",
@@ -79,19 +82,39 @@ export default function BlogPage() {
   return (
     <>
       {/* Hero Section */}
-      <div className="bg-gray-100 py-16 px-4 flex flex-col items-center text-center">
-        <h1 className="text-4xl font-bold text-gray-800 mb-2">Blog</h1>
-        <p className="text-gray-600 max-w-2xl">
-          Learn how to run a hackathon and get new ideas, industry insights, and
-          more on the CodeArena blog
+      <div
+        className="bg-gray-100 bg-cover bg-center h-[500px] px-[120px] mt-[80px] flex flex-col justify-center"
+        style={{ backgroundImage: `url(${blogHeroImage})` }}
+      >
+        <h1 className="text-6xl w-[740px] text-white mb-8">
+          Your Arena for Coding Stories & Insights.
+        </h1>
+        <p className="text-white w-[650px] mb-14">
+          Welcome to CodeArena Blogs — a hub where developers, students, and
+          innovators share coding knowledge, hackathon journeys, and the latest
+          in tech. Whether you’re here to learn, compete, or get inspired, we’ve
+          got you covered.
         </p>
+        <div className="relative w-84 hidden md:block">
+          <span className="absolute inset-y-0 left-5 flex items-center  text-gray-400">
+            <FontAwesomeIcon icon={faMagnifyingGlass} />
+          </span>
+          <input
+            type="text"
+            placeholder="Search..."
+            className="w-full rounded-full border bg-white pl-13  pr-27 py-[8px] text-gray-700 outline-none"
+          />
+          <button className="absolute right-1 top-1/2 transform -translate-y-1/2 bg-blue-400 text-white px-4 py-1.5 rounded-full text-sm hover:bg-blue-500">
+            Search &rarr;
+          </button>
+        </div>
       </div>
 
       {/* Featured Article */}
-      <div className="bg-white max-w-6xl mx-auto shadow-md rounded-lg mt-12 overflow-hidden flex flex-col md:flex-row mb-16">
+      <div className="bg-white px-[140px] flex gap-4 rounded-lg mt-12 mb-16">
         {/* Left Graphic Side */}
-        <div className="bg-teal-600 text-white md:w-1/2 p-8 relative">
-          <h2 className="text-3xl font-bold leading-snug">
+        <div className="bg-teal-600 text-white h-[360px] w-[680px] p-8 relative">
+          <h2 className="text-3xl font-bold ">
             How to get exec buy-in for internal hackathons (With templates)
           </h2>
           {/* Placeholder Images */}
@@ -123,7 +146,7 @@ export default function BlogPage() {
       </div>
 
       {/* Tabs (Blog navigation) */}
-      <div className="max-w-6xl mx-auto px-4">
+      <div className=" px-[140px]">
         <div className="flex justify-center gap-8 cursor-pointer border-b pb-4 mb-6">
           <Link to="">
             {" "}

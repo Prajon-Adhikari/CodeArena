@@ -63,7 +63,7 @@ export default function Overview() {
         {
           title: "Registration Period",
           start: moment(hackathon.registrationDeadline).toDate(),
-          end: moment(hackathon.startDate).subtract(1, "days").toDate(),
+          end: moment(hackathon.startDate).subtract(4, "days").toDate(),
         },
         {
           title: "Submission Period",
@@ -140,7 +140,7 @@ export default function Overview() {
           ))}
         </div>
       </div>
-      <div className="px-[100px] py-16 flex gap-20">
+      <div className="px-[140px] py-16 flex gap-20">
         <div className="w-[800px] ">
           <h1 className="text-4xl font-bold">{hackathon.title}</h1>
           <p className="text-[22px] pt-8">{hackathon.description}</p>
@@ -242,12 +242,12 @@ export default function Overview() {
           </div>
         </div>
       </div>
-      <div className="px-[108px] font-bold text-[50px] pb-10 pt-2 text-slate-800">
+      <div className="px-[140px] font-bold text-[40px] pb-4 pt-2 text-slate-800">
         Time Schedule
       </div>
-      
+
       {events.length > 0 && (
-        <div style={{ height: "600px" }} className="px-[140px]">
+        <div style={{ height: "700px" }} className="px-[140px]">
           <Calendar
             localizer={localizer}
             events={events}
@@ -255,11 +255,34 @@ export default function Overview() {
             endAccessor="end"
             views={["month"]}
             defaultView="month"
-            date={currentDate || new Date()} // show regDeadline if available
-            onNavigate={(date) => setCurrentDate(date)} // keeps navigation working
+            date={currentDate || new Date()}
+            onNavigate={(date) => setCurrentDate(date)}
             style={{
               borderRadius: "12px",
               boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+            }}
+            eventPropGetter={(event) => {
+              let backgroundColor = "";
+              let textColor = "black";
+
+              if (event.title === "Registration Period") {
+                backgroundColor = "#BBDCE5"; 
+              } else if (event.title === "Submission Period") {
+                backgroundColor = "#DFCCFB"; 
+              } else {
+                backgroundColor = "#F59E0B"; 
+              }
+
+              return {
+                style: {
+                  backgroundColor,
+                  color: textColor,
+                  padding:"25px" ,
+                  textAlign: "center",
+                  fontWeight: "bold",
+                  borderRadius: "6px",
+                },
+              };
             }}
           />
         </div>
@@ -267,11 +290,11 @@ export default function Overview() {
 
       <div id="registration"></div>
       {!isRegistered && (
-        <div className="px-[100px] py-26 flex gap-30 items-center">
+        <div className="px-[140px] py-26 flex gap-30 items-center">
           <form
             action=""
             onSubmit={handleHackathonRegistration}
-            className="shadow-[0px_0px_10px_#B6B09F] rounded-2xl w-[660px] p-10"
+            className=" border-1 rounded-lg border-gray-400 w-[660px] p-10"
           >
             <h1 className="font-bold text-4xl">Register</h1>
             <p className="text-xl pt-2 pb-6 border-b-1 border-gray-400 text-gray-500">
