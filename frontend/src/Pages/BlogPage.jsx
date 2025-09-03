@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import blogHeroImage from "../assets/blog-hero-image.jpg";
+import blogHeroImage from "../assets/blogheroimage.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faHeart } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import aws from "../assets/aws.png";
+import meta from "../assets/meta.png";
+import google from "../assets/google.webp";
+import microsoft from "../assets/mircosoft.jpg";
+import okta from "../assets/okta.png";
+import oracle from "../assets/oracle.png";
 
 const categoriesOptions = [
   { value: "Hackathon planning", label: "Hackathon Planning" },
@@ -113,13 +119,14 @@ export default function BlogPage() {
     <>
       {/* Hero Section */}
       <div
-        className="bg-gray-100 bg-cover bg-center h-[500px] px-[120px] mt-[80px] flex flex-col justify-center"
+        className="bg-gray-100 bg-cover bg-center relative h-[580px] pt-14 px-[120px] mt-[80px] flex flex-col justify-center"
         style={{ backgroundImage: `url(${blogHeroImage})` }}
       >
-        <h1 className="text-6xl w-[740px] text-white mb-8">
+        <div className="absolute inset-0  bg-black opacity-20">{""}</div>
+        <h1 className="relative text-6xl w-[740px] text-white mb-8">
           Your Arena for Coding Stories & Insights.
         </h1>
-        <p className="text-white w-[650px] mb-14">
+        <p className="relative text-white w-[650px] mb-14">
           Welcome to CodeArena Blogs — a hub where developers, students, and
           innovators share coding knowledge, hackathon journeys, and the latest
           in tech. Whether you’re here to learn, compete, or get inspired, we’ve
@@ -138,12 +145,21 @@ export default function BlogPage() {
             Search &rarr;
           </button>
         </div>
+        <div className="relative mt-16 bg-white w-full h-[85px] flex items-center justify-evenly">
+          <img src={microsoft} alt="" className="w-[130px] h-[85px]" />
+          <img src={google} alt="" className="w-[150px] h-[85px]" />
+          <img src={aws} alt="" className="w-[130px] h-[85px]" />
+          <img src={okta} alt="" className="w-[130px] h-[85px]" />
+          <img src={oracle} alt="" className="w-[130px] h-[85px]" />
+          <img src={meta} alt="" className="w-[120px] h-[70px]" />
+        </div>
       </div>
 
-      
       <div className="bg-white px-[140px] rounded-lg mt-22 mb-16">
-        <h2 className="font-semibold text-4xl mb-10 pl-4 ml-1 border-blue-400 border-l-4">What's New Today ?</h2>
-        <div className={`flex items-center justify-center mb-4`}>
+        <h2 className="font-semibold text-4xl mb-10 pl-4 ml-1 border-blue-400 border-l-4">
+          What's New Today ?
+        </h2>
+        <div className={`flex items-center gap-10 mb-4`}>
           {popularBlog?.images?.map((img, index) => (
             <img
               key={index}
@@ -152,25 +168,27 @@ export default function BlogPage() {
               className="w-[640px] h-[400px] object-cover rounded-lg mb-4"
             />
           ))}
-        
-        {/* Right Content Side */}
-        <div className="md:w-1/2 p-8 flex flex-col justify-center">
-          <span className="text-xs bg-teal-600 text-white px-3 py-1 rounded-full w-fit mb-4">
-            {popularBlog.category}
-          </span>
-          <span className="text-sm text-gray-500 pl-1 pb-6">
-            {formatDate(popularBlog.createdAt)}
-          </span>
-          <h3 className="text-4xl font-semibold text-gray-800 mb-4">
-            {popularBlog.title}
-          </h3>
-          <p className="text-gray-600 mb-6">{popularBlog.description}</p>
-          <button className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 w-fit">
-            Read more
-          </button>
+
+          {/* Right Content Side */}
+          <div className="md:w-1/2 p-8 flex flex-col justify-center">
+            <span className="text-xs bg-teal-600 text-white px-3 py-1 rounded-full w-fit mb-4">
+              {popularBlog.category}
+            </span>
+            <span className="text-sm text-gray-500 pl-1 pb-6">
+              {formatDate(popularBlog.createdAt)}
+            </span>
+            <h3 className="text-4xl font-semibold text-gray-800 mb-4">
+              {popularBlog.title}
+            </h3>
+            <p className="text-gray-600 mb-6 line-clamp-6">
+              {popularBlog.description}
+            </p>
+            <button className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 w-fit">
+              Read more
+            </button>
+          </div>
         </div>
       </div>
-     </div> 
 
       {/* Tabs (Blog navigation) */}
       <div className=" px-[140px]">
@@ -263,7 +281,15 @@ export default function BlogPage() {
               </div>
               <div className="py-4 px-3">
                 <div className="pb-2 pt-1">
-                  <span className={`text-xs text-gray-700 ${post.category === "Hackathon planning" ? "bg-teal-400": post.category === "Participant resources" ? "bg-blue-300": "bg-orange-300"}  px-3 py-1 rounded-full font-medium`}>
+                  <span
+                    className={`text-xs text-gray-700 ${
+                      post.category === "Hackathon planning"
+                        ? "bg-teal-400"
+                        : post.category === "Participant resources"
+                        ? "bg-blue-300"
+                        : "bg-orange-300"
+                    }  px-3 py-1 rounded-full font-medium`}
+                  >
                     {post.category}
                   </span>
                 </div>

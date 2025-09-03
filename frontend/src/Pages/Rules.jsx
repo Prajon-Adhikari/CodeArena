@@ -99,7 +99,7 @@ export default function Rules() {
       </div>
       <div className="flex px-[200px] py-20  gap-20">
         <div className="">
-          <h2 className="text-5xl font-bold mb-10 pb-1 px-2 inline-block border-b-3 border-b-gray-700">
+          <h2 className="text-5xl font-bold mb-10 pb-1">
             Rules
           </h2>
 
