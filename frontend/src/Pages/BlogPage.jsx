@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import blogHeroImage from "../assets/blog-hero-image.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass, faHeart } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const categories = [
-  "All posts",
-  "Hackathon planning",
-  "Participant resources",
-  "Business impact",
+const categoriesOptions = [
+  { value: "hackathonPlanning", label: "Hackathon Planning" },
+  { value: "participantResources", label: "Participant Resources" },
+  { value: "businessImpact", label: "Business Impact" },
 ];
 
 const posts = [
@@ -17,6 +19,8 @@ const posts = [
     category: "Hackathon planning",
     imageText: "Internal hackathon template and planning kit",
     imageBg: "bg-teal-600",
+    createdDate: "Oct 17, 2025",
+    likes: 24,
   },
   {
     title:
@@ -24,6 +28,8 @@ const posts = [
     category: "Participant resources",
     imageText: "Google Cloud AI in Action Hackathon on Devpost",
     imageBg: "bg-blue-600",
+    createdDate: "Oct 17, 2025",
+    likes: 24,
   },
   {
     title:
@@ -32,52 +38,119 @@ const posts = [
     imageText:
       "How to get exec buy-in for internal hackathons (With templates)",
     imageBg: "bg-teal-600",
+    createdDate: "Oct 17, 2025",
+    likes: 24,
   },
   {
     title: "From idea to impact: Measuring business outcomes from hackathons",
     category: "Business impact",
     imageText: "Measuring business outcomes from hackathons",
     imageBg: "bg-purple-600",
+    createdDate: "Oct 17, 2025",
+    likes: 24,
   },
   {
     title: "Top 10 tips for winning your next online hackathon",
     category: "Participant resources",
     imageText: "Top 10 tips for winning hackathons",
     imageBg: "bg-indigo-600",
+    createdDate: "Oct 17, 2025",
+    likes: 24,
   },
   {
     title: "How companies use internal hackathons to drive innovation",
     category: "Business impact",
     imageText: "Companies driving innovation with hackathons",
     imageBg: "bg-pink-600",
+    createdDate: "Oct 17, 2025",
+    likes: 24,
   },
   {
     title: "Hackathon planning checklist: Everything you need to prepare",
     category: "Hackathon planning",
     imageText: "Hackathon planning checklist",
     imageBg: "bg-orange-600",
+    createdDate: "Oct 17, 2025",
+    likes: 24,
   },
   {
     title: "Why participants love cross-functional team challenges",
     category: "Participant resources",
     imageText: "Cross-functional team benefits",
     imageBg: "bg-green-600",
+    createdDate: "Oct 17, 2025",
+    likes: 24,
   },
   {
     title: "The ROI of hackathons: What your CFO wants to know",
     category: "Business impact",
     imageText: "The ROI of hackathons",
     imageBg: "bg-red-600",
+    createdDate: "Oct 17, 2025",
+    likes: 24,
   },
 ];
 
 export default function BlogPage() {
   const [selectedCategory, setSelectedCategory] = useState("All posts");
+  const [selectedCategoryLabel, setSelectedCategoryLabel] = useState("All posts");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [title, setTitle] = useState("");
+  const [category, setCategory] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
 
   const filteredPosts =
     selectedCategory === "All posts"
       ? posts
       : posts.filter((post) => post.category === selectedCategory);
+
+  const handleImageChange = (e) => {
+    setSelectedImage(e.target.files[0]);
+  };
+
+  const handleBlogSubmit = async (e) => {
+    e.preventDefault();
+    if (!title || !category || !selectedImage) {
+      toast.error("Please fill all fields and select an image!");
+      return;
+    }
+
+    setSubmitting(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("category", category);
+      formData.append("image", selectedImage); // single image
+
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/blogs`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // backend extracts userId
+          },
+          withCredentials: true,
+        }
+      );
+
+      toast.success("Blog submitted successfully 🎉");
+
+      // reset form
+      setTitle("");
+      setCategory("");
+      setSelectedImage(null);
+
+      console.log("Blog submitted:", res.data);
+    } catch (err) {
+      console.error("Failed to submit blog:", err);
+      toast.error("Failed to submit blog");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <>
@@ -102,9 +175,9 @@ export default function BlogPage() {
           <input
             type="text"
             placeholder="Search..."
-            className="w-full rounded-full border bg-white pl-13  pr-27 py-[8px] text-gray-700 outline-none"
+            className="w-full rounded-full border bg-white pl-13  pr-27 py-[10px] text-gray-700 outline-none"
           />
-          <button className="absolute right-1 top-1/2 transform -translate-y-1/2 bg-blue-400 text-white px-4 py-1.5 rounded-full text-sm hover:bg-blue-500">
+          <button className="absolute right-1 top-1/2 transform -translate-y-1/2 bg-blue-400 cursor-pointer text-white px-4 py-[10px] rounded-full text-sm hover:bg-blue-500">
             Search &rarr;
           </button>
         </div>
@@ -181,24 +254,36 @@ export default function BlogPage() {
         </div>
 
         {/* Filter buttons */}
-        <div className="flex justify-center cursor-pointer flex-wrap gap-4 mb-10">
-          {categories.map((category) => (
+        <div className="flex justify-center flex-wrap gap-4 mb-10">
+          {categoriesOptions.map((cat) => (
             <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2 rounded border text-sm ${
-                selectedCategory === category
+              key={cat.value}
+              onClick={() => {
+                setSelectedCategory(cat.value);
+                setSelectedCategoryLabel(cat.label);
+              }}
+              className={`px-4 py-2 rounded border cursor-pointer text-sm ${
+                selectedCategory === cat.value
                   ? "bg-blue-600 text-white"
                   : "bg-gray-100 text-gray-800"
               }`}
             >
-              {category}
+              {cat.label}
             </button>
           ))}
         </div>
 
         {/* Post grid */}
-        <h2 className="text-3xl font-semibold mb-6">{selectedCategory}</h2>
+        <div className="flex justify-between items-center mb-6 mr-2">
+          <h2 className="text-3xl font-semibold">{selectedCategoryLabel}</h2>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="border-1 px-7 py-2 rounded-md font-semibold text-gray-600 cursor-pointer bg-gray-50"
+          >
+            {" "}
+            Add Blog
+          </button>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-20">
           {filteredPosts.map((post, index) => (
             <div
@@ -211,17 +296,96 @@ export default function BlogPage() {
                 {post.imageText}
               </div>
               <div className="p-4">
-                <span className="text-xs bg-gray-200 text-gray-800 px-2 py-1 rounded-full font-medium">
-                  {post.category}
+                <div className="pb-2">
+                  <span className="text-xs bg-gray-200 text-gray-800 px-2 py-1 rounded-full font-medium">
+                    {post.category}
+                  </span>
+                </div>
+                <span className="text-sm text-gray-500 pl-1">
+                  {post.createdDate}
                 </span>
                 <h3 className="mt-2 font-semibold text-lg leading-tight">
                   {post.title}
                 </h3>
+                <div className="flex justify-between pt-4 pr-5 items-center">
+                  <button className="text-orange-500">Learn More &rarr;</button>
+                  <span>
+                    <FontAwesomeIcon
+                      icon={faHeart}
+                      className="text-gray-500 mr-2 cursor-pointer"
+                    />
+                    {post.likes}
+                  </span>
+                </div>
               </div>
             </div>
           ))}
         </div>
       </div>
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-white/30 backdrop-blur-sm flex justify-center items-center z-50">
+          <div className="bg-white p-8 rounded-lg w-[500px] shadow-lg relative">
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="absolute top-3 right-3 text-gray-500 cursor-pointer hover:text-gray-800"
+            >
+              ✖
+            </button>
+            <h2 className="text-2xl font-semibold mb-6">Add New Blog</h2>
+            <form onSubmit={handleBlogSubmit} className="flex flex-col gap-4">
+              <input
+                type="text"
+                placeholder="Blog Title"
+                className="border rounded p-2"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+              <select
+                className="border rounded p-2"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              >
+                <option value="">Select category</option>
+                {categoriesOptions.map((cat) => (
+                  <option key={cat.value} value={cat.value}>
+                    {cat.label}
+                  </option>
+                ))}
+              </select>
+              <div className="flex flex-col">
+                <label className="font-semibold mb-1">Blog Image</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="border-2 border-gray-300 rounded p-2"
+                />
+                {selectedImage && (
+                  <div className="mt-3">
+                    <img
+                      src={URL.createObjectURL(selectedImage)}
+                      alt="Preview"
+                      className="w-60 h-40 object-cover rounded"
+                    />
+                  </div>
+                )}
+              </div>
+              <button
+                type="submit"
+                disabled={submitting}
+                className="bg-blue-600 text-white py-3 rounded hover:bg-blue-700 disabled:bg-gray-400"
+              >
+                {submitting ? "Submitting..." : "Submit Blog"}
+              </button>
+            </form>
+            <ToastContainer
+              position="top-center"
+              autoClose={2000}
+              hideProgressBar
+            />
+          </div>
+        </div>
+      )}
     </>
   );
 }

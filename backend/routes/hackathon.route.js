@@ -20,6 +20,8 @@ import { getRules } from "../controllers/rules.controller.js";
 import upload from "../middlewares/video.js";
 import { getPrizeDetails } from "../controllers/prize.controller.js";
 import { getJudgesDetails } from "../controllers/judges.controller.js";
+import uploadImage from "../middlewares/image.js";
+import { submitBlog } from "../controllers/blog.controller.js";
 
 const router = express.Router();
 
@@ -28,6 +30,8 @@ router.post("/host/hackathon", protectRoute, hackathon);
 router.get("/join/hackathon", protectRoute, getHackathonTournament);
 
 router.get("/", protectRoute, getTopHackathon);
+
+router.post("/blogs", protectRoute, uploadImage, submitBlog)
 
 router.get("/myjoinedhackathon", protectRoute, getMyJoinedHackathon);
 
