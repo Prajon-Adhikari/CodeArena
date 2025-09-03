@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import blogHeroImage from "../assets/blog-hero-image.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,110 +8,65 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const categoriesOptions = [
-  { value: "hackathonPlanning", label: "Hackathon Planning" },
-  { value: "participantResources", label: "Participant Resources" },
-  { value: "businessImpact", label: "Business Impact" },
-];
-
-const posts = [
-  {
-    title: "The ultimate internal hackathon template and planning kit",
-    category: "Hackathon planning",
-    imageText: "Internal hackathon template and planning kit",
-    imageBg: "bg-teal-600",
-    createdDate: "Oct 17, 2025",
-    likes: 24,
-  },
-  {
-    title:
-      "Dive into innovation: The Google Cloud AI in Action Hackathon on Devpost",
-    category: "Participant resources",
-    imageText: "Google Cloud AI in Action Hackathon on Devpost",
-    imageBg: "bg-blue-600",
-    createdDate: "Oct 17, 2025",
-    likes: 24,
-  },
-  {
-    title:
-      "How to get executive buy-in for internal hackathons (With templates)",
-    category: "Hackathon planning",
-    imageText:
-      "How to get exec buy-in for internal hackathons (With templates)",
-    imageBg: "bg-teal-600",
-    createdDate: "Oct 17, 2025",
-    likes: 24,
-  },
-  {
-    title: "From idea to impact: Measuring business outcomes from hackathons",
-    category: "Business impact",
-    imageText: "Measuring business outcomes from hackathons",
-    imageBg: "bg-purple-600",
-    createdDate: "Oct 17, 2025",
-    likes: 24,
-  },
-  {
-    title: "Top 10 tips for winning your next online hackathon",
-    category: "Participant resources",
-    imageText: "Top 10 tips for winning hackathons",
-    imageBg: "bg-indigo-600",
-    createdDate: "Oct 17, 2025",
-    likes: 24,
-  },
-  {
-    title: "How companies use internal hackathons to drive innovation",
-    category: "Business impact",
-    imageText: "Companies driving innovation with hackathons",
-    imageBg: "bg-pink-600",
-    createdDate: "Oct 17, 2025",
-    likes: 24,
-  },
-  {
-    title: "Hackathon planning checklist: Everything you need to prepare",
-    category: "Hackathon planning",
-    imageText: "Hackathon planning checklist",
-    imageBg: "bg-orange-600",
-    createdDate: "Oct 17, 2025",
-    likes: 24,
-  },
-  {
-    title: "Why participants love cross-functional team challenges",
-    category: "Participant resources",
-    imageText: "Cross-functional team benefits",
-    imageBg: "bg-green-600",
-    createdDate: "Oct 17, 2025",
-    likes: 24,
-  },
-  {
-    title: "The ROI of hackathons: What your CFO wants to know",
-    category: "Business impact",
-    imageText: "The ROI of hackathons",
-    imageBg: "bg-red-600",
-    createdDate: "Oct 17, 2025",
-    likes: 24,
-  },
+  { value: "Hackathon planning", label: "Hackathon Planning" },
+  { value: "Participant resources", label: "Participant Resources" },
+  { value: "Business impact", label: "Business Impact" },
 ];
 
 export default function BlogPage() {
   const [selectedCategory, setSelectedCategory] = useState("All posts");
-  const [selectedCategoryLabel, setSelectedCategoryLabel] = useState("All posts");
+  const [selectedCategoryLabel, setSelectedCategoryLabel] =
+    useState("All posts");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
+  const [description, setDescription] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  const [blogs, setBlogs] = useState([]);
+  const [popularBlog, setPopularBlog] = useState([]);
 
   const filteredPosts =
     selectedCategory === "All posts"
-      ? posts
-      : posts.filter((post) => post.category === selectedCategory);
+      ? blogs
+      : blogs.filter((post) => post.category === selectedCategory);
+
+  const formatDate = (timestamp) => {
+    const date = new Date(timestamp);
+    const options = { year: "numeric", month: "short", day: "numeric" };
+    return date.toLocaleDateString("en-US", options);
+  };
 
   const handleImageChange = (e) => {
     setSelectedImage(e.target.files[0]);
   };
 
+  useEffect(() => {
+    const getBlogs = async () => {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_BASE_URL}/home/blogs`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
+        );
+        const data = await response.json();
+        setBlogs(data.blogs);
+        setPopularBlog(data.popularBlog);
+      } catch (error) {
+        console.log("Error while fetching blogs", error);
+      }
+    };
+    getBlogs();
+  }, []);
+
   const handleBlogSubmit = async (e) => {
     e.preventDefault();
-    if (!title || !category || !selectedImage) {
+    if (!title || !category || !selectedImage || !description) {
       toast.error("Please fill all fields and select an image!");
       return;
     }
@@ -122,10 +77,11 @@ export default function BlogPage() {
       const formData = new FormData();
       formData.append("title", title);
       formData.append("category", category);
+      formData.append("description", description);
       formData.append("image", selectedImage); // single image
 
       const res = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/blogs`,
+        `${import.meta.env.VITE_API_BASE_URL}/home/blogs`,
         formData,
         {
           headers: {
@@ -141,6 +97,7 @@ export default function BlogPage() {
       // reset form
       setTitle("");
       setCategory("");
+      setDescription("");
       setSelectedImage(null);
 
       console.log("Blog submitted:", res.data);
@@ -183,40 +140,37 @@ export default function BlogPage() {
         </div>
       </div>
 
-      {/* Featured Article */}
-      <div className="bg-white px-[140px] flex gap-4 rounded-lg mt-12 mb-16">
-        {/* Left Graphic Side */}
-        <div className="bg-teal-600 text-white h-[360px] w-[680px] p-8 relative">
-          <h2 className="text-3xl font-bold ">
-            How to get exec buy-in for internal hackathons (With templates)
-          </h2>
-          {/* Placeholder Images */}
-          <div className="absolute bottom-4 right-4 flex gap-4">
-            <div className="w-16 h-16 bg-white rounded shadow-sm"></div>
-            <div className="w-16 h-16 bg-white rounded shadow-sm"></div>
-            <div className="w-16 h-16 bg-white rounded shadow-sm"></div>
-          </div>
-        </div>
-
+      
+      <div className="bg-white px-[140px] rounded-lg mt-22 mb-16">
+        <h2 className="font-semibold text-4xl mb-10 pl-4 ml-1 border-blue-400 border-l-4">What's New Today ?</h2>
+        <div className={`flex items-center justify-center mb-4`}>
+          {popularBlog?.images?.map((img, index) => (
+            <img
+              key={index}
+              src={img.url} // Cloudinary URL
+              alt={`Project Image ${index + 1}`}
+              className="w-[640px] h-[400px] object-cover rounded-lg mb-4"
+            />
+          ))}
+        
         {/* Right Content Side */}
         <div className="md:w-1/2 p-8 flex flex-col justify-center">
           <span className="text-xs bg-teal-600 text-white px-3 py-1 rounded-full w-fit mb-4">
-            Hackathon planning
+            {popularBlog.category}
           </span>
-          <h3 className="text-2xl font-semibold text-gray-800 mb-4">
-            How to get executive buy-in for your internal hackathons (With
-            templates)
+          <span className="text-sm text-gray-500 pl-1 pb-6">
+            {formatDate(popularBlog.createdAt)}
+          </span>
+          <h3 className="text-4xl font-semibold text-gray-800 mb-4">
+            {popularBlog.title}
           </h3>
-          <p className="text-gray-600 mb-6">
-            Learn how to secure leadership approval for your internal hackathon
-            — and get access to a business case template you can use to build
-            your pitch.
-          </p>
+          <p className="text-gray-600 mb-6">{popularBlog.description}</p>
           <button className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 w-fit">
             Read more
           </button>
         </div>
       </div>
+     </div> 
 
       {/* Tabs (Blog navigation) */}
       <div className=" px-[140px]">
@@ -259,8 +213,15 @@ export default function BlogPage() {
             <button
               key={cat.value}
               onClick={() => {
-                setSelectedCategory(cat.value);
-                setSelectedCategoryLabel(cat.label);
+                if (selectedCategory === cat.value) {
+                  // If clicking the same category again → reset to All posts
+                  setSelectedCategory("All posts");
+                  setSelectedCategoryLabel("All posts");
+                } else {
+                  // Normal behavior → set category
+                  setSelectedCategory(cat.value);
+                  setSelectedCategoryLabel(cat.label);
+                }
               }}
               className={`px-4 py-2 rounded border cursor-pointer text-sm ${
                 selectedCategory === cat.value
@@ -288,26 +249,34 @@ export default function BlogPage() {
           {filteredPosts.map((post, index) => (
             <div
               key={index}
-              className="rounded overflow-hidden border shadow-sm bg-white"
+              className="rounded-xl shadow-[0px_0px_4px_gray] p-2 pt-11 overflow-hidden bg-white"
             >
-              <div
-                className={`h-40 flex items-center justify-center text-white text-lg font-semibold p-4 ${post.imageBg}`}
-              >
-                {post.imageText}
+              <div className={`h-50 flex items-center justify-center mb-4`}>
+                {post?.images?.map((img, index) => (
+                  <img
+                    key={index}
+                    src={img.url} // Cloudinary URL
+                    alt={`Project Image ${index + 1}`}
+                    className="w-[640px] h-[260px] object-cover rounded-lg mb-4"
+                  />
+                ))}
               </div>
-              <div className="p-4">
-                <div className="pb-2">
-                  <span className="text-xs bg-gray-200 text-gray-800 px-2 py-1 rounded-full font-medium">
+              <div className="py-4 px-3">
+                <div className="pb-2 pt-1">
+                  <span className={`text-xs text-gray-700 ${post.category === "Hackathon planning" ? "bg-teal-400": post.category === "Participant resources" ? "bg-blue-300": "bg-orange-300"}  px-3 py-1 rounded-full font-medium`}>
                     {post.category}
                   </span>
                 </div>
                 <span className="text-sm text-gray-500 pl-1">
-                  {post.createdDate}
+                  {formatDate(post.createdAt)}
                 </span>
-                <h3 className="mt-2 font-semibold text-lg leading-tight">
+                <h3 className="mt-2 font-semibold text-lg leading-tight pl-1 h-12 line-clamp-2">
                   {post.title}
                 </h3>
-                <div className="flex justify-between pt-4 pr-5 items-center">
+                <div className="pt-2 pl-1 pr-2 text-gray-700 line-clamp-2">
+                  {post.description}
+                </div>
+                <div className="flex justify-between pt-4 pl-1 pr-5 items-center">
                   <button className="text-orange-500">Learn More &rarr;</button>
                   <span>
                     <FontAwesomeIcon
@@ -323,8 +292,8 @@ export default function BlogPage() {
         </div>
       </div>
       {isModalOpen && (
-        <div className="fixed inset-0 bg-white/30 backdrop-blur-sm flex justify-center items-center z-50">
-          <div className="bg-white p-8 rounded-lg w-[500px] shadow-lg relative">
+        <div className="fixed inset-0  bg-white/30 backdrop-blur-sm flex justify-center items-center z-50">
+          <div className="bg-white p-8 rounded-lg w-[500px] shadow-[0px_0px_5px_gray] relative">
             <button
               onClick={() => setIsModalOpen(false)}
               className="absolute top-3 right-3 text-gray-500 cursor-pointer hover:text-gray-800"
@@ -352,6 +321,12 @@ export default function BlogPage() {
                   </option>
                 ))}
               </select>
+              <textarea
+                placeholder="Blog Description"
+                className="border rounded p-2 h-24 resize-none"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              ></textarea>
               <div className="flex flex-col">
                 <label className="font-semibold mb-1">Blog Image</label>
                 <input

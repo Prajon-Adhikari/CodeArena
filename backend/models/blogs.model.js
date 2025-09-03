@@ -8,12 +8,16 @@ const blogSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      enum: ["hackathonPlanning", "participantResources", "businessImpact"],
+      enum: ["Hackathon planning", "Participant resources", "Business impact"],
       required: true,
     },
     likes: {
       type: Number,
       default: 0,
+    },
+    description:{
+      type: String,
+      required: true,
     },
     images: [
       // 👈 new field for images

@@ -1,9 +1,26 @@
 import Blog from "../models/blogs.model.js";
 
+export const fetchBlog = async (req,res) =>{
+  try {
+    const blogs = await Blog.find();
+
+    if(!blogs){
+      return res.status(400).json({message: "No blogs to show"});
+    }
+
+    const popularBlog = await Blog.findOne().sort({ likes: -1 }).limit(1);
+
+    return res.status(200).json({message:"Fetching blogs", blogs, popularBlog});
+  } catch (error) {
+    console.log("Internal error while fetching blogs",error);
+    return res.status(500).json({message: "Internal error while fetching blogs"});
+  }
+}
+
 export const submitBlog = async (req, res) => {
   try {
     const userId = req.user._id;
-    const { title, category, likes } = req.body;
+    const { title, category, likes, description } = req.body;
 
     if (!userId) {
       return res.status(400).json({ message: "User Id is missing" });
@@ -16,6 +33,7 @@ export const submitBlog = async (req, res) => {
       title,
       category,
       likes,
+      description,
       images: [
         {
           url: imageUrl,
@@ -27,7 +45,7 @@ export const submitBlog = async (req, res) => {
 
     await newBlog.save();
 
-    res.status(200).json({message: "Submitting blog "});
+    res.status(200).json({message: "Submitting blog ", blog: newBlog });
   } catch (error) {
     console.log("Internal error while submitting blog", error)
     return res.status(500).json({message: "Internal error while submitting blog"})
