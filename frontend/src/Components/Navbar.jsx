@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass, faBell } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass, faBell, faMessage } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => {
   const { pathname } = useLocation();
@@ -98,7 +98,11 @@ const Navbar = () => {
           </div>
           
           <div>
-            <FontAwesomeIcon icon={faBell} className="text-gray-400 text-xl"/>
+            <FontAwesomeIcon icon={faBell} className="text-gray-600 text-2xl cursor-pointer"/>
+          </div>
+
+          <div>
+            <FontAwesomeIcon icon={faMessage} className="text-gray-600 text-2xl cursor-pointer"/>
           </div>
 
           {/* Right Side: Auth / Profile */}

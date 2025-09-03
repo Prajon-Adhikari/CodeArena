@@ -11,6 +11,8 @@ import {
 } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { GoVerified } from "react-icons/go";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBriefcase, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -20,11 +22,14 @@ const Profile = () => {
   useEffect(() => {
     const fetchLoggedInUser = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/home`, {
-          method: "GET",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_API_BASE_URL}/home`,
+          {
+            method: "GET",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+          }
+        );
         const data = await response.json();
         setUser(data.user);
       } catch (error) {
@@ -52,53 +57,76 @@ const Profile = () => {
   }
 
   if (!user) {
-    return <div className="text-center mt-10 text-gray-500">Please log in to view your profile.</div>;
+    return (
+      <div className="text-center mt-10 text-gray-500">
+        Please log in to view your profile.
+      </div>
+    );
   }
 
   return (
-    <div className="bg-white min-h-screen text-[#2B2C34] p-6 md:p-12">
-      <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl text-white p-6">
-        <div className="flex flex-col md:flex-row items-center justify-between">
-          <div className="flex items-center gap-4">
+    <div className="bg-gray-100 pt-[80px] text-[#2B2C34] ">
+      <div className="py-10 bg-white rounded-xl px-[80px] mt-[10px] mx-[50px] flex items-center">
+        <div className="flex justify-between w-[800px] pr-10">
+          <div className="flex gap-8">
             <img
               src={profileData?.avatar}
               alt="avatar"
-              className="w-20 h-20 rounded-full border-4 border-white"
+              className="w-40 h-40 rounded-full border-4 border-white"
             />
-            <div>
-              <h2 className="text-xl font-bold">{profileData?.name}</h2>
-              <p className="text-sm">{profileData?.role}</p>
-              <p className="text-xs">{profileData?.location}</p>
+            <div className="pt-4 w-[400px]">
+              <h2 className="text-3xl font-bold pb-2">{profileData?.name}</h2>
+              <p className="text-gray-500 pb-2 text-sm">
+                <FontAwesomeIcon icon={faBriefcase} className="pr-3" />
+                {profileData?.role}
+              </p>
+              <p className="text-gray-500 text-sm">
+                <FontAwesomeIcon icon={faLocationDot} className="pr-3" />
+                {profileData?.location}
+              </p>
+              <div className="text-gray-500 pl-[1px] text-lg font-semibold mt-4">
+                <span className="pr-2">100</span><span>Follower</span>
+                <span className="pl-10 pr-2">100</span><span>Following</span>
+              </div>
             </div>
           </div>
-          <div className="flex items-center gap-3 mt-4 md:mt-0">
-            <p className="text-sm">
-              <span className="font-semibold">Work:</span> {profileData?.work}
-            </p>
-            <p className="text-sm">
-              <span className="font-semibold">Education:</span> {profileData?.education}
-            </p>
-            <button className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md">
-              Hire Me
+          <div className="pt-4">
+            <button className="bg-blue-400 text-white rounded-2xl px-8 py-2">
+              Edit Profile
             </button>
           </div>
         </div>
-        <div className="flex justify-center gap-4 mt-6 text-lg">
-          <FaFacebook />
-          <FaTwitter />
-          <FaInstagram />
-          <FaLinkedin />
-          <MdEmail />
+        <div className="border-l-2 border-gray-400 text-lg px-20">
+          <div className="flex pb-2"><div className="font-bold pr-2 w-[180px]">Availability : </div><span className="text-gray-500">Full-time</span></div>
+          <div className="flex pb-2"><div className="font-bold pr-2 w-[180px]">Age : </div><span className="text-gray-500">32</span></div>
+          <div className="flex pb-6"><div className="font-bold pr-2 w-[180px]">Year Experience : </div><span className="text-gray-500">6 </span></div>
+          <div className="flex gap-8 text-2xl text-blue-400">
+            <FaFacebook/>
+            <FaInstagram/>
+            <FaLinkedin/>
+            <FaTwitter/>
+          </div>
         </div>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-6 mt-8">
+      <div className="grid md:grid-cols-3 gap-6 mt-3 px-[50px] pb-10">
         {/* Skills */}
-        <div className="col-span-1">
+        
+        <div className="col-span-1 bg-white py-6 px-8 rounded-2xl">
+          <h3 className="text-lg font-semibold mb-3">About</h3>
+          <p className="mb-5 text-sm">
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                Deserunt excepturi velit sint nemo harum a accusamus tempore
+                nisi? Laborum culpa asperiores adipisci maiores ut quas alias
+                neque, corrupti accusamus non?
+              </p>
           <h3 className="text-lg font-semibold mb-4">Skills</h3>
           <div className="flex flex-wrap gap-2">
             {profileData?.skills.map((skill, i) => (
-              <span key={i} className="bg-gray-200 px-3 py-1 rounded-full text-sm">
+              <span
+                key={i}
+                className="bg-gray-200 px-3 py-1 rounded-full text-sm"
+              >
                 {skill}
               </span>
             ))}
@@ -129,39 +157,6 @@ const Profile = () => {
               <li key={i}>{prof}</li>
             ))}
           </ul>
-        </div>
-
-        {/* About & Experience */}
-        <div className="col-span-2">
-          <h3 className="text-lg font-semibold mb-4">About Me</h3>
-          <ul className="list-disc ml-6 text-sm space-y-2">
-            {profileData?.about.map((point, i) => (
-              <li key={i}>{point}</li>
-            ))}
-          </ul>
-
-          {/* Experience */}
-          <h3 className="text-lg font-semibold mt-6 mb-4">Experience</h3>
-          <ul className="text-sm space-y-3">
-            {profileData?.experience.map((exp, i) => (
-              <li key={i}>
-                <strong>{exp.role}</strong> @ {exp.company} ({exp.duration})
-              </li>
-            ))}
-          </ul>
-
-          {/* Portfolio */}
-          <h3 className="text-lg font-semibold mt-6 mb-4">Portfolio</h3>
-          <div className="grid grid-cols-3 gap-4">
-            {profileData?.portfolio.map((img, i) => (
-              <img
-                key={i}
-                src={img}
-                alt={`Portfolio ${i}`}
-                className="w-full h-28 object-cover rounded-lg"
-              />
-            ))}
-          </div>
         </div>
       </div>
     </div>
