@@ -36,7 +36,7 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState(null);
-  const [selectedThumbnail, setSelectedThumbnail] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
   const [projectTitle, setProjectTitle] = useState("");
   const [skills, setSkills] = useState([]);
   const [projectDescription, setProjectDescription] = useState("");
@@ -81,16 +81,23 @@ const Profile = () => {
 
   const handlePortfolioSubmit = async (e) => {
     e.preventDefault();
-    if (!title || !category || !selectedImage || !description) {
-      toast.error("Please fill all fields and select an image!");
-      return;
-    }
 
     setSubmitting(true);
 
     try {
+      const formData = new FormData();
+      formData.append("projectTitle", projectTitle);
+      formData.append("projectDescription", projectDescription);
+      formData.append("skills", skills.map((s) => s.value).join(","));
+      formData.append("projectLink", projectLink);
+      formData.append("image", selectedImage);
+
+      if (selectedVideo) {
+        formData.append("video", selectedVideo);
+      }
+
       const res = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/home/blogs`,
+        `${import.meta.env.VITE_API_BASE_URL}/home/profile/portfolio`,
         formData,
         {
           headers: {
@@ -101,9 +108,15 @@ const Profile = () => {
         }
       );
 
-      toast.success("Blog submitted successfully 🎉");
+      navigate("/profile");
 
-      console.log("Blog submitted:", res.data);
+      setProjectTitle("");
+      setProjectDescription("");
+      setProjectLink("");
+      setSkills([]);
+      setSelectedVideo(null);
+      setSelectedImage(null);
+      toast.success("Portfolio project submitted successfully 🎉");
     } catch (err) {
       console.error("Failed to submit blog:", err);
       toast.error("Failed to submit blog");
@@ -244,7 +257,7 @@ const Profile = () => {
         <div className="fixed inset-0  bg-white/30 backdrop-blur-sm flex justify-center items-center z-50">
           <div className="bg-white p-8 rounded-lg w-[1200px] max-h-[90vh] overflow-y-auto  shadow-[0px_0px_5px_gray] relative">
             <button
-               onClick={() => navigate(-1)}
+              onClick={() => navigate(-1)}
               className="absolute top-3 right-3 text-gray-500 cursor-pointer hover:text-gray-800"
             >
               ✖
@@ -255,7 +268,10 @@ const Profile = () => {
             <p className="text-gray-500 mb-6">
               All fields are required unless otherwise indicated
             </p>
-            <form className="flex flex-col gap-4">
+            <form
+              onSubmit={handlePortfolioSubmit}
+              className="flex flex-col gap-4"
+            >
               <div>
                 <label htmlFor="projectTitle" className="text-sm">
                   Project title
@@ -351,7 +367,6 @@ const Profile = () => {
                       value={projectLink}
                       name="projectLink"
                       onChange={(e) => setProjectLink(e.target.value)}
-                      required
                     />
                   </div>
                 </div>
@@ -397,7 +412,7 @@ const Profile = () => {
                     )}
                   </div>
                   <div className="border-2 border-dotted border-gray-400 h-[180px] w-[400px] flex flex-col items-center justify-center py-4 rounded-3xl relative">
-                    {!selectedThumbnail ? (
+                    {!selectedImage ? (
                       <>
                         <label
                           htmlFor="thumbnailUpload"
@@ -409,26 +424,23 @@ const Profile = () => {
                         <input
                           type="file"
                           id="thumbnailUpload"
-                          name="thumbnail"
                           accept="image/*"
                           className="hidden"
-                          onChange={(e) =>
-                            setSelectedThumbnail(e.target.files[0])
-                          }
+                          onChange={(e) => setSelectedImage(e.target.files[0])}
                         />
                       </>
                     ) : (
                       <div className="relative">
                         <button
                           type="button"
-                          onClick={() => setSelectedThumbnail(null)}
+                          onClick={() => setSelectedImage(null)}
                           className="absolute -top-3 -right-3 cursor-pointer text-black font-semibold bg-gray-200 rounded-full px-2 py-1 flex items-center justify-center text-sm"
                         >
                           ✕
                         </button>
                         <div className="w-[150px] h-[150px] rounded-xl border overflow-hidden">
                           <img
-                            src={URL.createObjectURL(selectedThumbnail)}
+                            src={URL.createObjectURL(selectedImage)}
                             alt="Thumbnail Preview"
                             className="w-full h-full object-cover"
                           />
@@ -441,9 +453,9 @@ const Profile = () => {
               <button
                 type="submit"
                 disabled={submitting}
-                className="bg-blue-600 text-white w-[140px] py-2 rounded hover:bg-blue-700 disabled:bg-gray-400"
+                className="bg-blue-600 text-white w-[140px] cursor-pointer py-2 rounded hover:bg-blue-700 disabled:bg-gray-400"
               >
-                {submitting ? "Submitting..." : "Submit Blog"}
+                {submitting ? "Submitting..." : "Submit Project"}
               </button>
             </form>
             <ToastContainer

@@ -13,6 +13,9 @@ const portfolioSchema = new mongoose.Schema({
         type: [String],
         required: true,
     },
+    projectLink:{
+      type: String,
+    },
      videos: [
       {
         url: { type: String, required: true }, // Cloud URL

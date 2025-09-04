@@ -22,6 +22,8 @@ import { getPrizeDetails } from "../controllers/prize.controller.js";
 import { getJudgesDetails } from "../controllers/judges.controller.js";
 import uploadImage from "../middlewares/image.js";
 import { fetchBlog, submitBlog } from "../controllers/blog.controller.js";
+import { submitPortfolioProject } from "../controllers/portfolio.controller.js";
+import {uploadPortfolio} from "../middlewares/uploadPortfolio.js";
 
 const router = express.Router();
 
@@ -38,6 +40,8 @@ router.post("/blogs", protectRoute, uploadImage, submitBlog);
 router.get("/myjoinedhackathon", protectRoute, getMyJoinedHackathon);
 
 router.get("/myhostedhackathon", protectRoute, getHostedHackathon);
+
+router.post("/profile/portfolio",protectRoute,uploadPortfolio, submitPortfolioProject)
 
 router.get("/:id", protectRoute, getSpecificHackathonDetails);
 
