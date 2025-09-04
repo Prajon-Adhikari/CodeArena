@@ -57,7 +57,9 @@ const router = createBrowserRouter(
         <Route path=":id/prizes" element={<Prizes />} />
         <Route path=":id/judges" element={<Judges />} />
         <Route path="host/hackathon" element={<Hosting />} />
-        <Route path="profile" element={<Profile />} />
+        <Route path="profile" element={<Profile />}>
+          <Route path="portfolio" /> {/* nested, no element */}
+        </Route>
         <Route path="blog" element={<BlogPage />} />
         <Route path="about" element={<About />} />
         <Route path="contact" element={<Contact />} />

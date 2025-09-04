@@ -9,15 +9,42 @@ import {
   FaInstagram,
   FaPhone,
 } from "react-icons/fa";
-import { MdEmail } from "react-icons/md";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { GoVerified } from "react-icons/go";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBriefcase, faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate, useLocation } from "react-router-dom";
+import {
+  faBriefcase,
+  faLocationDot,
+  faPlus,
+  faVideo,
+} from "@fortawesome/free-solid-svg-icons";
+import Select from "react-select";
+
+const skillsOptions = [
+  { value: "react", label: "React" },
+  { value: "javascript", label: "JavaScript" },
+  { value: "nodejs", label: "Node.js" },
+  { value: "mongodb", label: "MongoDB" },
+  { value: "express", label: "Express" },
+];
 
 const Profile = () => {
   const [user, setUser] = useState(null);
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedThumbnail, setSelectedThumbnail] = useState(null);
+  const [projectTitle, setProjectTitle] = useState("");
+  const [skills, setSkills] = useState([]);
+  const [projectDescription, setProjectDescription] = useState("");
+  const [projectLink, setProjectLink] = useState("");
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const portfolioModal = location.pathname === "/profile/portfolio";
 
   useEffect(() => {
     const fetchLoggedInUser = async () => {
@@ -52,6 +79,39 @@ const Profile = () => {
     fetchProfileData();
   }, []);
 
+  const handlePortfolioSubmit = async (e) => {
+    e.preventDefault();
+    if (!title || !category || !selectedImage || !description) {
+      toast.error("Please fill all fields and select an image!");
+      return;
+    }
+
+    setSubmitting(true);
+
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/home/blogs`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // backend extracts userId
+          },
+          withCredentials: true,
+        }
+      );
+
+      toast.success("Blog submitted successfully 🎉");
+
+      console.log("Blog submitted:", res.data);
+    } catch (err) {
+      console.error("Failed to submit blog:", err);
+      toast.error("Failed to submit blog");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   if (loading) {
     return <div className="text-center mt-10 text-gray-500">Loading...</div>;
   }
@@ -85,8 +145,10 @@ const Profile = () => {
                 {profileData?.location}
               </p>
               <div className="text-gray-500 pl-[1px] text-lg font-semibold mt-4">
-                <span className="pr-2">100</span><span>Follower</span>
-                <span className="pl-10 pr-2">100</span><span>Following</span>
+                <span className="pr-2">100</span>
+                <span>Follower</span>
+                <span className="pl-10 pr-2">100</span>
+                <span>Following</span>
               </div>
             </div>
           </div>
@@ -97,29 +159,38 @@ const Profile = () => {
           </div>
         </div>
         <div className="border-l-2 border-gray-400 text-lg px-20">
-          <div className="flex pb-2"><div className="font-bold pr-2 w-[180px]">Availability : </div><span className="text-gray-500">Full-time</span></div>
-          <div className="flex pb-2"><div className="font-bold pr-2 w-[180px]">Age : </div><span className="text-gray-500">32</span></div>
-          <div className="flex pb-6"><div className="font-bold pr-2 w-[180px]">Year Experience : </div><span className="text-gray-500">6 </span></div>
+          <div className="flex pb-2">
+            <div className="font-bold pr-2 w-[180px]">Availability : </div>
+            <span className="text-gray-500">Full-time</span>
+          </div>
+          <div className="flex pb-2">
+            <div className="font-bold pr-2 w-[180px]">Age : </div>
+            <span className="text-gray-500">32</span>
+          </div>
+          <div className="flex pb-6">
+            <div className="font-bold pr-2 w-[180px]">Year Experience : </div>
+            <span className="text-gray-500">6 </span>
+          </div>
           <div className="flex gap-8 text-2xl text-blue-400">
-            <FaFacebook/>
-            <FaInstagram/>
-            <FaLinkedin/>
-            <FaTwitter/>
+            <FaFacebook />
+            <FaInstagram />
+            <FaLinkedin />
+            <FaTwitter />
           </div>
         </div>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-6 mt-3 px-[50px] pb-10">
+      <div className="grid md:grid-cols-3 gap-3 mt-3 px-[50px] pb-10">
         {/* Skills */}
-        
+
         <div className="col-span-1 bg-white py-6 px-8 rounded-2xl">
           <h3 className="text-lg font-semibold mb-3">About</h3>
           <p className="mb-5 text-sm">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Deserunt excepturi velit sint nemo harum a accusamus tempore
-                nisi? Laborum culpa asperiores adipisci maiores ut quas alias
-                neque, corrupti accusamus non?
-              </p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deserunt
+            excepturi velit sint nemo harum a accusamus tempore nisi? Laborum
+            culpa asperiores adipisci maiores ut quas alias neque, corrupti
+            accusamus non?
+          </p>
           <h3 className="text-lg font-semibold mb-4">Skills</h3>
           <div className="flex flex-wrap gap-2">
             {profileData?.skills.map((skill, i) => (
@@ -158,7 +229,231 @@ const Profile = () => {
             ))}
           </ul>
         </div>
+        <div className="bg-white rounded-2xl w-[945px] pl-8 pr-20 py-6">
+          <div className="flex  items-center justify-between">
+            <h2 className="font-semibold text-2xl">Portfolio</h2>
+            <FontAwesomeIcon
+              icon={faPlus}
+              onClick={() => navigate("/profile/portfolio")}
+              className="px-[9px] py-2 border-2 cursor-pointer border-blue-400 text-blue-400 rounded-full"
+            />
+          </div>
+        </div>
       </div>
+      {portfolioModal && (
+        <div className="fixed inset-0  bg-white/30 backdrop-blur-sm flex justify-center items-center z-50">
+          <div className="bg-white p-8 rounded-lg w-[1200px] max-h-[90vh] overflow-y-auto  shadow-[0px_0px_5px_gray] relative">
+            <button
+               onClick={() => navigate(-1)}
+              className="absolute top-3 right-3 text-gray-500 cursor-pointer hover:text-gray-800"
+            >
+              ✖
+            </button>
+            <h2 className="text-3xl font-semibold ">
+              Add a new portfolio project
+            </h2>
+            <p className="text-gray-500 mb-6">
+              All fields are required unless otherwise indicated
+            </p>
+            <form className="flex flex-col gap-4">
+              <div>
+                <label htmlFor="projectTitle" className="text-sm">
+                  Project title
+                </label>
+                <br />
+                <input
+                  type="text"
+                  name="projectTitle"
+                  id="projectTitle"
+                  placeholder="Enter a brief but descriptive title"
+                  className="border-2 w-full border-gray-400 rounded-lg text-sm py-2 px-4"
+                  value={projectTitle}
+                  onChange={(e) => setProjectTitle(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="flex gap-20 ">
+                <div>
+                  <div>
+                    <label htmlFor="description" className="text-sm">
+                      Project description
+                    </label>
+                    <br />
+                    <textarea
+                      id="description"
+                      name="projectDescription"
+                      placeholder="Briefly describe the project's goals, your solution and the impact you made here"
+                      className="border-2 w-[500px] min-h-[200px] border-gray-400 text-sm rounded-lg py-2 px-4"
+                      value={projectDescription}
+                      onChange={(e) => setProjectDescription(e.target.value)}
+                      required
+                    ></textarea>
+                  </div>
+                  <div className="py-4">
+                    <label htmlFor="tech" className=" text-sm px-1 py-1">
+                      Skills Used
+                    </label>
+                    <Select
+                      isMulti
+                      name="skills"
+                      options={skillsOptions}
+                      value={skills}
+                      onChange={setSkills}
+                      placeholder="Mention skills you used..."
+                      className="text-sm w-[500px]"
+                      styles={{
+                        control: (base) => ({
+                          ...base,
+                          borderWidth: "2px",
+                          borderRadius: "12px",
+                          borderColor: "#B7B7B7",
+                          padding: "1px 6px",
+                          boxShadow: "none",
+                          "&:hover": { borderColor: "#6B7280" },
+                        }),
+                        multiValue: (base) => ({
+                          ...base,
+                          borderWidth: "2px",
+                          borderRadius: "9999px",
+                          borderColor: "#000000",
+                          backgroundColor: "#FFFFFF",
+                          padding: "0px 8px",
+                          "&:hover": { backgroundColor: "#EEEEEE" },
+                        }),
+                        multiValueLabel: (base) => ({
+                          ...base,
+                          color: "#000000", // Tailwind blue-900
+                          fontWeight: "500",
+                        }),
+                        multiValueRemove: (base) => ({
+                          ...base,
+                          borderRadius: "9999px",
+                          color: "black",
+                          "&:hover": {
+                            backgroundColor: "#EEEEEE",
+                            cursor: "pointer",
+                            color: "#000000",
+                          },
+                        }),
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="projectLink" className="text-sm">
+                      Project Link
+                    </label>
+                    <br />
+                    <input
+                      type="text"
+                      id="projectLink"
+                      placeholder="Enter a brief but descriptive title"
+                      className="border-2 w-[500px] border-gray-400 rounded-lg text-sm py-2 px-4"
+                      value={projectLink}
+                      name="projectLink"
+                      onChange={(e) => setProjectLink(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-6 mt-4">
+                  <div className="border-2 border-dotted border-gray-400 h-[180px] w-[400px] flex justify-center flex-col items-center rounded-3xl relative">
+                    {!selectedVideo ? (
+                      <>
+                        <label
+                          htmlFor="videoUpload"
+                          className="cursor-pointer flex items-center gap-4 border-1 border-dotted px-[15px] py-[16px] rounded-full w-fit hover:bg-gray-50 "
+                        >
+                          <FontAwesomeIcon icon={faVideo} x className="" />
+                        </label>
+                        <p className="text-sm pt-3">Upload a video</p>
+                        <input
+                          type="file"
+                          id="videoUpload"
+                          name="video"
+                          accept="video/*"
+                          className="hidden"
+                          onChange={(e) => setSelectedVideo(e.target.files[0])}
+                        />
+                      </>
+                    ) : (
+                      <div className="relative">
+                        {/* Cross button */}
+                        <button
+                          type="button"
+                          onClick={() => setSelectedVideo(null)}
+                          className="absolute -top-3 -right-3 cursor-pointer  text-black font-semibold bg-gray-200 rounded-full px-2 py-1 flex items-center justify-center text-sm"
+                        >
+                          ✕
+                        </button>
+
+                        <div className="w-[400px] h-[180px] rounded-2xl border overflow-hidden">
+                          <video
+                            src={URL.createObjectURL(selectedVideo)}
+                            controls
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <div className="border-2 border-dotted border-gray-400 h-[180px] w-[400px] flex flex-col items-center justify-center py-4 rounded-3xl relative">
+                    {!selectedThumbnail ? (
+                      <>
+                        <label
+                          htmlFor="thumbnailUpload"
+                          className="cursor-pointer flex items-center gap-4 border-1 border-dotted px-[15px] py-[14px] rounded-full w-fit hover:bg-gray-50 "
+                        >
+                          📷
+                        </label>
+                        <p className="text-sm pt-3">Upload a thumbnail</p>
+                        <input
+                          type="file"
+                          id="thumbnailUpload"
+                          name="thumbnail"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) =>
+                            setSelectedThumbnail(e.target.files[0])
+                          }
+                        />
+                      </>
+                    ) : (
+                      <div className="relative">
+                        <button
+                          type="button"
+                          onClick={() => setSelectedThumbnail(null)}
+                          className="absolute -top-3 -right-3 cursor-pointer text-black font-semibold bg-gray-200 rounded-full px-2 py-1 flex items-center justify-center text-sm"
+                        >
+                          ✕
+                        </button>
+                        <div className="w-[150px] h-[150px] rounded-xl border overflow-hidden">
+                          <img
+                            src={URL.createObjectURL(selectedThumbnail)}
+                            alt="Thumbnail Preview"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <button
+                type="submit"
+                disabled={submitting}
+                className="bg-blue-600 text-white w-[140px] py-2 rounded hover:bg-blue-700 disabled:bg-gray-400"
+              >
+                {submitting ? "Submitting..." : "Submit Blog"}
+              </button>
+            </form>
+            <ToastContainer
+              position="top-center"
+              autoClose={2000}
+              hideProgressBar
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
