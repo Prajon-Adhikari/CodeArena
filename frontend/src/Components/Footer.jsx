@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFacebook, faXTwitter, faWhatsapp, faInstagram
 } from "@fortawesome/free-brands-svg-icons";
-import { faEnvelope, faPhone, faLocation } from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope, faPhone, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 
 const Footer = () => {
   return (
@@ -97,7 +97,7 @@ const Footer = () => {
 
             </li>
             <li>
-              <FontAwesomeIcon icon={faLocation} className="text-yellow-500 pr-2"/> Bharatpur-6, Chitwan
+              <FontAwesomeIcon icon={faLocationDot} className="text-yellow-500 pr-2"/> Bharatpur-6, Chitwan
             </li>
           </ul>
           <h4 className="font-bold text-xl mb-2 pt-5">Opening Hours</h4>
