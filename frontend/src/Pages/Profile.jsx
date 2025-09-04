@@ -21,6 +21,7 @@ import {
   faVideo,
 } from "@fortawesome/free-solid-svg-icons";
 import Select from "react-select";
+import folder from "../assets/folder.jpg";
 
 const skillsOptions = [
   { value: "react", label: "React" },
@@ -41,6 +42,7 @@ const Profile = () => {
   const [skills, setSkills] = useState([]);
   const [projectDescription, setProjectDescription] = useState("");
   const [projectLink, setProjectLink] = useState("");
+  const [portfolioProjects, setPortfolioProjects] = useState([]);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -77,6 +79,28 @@ const Profile = () => {
 
     fetchLoggedInUser();
     fetchProfileData();
+  }, []);
+
+  useEffect(() => {
+    const fetchPortfolioProjects = async () => {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_BASE_URL}/home/profile`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
+        );
+        const data = await response.json();
+        setPortfolioProjects(data.portfolioProjects);
+      } catch (error) {
+        console.log("Error while fetching portfolio projects", error);
+      }
+    };
+    fetchPortfolioProjects();
   }, []);
 
   const handlePortfolioSubmit = async (e) => {
@@ -242,7 +266,7 @@ const Profile = () => {
             ))}
           </ul>
         </div>
-        <div className="bg-white rounded-2xl w-[945px] pl-8 pr-20 py-6">
+        <div className="bg-white rounded-2xl w-[945px] px-8 py-6 ">
           <div className="flex  items-center justify-between">
             <h2 className="font-semibold text-2xl">Portfolio</h2>
             <FontAwesomeIcon
@@ -250,6 +274,39 @@ const Profile = () => {
               onClick={() => navigate("/profile/portfolio")}
               className="px-[9px] py-2 border-2 cursor-pointer border-blue-400 text-blue-400 rounded-full"
             />
+          </div>
+          <div className="pt-3 border-b-1 border-gray-300 pb-12">
+            {portfolioProjects.length > 0 ? (
+              <div className="grid grid-cols-3 gap-10">
+                {portfolioProjects.map((project, index) => {
+                  return (
+                    <div className=" h-[280px] shadow-lg p-2 rounded-lg ">
+                      {project?.images?.map((img, index) => (
+                        <img
+                          key={index}
+                          src={img.url} // Cloudinary URL
+                          alt={`Project Image ${index + 1}`}
+                          className="w-full h-[68%] object-cover rounded-lg mb-3"
+                        />
+                      ))}
+                      <div className="pl-2 font-bold">
+                        {project.projectTitle}
+                      </div>
+                      <div className="text-gray-500 text-sm line-clamp-2 pl-2">
+                        {project.projectDescription}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div>
+                <div className="flex flex-col items-center">
+                  <img src={folder} alt="" className="w-[220px] h-[220px]"/>
+                  <p className="font-bold text-lg">No projects yet, When you create a new project it appears here</p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

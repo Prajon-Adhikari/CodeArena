@@ -22,7 +22,7 @@ import { getPrizeDetails } from "../controllers/prize.controller.js";
 import { getJudgesDetails } from "../controllers/judges.controller.js";
 import uploadImage from "../middlewares/image.js";
 import { fetchBlog, submitBlog } from "../controllers/blog.controller.js";
-import { submitPortfolioProject } from "../controllers/portfolio.controller.js";
+import { getPortfolioProject, submitPortfolioProject } from "../controllers/portfolio.controller.js";
 import {uploadPortfolio} from "../middlewares/uploadPortfolio.js";
 
 const router = express.Router();
@@ -32,6 +32,8 @@ router.post("/host/hackathon", protectRoute, hackathon);
 router.get("/join/hackathon", protectRoute, getHackathonTournament);
 
 router.get("/", protectRoute, getTopHackathon);
+
+router.get("/profile", protectRoute, getPortfolioProject)
 
 router.get("/blogs", protectRoute, fetchBlog);
 
