@@ -9,6 +9,7 @@ const HackathonSchema = new mongoose.Schema(
     contactEmail: { type: String, required: true },
     startDate: { type: Date },
     endDate: { type: Date },
+    registrationStart: {type: Date},
     registrationDeadline: { type: Date },
     themes: { type: [String], required: true },
     mode: { type: String },

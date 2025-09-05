@@ -97,7 +97,7 @@ export default function Prizes() {
           <div className="grid grid-cols-2 gap-10">
             {prizes.map((prize, index) => {
               return (
-                <div key={index} className="w-[400px] mb-8">
+                <div key={index} className="w-[360px] mb-8">
                   <div className="font-bold text-[24px] pb-2">
                     ⭐ {prize.title}
                   </div>

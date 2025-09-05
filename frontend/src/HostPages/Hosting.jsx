@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
-import { faCalendar, faList } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import CreatableSelect from "react-select/creatable";
 
@@ -21,6 +19,7 @@ export default function Hosting() {
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [registrationStart, setRegistrationStart] = useState("");
   const [registrationDeadline, setRegistrationDeadline] = useState("");
   const [mode, setMode] = useState("");
   const [organizerName, setOrganizerName] = useState("");
@@ -92,6 +91,7 @@ export default function Hosting() {
           description,
           startDate,
           endDate,
+          registrationStart,
           registrationDeadline,
           mode,
           contactEmail,
@@ -125,12 +125,12 @@ export default function Hosting() {
         {step === 1 && (
           <div className="space-y-6">
             <h2 className="text-3xl font-bold mb-8">Basic Information</h2>
+
             <div>
               <h1 className="text-xl font-semibold pl-2 pb-1">
                 Hackathon Name
               </h1>
               <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
-                <FontAwesomeIcon icon={faList} className="mr-3" />
                 <input
                   type="text"
                   placeholder="Enter hackathon name"
@@ -140,6 +140,7 @@ export default function Hosting() {
                 />
               </div>
             </div>
+
             <div>
               <h1 className="text-xl font-semibold pl-2 pb-1">Description</h1>
               <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
@@ -151,12 +152,12 @@ export default function Hosting() {
                 />
               </div>
             </div>
+
             <div>
               <h1 className="text-xl font-semibold pl-2 pb-1">
                 Organizer Name
               </h1>
               <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
-                <FontAwesomeIcon icon={faList} className="mr-3" />
                 <input
                   type="text"
                   placeholder="Enter organizer name"
@@ -166,10 +167,10 @@ export default function Hosting() {
                 />
               </div>
             </div>
+
             <div>
               <h1 className="text-xl font-semibold pl-2 pb-1">Contact Email</h1>
               <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
-                <FontAwesomeIcon icon={faList} className="mr-3" />
                 <input
                   type="email"
                   placeholder="Enter your contact email"
@@ -179,44 +180,7 @@ export default function Hosting() {
                 />
               </div>
             </div>
-            <div>
-              <h1 className="text-xl font-semibold pl-2 pb-1">Start Date</h1>
-              <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
-                <FontAwesomeIcon icon={faCalendar} className="mr-3" />
-                <input
-                  type="date"
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
-                  className="bg-transparent focus:outline-none w-full"
-                />
-              </div>
-            </div>
-            <div>
-              <h1 className="text-xl font-semibold pl-2 pb-1">End Date</h1>
-              <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
-                <FontAwesomeIcon icon={faCalendar} className="mr-3" />
-                <input
-                  type="date"
-                  value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
-                  className="bg-transparent focus:outline-none w-full"
-                />
-              </div>
-            </div>
-            <div>
-              <h1 className="text-xl font-semibold pl-2 pb-1">
-                Registration Deadline
-              </h1>
-              <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
-                <FontAwesomeIcon icon={faCalendar} className="mr-3" />
-                <input
-                  type="date"
-                  value={registrationDeadline}
-                  onChange={(e) => setRegistrationDeadline(e.target.value)}
-                  className="bg-transparent focus:outline-none w-full"
-                />
-              </div>
-            </div>
+
             <div className="flex flex-col ">
               <label
                 htmlFor="themes"
@@ -269,10 +233,10 @@ export default function Hosting() {
                 }}
               />
             </div>
+
             <div>
               <h1 className="text-xl font-semibold pl-2 pb-1">Mode</h1>
               <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
-                <FontAwesomeIcon icon={faList} className="mr-3" />
                 <input
                   type="text"
                   placeholder="Enter mode"
@@ -282,6 +246,28 @@ export default function Hosting() {
                 />
               </div>
             </div>
+
+            {/* <div>
+              <h1 className="text-xl font-semibold pl-2 pb-1">Banner Image</h1>
+              <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setBannerUrl(e.target.files[0])}
+                  className="bg-transparent focus:outline-none w-full"
+                />
+              </div>
+              {bannerUrl && (
+                <div className="mt-3">
+                  <img
+                    src={URL.createObjectURL(bannerUrl)}
+                    alt="Preview"
+                    className="w-full max-h-60 rounded-lg object-cover"
+                  />
+                </div>
+              )}
+            </div> */}
+
             <div className="flex justify-between">
               <div />
               <button
@@ -295,8 +281,84 @@ export default function Hosting() {
           </div>
         )}
 
-        {/* STEP 2: RULES */}
+        {/* STEP 2: TIMELINES */}
         {step === 2 && (
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold mb-4">Timelines</h2>
+
+            <div>
+              <h1 className="text-xl font-semibold pl-2 pb-1">Start Date</h1>
+              <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
+                <input
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  className="bg-transparent focus:outline-none w-full"
+                />
+              </div>
+            </div>
+
+            <div>
+              <h1 className="text-xl font-semibold pl-2 pb-1">End Date</h1>
+              <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
+                <input
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  className="bg-transparent focus:outline-none w-full"
+                />
+              </div>
+            </div>
+
+            <div>
+              <h1 className="text-xl font-semibold pl-2 pb-1">
+                Registration Start
+              </h1>
+              <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
+                <input
+                  type="date"
+                  value={registrationStart}
+                  onChange={(e) => setRegistrationStart(e.target.value)}
+                  className="bg-transparent focus:outline-none w-full"
+                />
+              </div>
+            </div>
+
+            <div>
+              <h1 className="text-xl font-semibold pl-2 pb-1">
+                Registration Deadline
+              </h1>
+              <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
+                <input
+                  type="date"
+                  value={registrationDeadline}
+                  onChange={(e) => setRegistrationDeadline(e.target.value)}
+                  className="bg-transparent focus:outline-none w-full"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-between">
+              <button
+                type="button"
+                onClick={prevStep}
+                className="bg-gray-400 text-white py-2 px-4 rounded-lg"
+              >
+                Back
+              </button>
+              <button
+                type="button"
+                onClick={nextStep}
+                className="bg-purple-500 text-white py-2 px-4 rounded-lg"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* STEP 3: RULES */}
+        {step === 3 && (
           <div className="space-y-6">
             <h2 className="text-2xl font-bold mb-4">Rules</h2>
 
@@ -407,8 +469,8 @@ export default function Hosting() {
           </div>
         )}
 
-        {/* STEP 3: PRIZES */}
-        {step === 3 && (
+        {/* STEP 4: PRIZES */}
+        {step === 4 && (
           <div className="space-y-6">
             <h2 className="text-2xl font-bold mb-4">Prizes</h2>
             <div className="grid grid-cols-2 gap-10">
@@ -491,8 +553,8 @@ export default function Hosting() {
           </div>
         )}
 
-        {/* STEP 4: JUDGES */}
-        {step === 4 && (
+        {/* STEP 5: JUDGES */}
+        {step === 5 && (
           <div className="space-y-6">
             <h2 className="text-2xl font-bold mb-4">Judges</h2>
             <div className="grid grid-cols-2 gap-10">

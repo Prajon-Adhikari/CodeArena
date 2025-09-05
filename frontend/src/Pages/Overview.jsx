@@ -21,6 +21,7 @@ export default function Overview() {
   const [hackathon, setHackathon] = useState("");
   const [teamStatus, setTeamStatus] = useState("");
   const [referer, setReferer] = useState("");
+  const [teamName, setTeamName] = useState("");
   const [isRegistered, setIsRegistered] = useState(false);
   const [showUnregisterConfirm, setShowUnregisterConfirm] = useState(false);
   const [events, setEvents] = useState([]);
@@ -81,6 +82,7 @@ export default function Overview() {
       const response = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/home/${id}/overview`,
         {
+          teamName,
           teamStatus,
           referer,
         },
@@ -266,18 +268,18 @@ export default function Overview() {
               let textColor = "black";
 
               if (event.title === "Registration Period") {
-                backgroundColor = "#BBDCE5"; 
+                backgroundColor = "#BBDCE5";
               } else if (event.title === "Submission Period") {
-                backgroundColor = "#DFCCFB"; 
+                backgroundColor = "#DFCCFB";
               } else {
-                backgroundColor = "#F59E0B"; 
+                backgroundColor = "#F59E0B";
               }
 
               return {
                 style: {
                   backgroundColor,
                   color: textColor,
-                  padding:"25px" ,
+                  padding: "25px",
                   textAlign: "center",
                   fontWeight: "bold",
                   borderRadius: "6px",
@@ -300,6 +302,12 @@ export default function Overview() {
             <p className="text-xl pt-2 pb-6 border-b-1 border-gray-400 text-gray-500">
               Please support our community guidelines
             </p>
+            <div>
+              <p className="pt-6 font-semibold text-xl pb-2">
+                <span className="text-red-600">*</span> Team Name
+              </p>
+              <input type="text" placeholder="Enter you team name" className="border-2 border-gray-400 w-[90%] px-4 py-2 rounded-lg" value={teamName} onChange={(e) => setTeamName(e.target.value)}/>
+            </div>
             <p className="pt-6 font-semibold text-xl pb-2">
               <span className="text-red-600">*</span> Are you working solo or
               with a team?

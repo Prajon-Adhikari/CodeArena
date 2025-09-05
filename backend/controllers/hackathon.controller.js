@@ -14,6 +14,7 @@ export const hackathon = async (req, res) => {
     contactEmail,
     startDate,
     endDate,
+    registrationStart,
     registrationDeadline,
     themes,
     mode,
@@ -40,6 +41,7 @@ export const hackathon = async (req, res) => {
       contactEmail,
       startDate,
       endDate,
+      registrationStart,
       registrationDeadline,
       themes,
       mode,
@@ -128,7 +130,7 @@ export const joinedHackathon = async (req, res) => {
   try {
     const userId = req.user._id;
     const { id: hackathonId } = req.params;
-    const { teamStatus, referer } = req.body;
+    const { teamName, teamStatus, referer } = req.body;
 
     const user = await User.findById(userId);
     if (!user) {
@@ -153,6 +155,7 @@ export const joinedHackathon = async (req, res) => {
     const joined = new JoinedHackathon({
       username: user.fullName,
       email: user.email,
+      teamName,
       teamStatus,
       referer,
       userId: user._id,

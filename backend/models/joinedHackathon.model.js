@@ -10,6 +10,10 @@ const joinedHackathonSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    teamName:{
+      type: String,
+      required: true,
+    },
     teamStatus: {
       type: String,
       rquired: true,
