@@ -7,7 +7,7 @@ import {
   FaBehance,
   FaDribbble,
   FaInstagram,
-  FaPhone,
+  FaGithub
 } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -103,6 +103,7 @@ const Profile = () => {
     fetchPortfolioProjects();
   }, []);
 
+
   const handlePortfolioSubmit = async (e) => {
     e.preventDefault();
 
@@ -162,7 +163,7 @@ const Profile = () => {
   }
 
   return (
-    <div className="bg-gray-100 pt-[80px] text-[#2B2C34] ">
+    <div className="bg-gray-100 pt-[80px] text-[#2B2C34] pb-10">
       <div className="py-10 bg-white rounded-xl px-[80px] mt-[10px] mx-[50px] flex items-center">
         <div className="flex justify-between w-[800px] pr-10">
           <div className="flex gap-8">
@@ -208,26 +209,21 @@ const Profile = () => {
             <div className="font-bold pr-2 w-[180px]">Year Experience : </div>
             <span className="text-gray-500">6 </span>
           </div>
-          <div className="flex gap-8 text-2xl text-blue-400">
+          <div className="flex gap-10 text-2xl text-blue-400">
             <FaFacebook />
             <FaInstagram />
             <FaLinkedin />
             <FaTwitter />
+            <FaGithub/>
           </div>
         </div>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-3 mt-3 px-[50px] pb-10">
+      <div className="grid md:grid-cols-3 gap-3 mt-3 px-[50px] items-start pb-10">
         {/* Skills */}
 
         <div className="col-span-1 bg-white py-6 px-8 rounded-2xl">
-          <h3 className="text-lg font-semibold mb-3">About</h3>
-          <p className="mb-5 text-sm">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deserunt
-            excepturi velit sint nemo harum a accusamus tempore nisi? Laborum
-            culpa asperiores adipisci maiores ut quas alias neque, corrupti
-            accusamus non?
-          </p>
+          
           <h3 className="text-lg font-semibold mb-4">Skills</h3>
           <div className="flex flex-wrap gap-2">
             {profileData?.skills.map((skill, i) => (
@@ -259,11 +255,11 @@ const Profile = () => {
           </ul>
 
           {/* Proficiency */}
-          <h3 className="text-lg font-semibold mt-6 mb-4">Proficiency</h3>
+          <h3 className="text-lg font-semibold mt-6 mb-4">Language</h3>
           <ul className="text-sm space-y-1">
-            {profileData?.proficiency.map((prof, i) => (
-              <li key={i}>{prof}</li>
-            ))}
+            <li>English</li>
+            <li>Nepali</li>
+            <li>Hindi</li>
           </ul>
         </div>
         <div className="bg-white rounded-2xl w-[945px] px-8 py-6 ">
@@ -302,11 +298,44 @@ const Profile = () => {
             ) : (
               <div>
                 <div className="flex flex-col items-center">
-                  <img src={folder} alt="" className="w-[220px] h-[220px]"/>
-                  <p className="font-bold text-lg">No projects yet, When you create a new project it appears here</p>
+                  <img src={folder} alt="" className="w-[220px] h-[220px]" />
+                  <p className="font-bold text-lg">
+                    No projects yet, When you create a new project it appears
+                    here
+                  </p>
                 </div>
               </div>
             )}
+          </div>
+          <div className="py-6 border-b-1 border-gray-300 ">
+            <h2 className="font-semibold text-2xl pb-4 pl-1">Address</h2>
+            <div className="grid grid-cols-2 gap-y-10 pl-2">
+              <div>
+                <p className="font-bold text-lg">Country:</p>
+                <p className="">United Kingdom</p>
+              </div>
+              <div>
+                <p className="font-bold text-lg">City:</p>
+                <p className="">London</p>
+              </div>
+              <div>
+                <p className="font-bold text-lg">Street:</p>
+                <p className="">5th Street</p>
+              </div>
+            </div>
+          </div>
+          <div className="py-6">
+            <h3 className="text-2xl font-semibold mb-3 pl-1">About</h3>
+          <p className="pr-10 pl-1">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deserunt
+            excepturi velit sint nemo harum a accusamus tempore nisi? Laborum
+            culpa asperiores adipisci maiores ut quas alias neque, corrupti
+            accusamus non? Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deserunt
+            excepturi velit sint nemo harum a accusamus tempore nisi? Laborum
+            culpa asperiores adipisci maiores ut quas alias neque, corrupti
+            accusamus non?
+          </p>
+            
           </div>
         </div>
       </div>

@@ -119,7 +119,7 @@ export default function Hosting() {
   const prevStep = () => setStep((prev) => prev - 1);
 
   return (
-    <div className="flex justify-center my-14 pt-[50px] mt-20">
+    <div className="flex justify-center my-14 pt-[50px] mt-20 pb-10">
       <form className="space-y-7 w-[840px]" onSubmit={handleSubmit}>
         {/* STEP 1: BASIC INFO */}
         {step === 1 && (

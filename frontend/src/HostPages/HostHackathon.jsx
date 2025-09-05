@@ -36,7 +36,7 @@ export default function HostHackathon() {
   }, []);
 
   return (
-    <div className="pt-[80px]">
+    <div className="pt-[80px] pb-10">
       <div className="py-20">
         <div className="flex flex-col items-center">
           <h1 className="font-bold text-6xl w-[800px] text-center">

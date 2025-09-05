@@ -8,7 +8,7 @@ import { faEnvelope, faPhone, faLocationDot } from "@fortawesome/free-solid-svg-
 
 const Footer = () => {
   return (
-    <footer className="bg-[#196594] mt-10 px-[120px]">
+    <footer className="bg-[#196594] px-[120px]">
       <div className=" px-10 pb-12 pt-16 flex justify-between text-sm text-white">
         <div className="w-[300px]">
            <h1 className="font-bold text-3xl pb-3 ">CODEARENA</h1>
@@ -44,11 +44,6 @@ const Footer = () => {
             <li>
               <Link to="/blog" className="hover:underline">
                Blogs
-              </Link>
-            </li>
-            <li>
-              <Link to="" className="hover:underline">
-                 Press
               </Link>
             </li>
             <li>

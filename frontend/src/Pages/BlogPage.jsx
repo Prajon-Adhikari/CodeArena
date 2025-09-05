@@ -119,7 +119,7 @@ export default function BlogPage() {
     <>
       {/* Hero Section */}
       <div
-        className="bg-gray-100 bg-cover bg-center relative h-[580px] pt-14 px-[120px] mt-[80px] flex flex-col justify-center"
+        className="bg-gray-100 bg-cover bg-center pb-10 relative h-[580px] pt-14 px-[120px] mt-[80px] flex flex-col justify-center"
         style={{ backgroundImage: `url(${blogHeroImage})` }}
       >
         <div className="absolute inset-0  bg-black opacity-20">{""}</div>

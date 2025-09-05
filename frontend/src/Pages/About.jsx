@@ -26,7 +26,7 @@ import Teams from "../Components/Teams";
 const About = () => {
   return (
     <>
-      <div className="pt-[80px]">
+      <div className="pt-[80px] pb-10">
         <div
           className="h-[600px] bg-gray-300"
           style={{

@@ -1,4 +1,5 @@
 import Portfolio from "../models/portfolio.model.js";
+import Hackathon from "../models/hackathon.model.js"
 
 export const getPortfolioProject = async (req, res) =>{
   try {
@@ -8,11 +9,13 @@ export const getPortfolioProject = async (req, res) =>{
       return res.status(400).json({message: "User Id not found"});
     }
 
+    const hackathons = await Hackathon.find({userId});
+
     const portfolioProjects = await Portfolio.find({
       userId
     });
 
-    return res.status(200).json({message: "Fetching portfolio projects", portfolioProjects });
+    return res.status(200).json({message: "Fetching portfolio projects", portfolioProjects, hackathons });
   } catch (error) {
     console.log("Internal error while fetching portfolio projects");
     return res.status(500).json({message: "Internal error while fetching portfolio projects"});

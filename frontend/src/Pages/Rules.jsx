@@ -72,7 +72,7 @@ export default function Rules() {
     fetchHackathonRules();
   }, [id]);
   return (
-    <div className="pt-[60px]">
+    <div className="pt-[60px] pb-10">
       <div>
         {hackathon && hackathon.bannerUrl ? (
           <img src={hackathon.bannerUrl} />

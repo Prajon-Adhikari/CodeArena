@@ -36,7 +36,7 @@ export default function MyJoinedHackathon() {
   }, []);
 
   return (
-    <div className="pt-30 px-[130px]">
+    <div className="pt-30 px-[130px] pb-10">
       <h1 className="font-bold text-5xl pb-10">My Hackathons</h1>
 
       <div className="flex gap-20 text-2xl mb-10">

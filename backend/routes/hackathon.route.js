@@ -33,7 +33,7 @@ router.get("/join/hackathon", protectRoute, getHackathonTournament);
 
 router.get("/", protectRoute, getTopHackathon);
 
-router.get("/profile", protectRoute, getPortfolioProject)
+router.get("/profile", protectRoute, getPortfolioProject);
 
 router.get("/blogs", protectRoute, fetchBlog);
 

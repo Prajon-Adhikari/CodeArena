@@ -155,7 +155,7 @@ const JoinHackathon = () => {
   });
 
   return (
-    <div className=" pt-[50px]">
+    <div className=" pt-[50px] pb-10">
       <div
         className="text-center py-32 text-[50px] font-extrabold bg-cover bg-center  text-white mb-16"
         style={{ backgroundImage: "url('/src/assets/join-heroimage.jpg')" }}
