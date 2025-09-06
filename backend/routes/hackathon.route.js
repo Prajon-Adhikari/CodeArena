@@ -21,7 +21,7 @@ import upload from "../middlewares/video.js";
 import { getPrizeDetails } from "../controllers/prize.controller.js";
 import { getJudgesDetails } from "../controllers/judges.controller.js";
 import uploadImage from "../middlewares/image.js";
-import { fetchBlog, submitBlog } from "../controllers/blog.controller.js";
+import { fetchBlog, getSpecificBlogDetails, submitBlog } from "../controllers/blog.controller.js";
 import { getPortfolioProject, submitPortfolioProject } from "../controllers/portfolio.controller.js";
 import {uploadPortfolio} from "../middlewares/uploadPortfolio.js";
 import { submitContact } from "../controllers/contact.controller.js";
@@ -40,13 +40,15 @@ router.get("/blogs", protectRoute, fetchBlog);
 
 router.post("/blogs", protectRoute, uploadImage, submitBlog);
 
+router.get("/blog/:id", getSpecificBlogDetails);
+
 router.post("/contact",protectRoute, submitContact);
 
 router.get("/myjoinedhackathon", protectRoute, getMyJoinedHackathon);
 
 router.get("/myhostedhackathon", protectRoute, getHostedHackathon);
 
-router.post("/profile/portfolio",protectRoute,uploadPortfolio, submitPortfolioProject)
+router.post("/profile/portfolio",protectRoute,uploadPortfolio, submitPortfolioProject);
 
 router.get("/:id", protectRoute, getSpecificHackathonDetails);
 

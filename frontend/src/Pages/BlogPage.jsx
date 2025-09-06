@@ -265,54 +265,57 @@ export default function BlogPage() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-20">
           {filteredPosts.map((post, index) => (
-            <div
-              key={index}
-              className="rounded-xl shadow-[0px_0px_4px_gray] p-2 pt-11 overflow-hidden bg-white"
-            >
-              <div className={`h-50 flex items-center justify-center mb-4`}>
-                {post?.images?.map((img, index) => (
-                  <img
-                    key={index}
-                    src={img.url} // Cloudinary URL
-                    alt={`Project Image ${index + 1}`}
-                    className="w-[640px] h-[260px] object-cover rounded-lg mb-4"
-                  />
-                ))}
-              </div>
-              <div className="py-4 px-3">
-                <div className="pb-2 pt-1">
-                  <span
-                    className={`text-xs text-gray-700 ${
-                      post.category === "Hackathon planning"
-                        ? "bg-teal-400"
-                        : post.category === "Participant resources"
-                        ? "bg-blue-300"
-                        : "bg-orange-300"
-                    }  px-3 py-1 rounded-full font-medium`}
-                  >
-                    {post.category}
-                  </span>
+            <Link to={`/blog/${post._id}`}>
+              <div
+                key={index}
+                className="rounded-xl shadow-[0px_0px_4px_gray] hover:shadow-[0px_0px_10px_gray] cursor-pointer p-2 pt-11 overflow-hidden bg-white"
+              >
+                <div className={`h-50 flex  items-center justify-center mb-4`}>
+                  {post?.images?.map((img, index) => (
+                    <img
+                      key={index}
+                      src={img.url} // Cloudinary URL
+                      alt={`Project Image ${index + 1}`}
+                      className="w-[640px] h-[260px] object-cover rounded-lg mb-4"
+                    />
+                  ))}
                 </div>
-                <span className="text-sm text-gray-500 pl-1">
-                  {formatDate(post.createdAt)}
-                </span>
-                <h3 className="mt-2 font-semibold text-lg leading-tight pl-1 h-12 line-clamp-2">
-                  {post.title}
-                </h3>
-                <div className="pt-2 pl-1 pr-2 text-gray-700 line-clamp-2">
-                  {post.description}
-                </div>
-                <div className="flex justify-between pt-4 pl-1 pr-5 items-center">
-                  <button className="text-orange-500">Learn More &rarr;</button>
-                  <div className="text-sm italic">
-                    <span className="pr-1">
-                    Created by :
+
+                <div className="py-4 px-3">
+                  <div className="pb-2 pt-1">
+                    <span
+                      className={`text-xs text-gray-700 ${
+                        post.category === "Hackathon planning"
+                          ? "bg-teal-400"
+                          : post.category === "Participant resources"
+                          ? "bg-blue-300"
+                          : "bg-orange-300"
+                      }  px-3 py-1 rounded-full font-medium`}
+                    >
+                      {post.category}
+                    </span>
+                  </div>
+                  <span className="text-sm text-gray-500 pl-1">
+                    {formatDate(post.createdAt)}
                   </span>
-                  {post.userId.fullName}
+                  <h3 className="mt-2 font-semibold text-lg leading-tight pl-1 h-12 line-clamp-2">
+                    {post.title}
+                  </h3>
+                  <div className="pt-2 pl-1 pr-2 text-gray-700 line-clamp-2">
+                    {post.description}
+                  </div>
+                  <div className="flex justify-between pt-4 pl-1 pr-5 items-center">
+                    <button className="text-orange-500">
+                      Learn More &rarr;
+                    </button>
+                    <div className="text-sm italic">
+                      <span className="pr-1">Created by :</span>
+                      {post.userId.fullName}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
