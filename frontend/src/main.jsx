@@ -31,7 +31,6 @@ import Prizes from "./Pages/Prizes.jsx";
 import Judges from "./Pages/Judges.jsx";
 import SpecificBlog from "./Pages/SpecificBlog.jsx";
 import SpecificPortfolioProject from "./Pages/SpecificPortfolioProject.jsx";
-import { UserProvider } from "./Context/UserContext.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -75,8 +74,6 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <UserProvider>
       <RouterProvider router={router} />
-    </UserProvider>
   </React.StrictMode>
 );

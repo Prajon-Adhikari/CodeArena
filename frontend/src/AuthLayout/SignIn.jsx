@@ -11,7 +11,6 @@ import {
 import login from "../assets/login-img.png";
 import google from "../assets/google.png";
 import { ToastContainer, toast } from "react-toastify";
-import {UserContext} from "../Context/UserContext";
 
 export default function Signin() {
   const [showPassword, setShowPassword] = useState(false);
@@ -19,8 +18,6 @@ export default function Signin() {
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
-
-  const {setUser} = useContext(UserContext);
 
   const handleLogIn = async (e) => {
     e.preventDefault();
@@ -36,7 +33,6 @@ export default function Signin() {
         }
       );
       navigate("/");
-      setUser(data);
     } catch (error) {
       toast.dismiss();
       const errorMsg =
@@ -46,7 +42,7 @@ export default function Signin() {
   };
 
   return (
-    <div className="bg-[url(./assets/coding-background.jpg)] bg-no-repeat w-full  min-h-screen flex items-center justify-center bg-cover">
+    <div className="bg-[url(./assets/auth.jpg)] bg-no-repeat w-full  min-h-screen flex items-center justify-center bg-cover">
       <div className="backdrop-blur-lg bg-white/10 p-5 h-[640px] rounded-[26px] shadow-lg w-[80%] border-1 border-gray-300 ">
         <div className="flex gap-16 items-center h-full">
           <div className="h-[560px] w-[50%] pl-10">
