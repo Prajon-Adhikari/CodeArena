@@ -98,13 +98,8 @@ const Navbar = () => {
           </div>
           
           <div>
-            <FontAwesomeIcon icon={faBell} className="text-gray-600 text-2xl cursor-pointer"/>
+            <FontAwesomeIcon icon={faBell} className="text-gray-400 text-2xl cursor-pointer"/>
           </div>
-
-          <div>
-            <FontAwesomeIcon icon={faMessage} className="text-gray-600 text-2xl cursor-pointer"/>
-          </div>
-
           {/* Right Side: Auth / Profile */}
           <div className="flex items-center gap-4">
             {user?.fullName ? (

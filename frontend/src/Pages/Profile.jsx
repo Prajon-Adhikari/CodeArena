@@ -32,8 +32,7 @@ const skillsOptions = [
 ];
 
 const Profile = () => {
-  const [user, setUser] = useState(null);
-  const [profileData, setProfileData] = useState(null);
+  const [profileData, setProfileData] = useState({});
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState(null);
@@ -47,39 +46,6 @@ const Profile = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const portfolioModal = location.pathname === "/profile/portfolio";
-
-  useEffect(() => {
-    const fetchLoggedInUser = async () => {
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/home`,
-          {
-            method: "GET",
-            credentials: "include",
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-        const data = await response.json();
-        setUser(data.user);
-      } catch (error) {
-        console.log("Failed to fetch user:", error);
-      }
-    };
-
-    const fetchProfileData = async () => {
-      try {
-        const res = await axios.get("http://localhost:8000/api/profile");
-        setProfileData(res.data);
-      } catch (error) {
-        console.error("Failed to fetch profile data", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchLoggedInUser();
-    fetchProfileData();
-  }, []);
 
   useEffect(() => {
     const fetchPortfolioProjects = async () => {
@@ -96,6 +62,9 @@ const Profile = () => {
         );
         const data = await response.json();
         setPortfolioProjects(data.portfolioProjects);
+        setProfileData(data.user);
+        setLoading(false);
+        console.log(data.user);
       } catch (error) {
         console.log("Error while fetching portfolio projects", error);
       }
@@ -153,33 +122,35 @@ const Profile = () => {
     return <div className="text-center mt-10 text-gray-500">Loading...</div>;
   }
 
-  if (!user) {
-    return (
-      <div className="text-center mt-10 text-gray-500">
-        Please log in to view your profile.
-      </div>
-    );
-  }
+  const dummySkills = ["React", "JavaScript", "Node.js", "MongoDB", "Express"];
+  const dummyVerifications = ["Email", "Phone", "Identity"];
 
   return (
     <div className="bg-gray-100 pt-[80px] text-[#2B2C34] pb-10">
       <div className="py-10 bg-white rounded-xl px-[80px] mt-[10px] mx-[50px] flex items-center">
         <div className="flex justify-between w-[800px] pr-10">
           <div className="flex gap-8">
-            <img
-              src={profileData?.avatar}
-              alt="avatar"
-              className="w-40 h-40 rounded-full border-4 border-white"
-            />
+            {profileData?.profilePic ? (
+              <img
+                src={profileData?.profilePic}
+                alt="avatar"
+                className="w-40 h-40 rounded-full border-4 border-white"
+              />
+            ) : (
+              <div className="w-40 h-40 rounded-full border-4 flex items-center justify-center bg-indigo-900 text-white text-6xl">{profileData.fullName.charAt(0).toUpperCase()}</div>
+            )}
+
             <div className="pt-4 w-[400px]">
-              <h2 className="text-3xl font-bold pb-2">{profileData?.name}</h2>
+              <h2 className="text-3xl font-bold pb-2">
+                {profileData?.fullName}
+              </h2>
               <p className="text-gray-500 pb-2 text-sm">
                 <FontAwesomeIcon icon={faBriefcase} className="pr-3" />
-                {profileData?.role}
+                Manager at Google
               </p>
               <p className="text-gray-500 text-sm">
                 <FontAwesomeIcon icon={faLocationDot} className="pr-3" />
-                {profileData?.location}
+                London, United Kingdom
               </p>
               <div className="text-gray-500 pl-[1px] text-lg font-semibold mt-4">
                 <span className="pr-2">100</span>
@@ -224,7 +195,7 @@ const Profile = () => {
         <div className="col-span-1 bg-white py-6 px-8 rounded-2xl">
           <h3 className="text-lg font-semibold mb-4">Skills</h3>
           <div className="flex flex-wrap gap-2">
-            {profileData?.skills.map((skill, i) => (
+            {dummySkills.map((skill, i) => (
               <span
                 key={i}
                 className="bg-gray-200 px-3 py-1 rounded-full text-sm"
@@ -245,7 +216,7 @@ const Profile = () => {
           {/* Verifications */}
           <h3 className="text-lg font-semibold mt-6 mb-4">Verifications</h3>
           <ul className="space-y-2">
-            {profileData?.verifications.map((item, i) => (
+            {dummyVerifications.map((item, i) => (
               <li key={i} className="flex items-center gap-2 text-sm">
                 <GoVerified className="text-green-500" /> {item} Verified
               </li>

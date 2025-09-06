@@ -39,10 +39,10 @@ export default function HostHackathon() {
     <div className="pt-[80px] pb-10">
       <div className="py-20">
         <div className="flex flex-col items-center">
-          <h1 className="font-bold text-6xl w-[800px] text-center">
+          <h1 className="font-bold text-5xl w-[800px] text-center">
             Grow Your Developer Ecosystem with CodeArena
           </h1>
-          <p className="text-gray-600 pt-4 text-lg w-[720px]">
+          <p className="text-gray-600 pt-4 text-lg w-[700px] text-center">
             Inspire developers to build with your tools through hackathons
             managed by CodeArena
           </p>
@@ -52,8 +52,8 @@ export default function HostHackathon() {
             </button>
           </a>
         </div>
-        <div className="relative h-[480px]">
-          <div className=" w-[280px] max-h-[340px] pb-7 -rotate-7 bg-white shadow-[0px_0px_5px_gray] p-2 rounded-2xl absolute bottom-75 left-12">
+        <div className="relative h-[470px]">
+          <div className=" w-[280px] max-h-[340px] pb-7 -rotate-10 bg-white shadow-[0px_0px_5px_gray] p-2 rounded-2xl absolute bottom-70 left-24">
             <img
               src={image4}
               alt=""
@@ -64,7 +64,7 @@ export default function HostHackathon() {
               Lorem ipsum dolor sit amet consectetur.
             </p>
           </div>
-          <div className=" w-[280px] max-h-[340px] pb-7 rotate-7 bg-white  shadow-[0px_0px_5px_gray] p-2 rounded-2xl absolute bottom-30 left-75">
+          <div className=" w-[280px] max-h-[340px] pb-7 rotate-7 bg-white  shadow-[0px_0px_5px_gray] p-2 rounded-2xl absolute bottom-25 left-80">
             <img
               src={collaboration}
               alt=""
@@ -75,7 +75,7 @@ export default function HostHackathon() {
               Lorem ipsum dolor sit amet consectetur.
             </p>
           </div>
-          <div className=" w-[280px] max-h-[340px] pb-7 bg-white shadow-[0px_0px_5px_gray] p-2 rounded-2xl absolute bottom-20 left-155">
+          <div className=" w-[280px] max-h-[340px] pb-7 bg-white shadow-[0px_0px_5px_gray] p-2 rounded-2xl absolute bottom-15 left-156">
             <img
               src={image5}
               alt=""
@@ -86,7 +86,7 @@ export default function HostHackathon() {
               Lorem ipsum dolor sit amet consectetur.
             </p>
           </div>
-          <div className=" w-[280px] max-h-[340px] pb-7 -rotate-7 bg-white shadow-[0px_0px_5px_gray] p-2 rounded-2xl absolute bottom-30 right-75">
+          <div className=" w-[280px] max-h-[340px] z-10 pb-7 -rotate-7 bg-white shadow-[0px_0px_5px_gray] p-2 rounded-2xl absolute bottom-25 right-78">
             <img
               src={image3}
               alt=""
@@ -97,7 +97,7 @@ export default function HostHackathon() {
               Lorem ipsum dolor sit amet consectetur.
             </p>
           </div>
-          <div className=" w-[280px] max-h-[340px] pb-7 rotate-7 bg-white shadow-[0px_0px_5px_gray] p-2 rounded-2xl absolute bottom-70 right-10">
+          <div className=" w-[280px] max-h-[340px] pb-7 rotate-10 bg-white shadow-[0px_0px_5px_gray] p-2 rounded-2xl absolute bottom-65 right-24">
             <img
               src={image2}
               alt=""

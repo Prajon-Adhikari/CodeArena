@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -11,6 +11,7 @@ import {
 import login from "../assets/login-img.png";
 import google from "../assets/google.png";
 import { ToastContainer, toast } from "react-toastify";
+import {UserContext} from "../Context/UserContext";
 
 export default function Signin() {
   const [showPassword, setShowPassword] = useState(false);
@@ -18,6 +19,8 @@ export default function Signin() {
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
+
+  const {setUser} = useContext(UserContext);
 
   const handleLogIn = async (e) => {
     e.preventDefault();
@@ -33,6 +36,7 @@ export default function Signin() {
         }
       );
       navigate("/");
+      setUser(data);
     } catch (error) {
       toast.dismiss();
       const errorMsg =
