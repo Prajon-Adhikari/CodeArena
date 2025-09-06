@@ -7,13 +7,13 @@ import {
   FaBehance,
   FaDribbble,
   FaInstagram,
-  FaGithub
+  FaGithub,
 } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GoVerified } from "react-icons/go";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import {
   faBriefcase,
   faLocationDot,
@@ -102,7 +102,6 @@ const Profile = () => {
     };
     fetchPortfolioProjects();
   }, []);
-
 
   const handlePortfolioSubmit = async (e) => {
     e.preventDefault();
@@ -214,7 +213,7 @@ const Profile = () => {
             <FaInstagram />
             <FaLinkedin />
             <FaTwitter />
-            <FaGithub/>
+            <FaGithub />
           </div>
         </div>
       </div>
@@ -223,7 +222,6 @@ const Profile = () => {
         {/* Skills */}
 
         <div className="col-span-1 bg-white py-6 px-8 rounded-2xl">
-          
           <h3 className="text-lg font-semibold mb-4">Skills</h3>
           <div className="flex flex-wrap gap-2">
             {profileData?.skills.map((skill, i) => (
@@ -273,25 +271,27 @@ const Profile = () => {
           </div>
           <div className="pt-3 border-b-1 border-gray-300 pb-12">
             {portfolioProjects.length > 0 ? (
-              <div className="grid grid-cols-3 gap-10">
+              <div className="grid grid-cols-3 gap-10 ">
                 {portfolioProjects.map((project, index) => {
                   return (
-                    <div className=" h-[280px] shadow-lg p-2 rounded-lg ">
-                      {project?.images?.map((img, index) => (
-                        <img
-                          key={index}
-                          src={img.url} // Cloudinary URL
-                          alt={`Project Image ${index + 1}`}
-                          className="w-full h-[68%] object-cover rounded-lg mb-3"
-                        />
-                      ))}
-                      <div className="pl-2 font-bold">
-                        {project.projectTitle}
+                    <Link to={`/profile/${project._id}`}>
+                      <div className=" h-[280px] shadow-lg p-2 rounded-lg hover:shadow-[0px_0px_5px_gray] cursor-pointer">
+                        {project?.images?.map((img, index) => (
+                          <img
+                            key={index}
+                            src={img.url} // Cloudinary URL
+                            alt={`Project Image ${index + 1}`}
+                            className="w-full h-[68%] object-cover rounded-lg mb-3"
+                          />
+                        ))}
+                        <div className="pl-2 font-bold">
+                          {project.projectTitle}
+                        </div>
+                        <div className="text-gray-500 text-sm line-clamp-2 pl-2">
+                          {project.projectDescription}
+                        </div>
                       </div>
-                      <div className="text-gray-500 text-sm line-clamp-2 pl-2">
-                        {project.projectDescription}
-                      </div>
-                    </div>
+                    </Link>
                   );
                 })}
               </div>
@@ -326,16 +326,15 @@ const Profile = () => {
           </div>
           <div className="py-6">
             <h3 className="text-2xl font-semibold mb-3 pl-1">About</h3>
-          <p className="pr-10 pl-1">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deserunt
-            excepturi velit sint nemo harum a accusamus tempore nisi? Laborum
-            culpa asperiores adipisci maiores ut quas alias neque, corrupti
-            accusamus non? Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deserunt
-            excepturi velit sint nemo harum a accusamus tempore nisi? Laborum
-            culpa asperiores adipisci maiores ut quas alias neque, corrupti
-            accusamus non?
-          </p>
-            
+            <p className="pr-10 pl-1">
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deserunt
+              excepturi velit sint nemo harum a accusamus tempore nisi? Laborum
+              culpa asperiores adipisci maiores ut quas alias neque, corrupti
+              accusamus non? Lorem ipsum dolor sit, amet consectetur adipisicing
+              elit. Deserunt excepturi velit sint nemo harum a accusamus tempore
+              nisi? Laborum culpa asperiores adipisci maiores ut quas alias
+              neque, corrupti accusamus non?
+            </p>
           </div>
         </div>
       </div>
@@ -456,8 +455,8 @@ const Profile = () => {
                     />
                   </div>
                 </div>
-                <div className="flex flex-col gap-6 mt-4">
-                  <div className="border-2 border-dotted border-gray-400 h-[180px] w-[400px] flex justify-center flex-col items-center rounded-3xl relative">
+                <div className="flex flex-col gap-10 mt-7">
+                  <div className="border-2 border-dotted border-gray-400 h-[180px] w-[510px] flex justify-center flex-col items-center rounded-3xl relative">
                     {!selectedVideo ? (
                       <>
                         <label
@@ -487,17 +486,17 @@ const Profile = () => {
                           ✕
                         </button>
 
-                        <div className="w-[400px] h-[180px] rounded-2xl border overflow-hidden">
+                        <div className="w-[510px] rounded-2xl border overflow-hidden">
                           <video
                             src={URL.createObjectURL(selectedVideo)}
                             controls
-                            className="w-full h-full object-cover"
+                            className="w-full h-auto rounded-2xl"
                           />
                         </div>
                       </div>
                     )}
                   </div>
-                  <div className="border-2 border-dotted border-gray-400 h-[180px] w-[400px] flex flex-col items-center justify-center py-4 rounded-3xl relative">
+                  <div className="border-2 border-dotted border-gray-400 h-[180px] w-[510px] flex flex-col items-center justify-center py-4 rounded-3xl relative">
                     {!selectedImage ? (
                       <>
                         <label

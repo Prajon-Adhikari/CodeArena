@@ -22,7 +22,7 @@ import { getPrizeDetails } from "../controllers/prize.controller.js";
 import { getJudgesDetails } from "../controllers/judges.controller.js";
 import uploadImage from "../middlewares/image.js";
 import { fetchBlog, getSpecificBlogDetails, submitBlog } from "../controllers/blog.controller.js";
-import { getPortfolioProject, submitPortfolioProject } from "../controllers/portfolio.controller.js";
+import { getPortfolioProject, getSpecificPortfolioProject, submitPortfolioProject } from "../controllers/portfolio.controller.js";
 import {uploadPortfolio} from "../middlewares/uploadPortfolio.js";
 import { submitContact } from "../controllers/contact.controller.js";
 
@@ -35,6 +35,8 @@ router.get("/join/hackathon", protectRoute, getHackathonTournament);
 router.get("/", protectRoute, getTopHackathon);
 
 router.get("/profile", protectRoute, getPortfolioProject);
+
+router.get("/profile/:id", getSpecificPortfolioProject);
 
 router.get("/blogs", protectRoute, fetchBlog);
 

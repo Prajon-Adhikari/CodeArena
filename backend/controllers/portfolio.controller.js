@@ -63,3 +63,26 @@ export const submitPortfolioProject = async (req, res) => {
 };
 
 
+export const getSpecificPortfolioProject = async (req, res) => {
+  try {
+    const { id: portfolioProjectId } = req.params;
+
+    if (!portfolioProjectId) {
+      return res.status(400).json({ message: "Portfolio Projeect id is not defined" });
+    }
+
+    const portfolioProject = await Portfolio.findOne({
+      _id: portfolioProjectId,
+    });
+
+    if(!portfolioProject){
+      return res.status(400).json({message: "Portfolio project not found"});
+    }
+
+
+    return res.status(200).json({message: "Fetching specific portfolio project", portfolioProject});
+  } catch (error) {
+    console.log("Internal error while fetching specific portfolio project",error);
+    return res.status(500).json({message: "Internal error while fetching specific portfolio project"})
+  }
+};
