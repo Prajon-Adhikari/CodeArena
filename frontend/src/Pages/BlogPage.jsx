@@ -183,9 +183,11 @@ export default function BlogPage() {
             <p className="text-gray-600 mb-6 line-clamp-6">
               {popularBlog.description}
             </p>
-            <button className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 w-fit">
-              Read more
-            </button>
+            <Link to={`/blog/${popularBlog._id}`}>
+              <button className="bg-blue-600 cursor-pointer text-white px-6 py-2 rounded hover:bg-blue-700 w-fit">
+                Read more
+              </button>
+            </Link>
           </div>
         </div>
       </div>
