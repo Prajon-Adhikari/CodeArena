@@ -23,7 +23,6 @@ const uploadImageMiddleware = multer({ storage: imageStorage }).single("image");
 // Express middleware wrapper
 const uploadImage = (req, res, next) => {
   uploadImageMiddleware(req, res, (err) => {
-    console.log("Uploading image...");
     if (err) {
       console.error("Multer or Cloudinary upload error:", err);
       return res

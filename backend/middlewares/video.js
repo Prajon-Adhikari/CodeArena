@@ -18,7 +18,6 @@ const uploadMiddleware = multer({ storage }).single("video");
 
 const upload = (req, res, next) => {
   uploadMiddleware(req, res, (err) => {
-    console.log("Uploading");
     if (err) {
       console.error("Multer or Cloudinary upload error:", err); // 👈 log full error
       return res

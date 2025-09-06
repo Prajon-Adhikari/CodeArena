@@ -15,7 +15,7 @@ const blogSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    description:{
+    description: {
       type: String,
       required: true,
     },
@@ -28,7 +28,7 @@ const blogSchema = new mongoose.Schema(
     ],
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "user",
     },
   },
   { timestamps: true }

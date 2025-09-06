@@ -304,13 +304,12 @@ export default function BlogPage() {
                 </div>
                 <div className="flex justify-between pt-4 pl-1 pr-5 items-center">
                   <button className="text-orange-500">Learn More &rarr;</button>
-                  <span>
-                    <FontAwesomeIcon
-                      icon={faHeart}
-                      className="text-gray-500 mr-2 cursor-pointer"
-                    />
-                    {post.likes}
+                  <div className="text-sm italic">
+                    <span className="pr-1">
+                    Created by :
                   </span>
+                  {post.userId.fullName}
+                  </div>
                 </div>
               </div>
             </div>

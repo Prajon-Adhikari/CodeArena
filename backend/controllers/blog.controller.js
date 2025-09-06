@@ -1,8 +1,9 @@
 import Blog from "../models/blogs.model.js";
+import User from "../models/user.model.js";
 
 export const fetchBlog = async (req,res) =>{
   try {
-    const blogs = await Blog.find();
+    const blogs = await Blog.find().populate("userId", "fullName");
 
     if(!blogs){
       return res.status(400).json({message: "No blogs to show"});
