@@ -24,6 +24,7 @@ import uploadImage from "../middlewares/image.js";
 import { fetchBlog, submitBlog } from "../controllers/blog.controller.js";
 import { getPortfolioProject, submitPortfolioProject } from "../controllers/portfolio.controller.js";
 import {uploadPortfolio} from "../middlewares/uploadPortfolio.js";
+import { submitContact } from "../controllers/contact.controller.js";
 
 const router = express.Router();
 
@@ -38,6 +39,8 @@ router.get("/profile", protectRoute, getPortfolioProject);
 router.get("/blogs", protectRoute, fetchBlog);
 
 router.post("/blogs", protectRoute, uploadImage, submitBlog);
+
+router.post("/contact",protectRoute, submitContact);
 
 router.get("/myjoinedhackathon", protectRoute, getMyJoinedHackathon);
 

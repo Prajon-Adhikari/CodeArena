@@ -1,52 +1,73 @@
 import { useState } from "react";
 import backgroundImg from "../assets/contact.png";
+import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEnvelope,
   faPhone,
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    firstname: "",
-    lastname: "",
-    email: "",
-    phone: "",
-    message: "",
-  });
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData);
-  };
-
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
   const [expanded, setExpanded] = useState({});
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/home/contact`,
+        {
+          firstName,
+          lastName,
+          email,
+          phone,
+          message,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      toast.success("Project submitted successfully 🎉");
+
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPhone("");
+      setMessage("");
+    } catch (error) {
+      console.error("Failed to submit project", error);
+      toast.error("Failed to submit contact message");
+    }
+  };
 
   const faqData = [
     {
-      question: "What makes Snappy different from other messaging apps?",
+      question: "What makes CodeArena different from other apps?",
       answer:
-        "Snappy focuses on user privacy and security... (replace with actual answer)",
+        "CodeArena focuses on user privacy and security...",
     },
     {
-      question: "How secure are my conversations on Snappy?",
+      question: "How secure are my conversations on CodeArena?",
       answer:
-        "Your conversations are encrypted end-to-end... (replace with actual answer)",
+        "Your conversations are encrypted end-to-end...",
     },
     {
-      question: "Can I personalize my Snappy experience?",
+      question: "Can I personalize my CodeArena experience?",
       answer:
-        "Yes, you can customize themes, notifications, and more... (replace with actual answer)",
+        "Yes, you can customize themes, notifications, and more...",
     },
     {
-      question: "What group features does Snappy offer?",
+      question: "What group features does CodeArena offer?",
       answer:
-        "Snappy offers group chats, voice and video calls, file sharing... (replace with actual answer)",
+        "Snappy offers group chats, voice and video calls, file sharing...",
     },
   ];
 
@@ -130,11 +151,12 @@ const Contact = () => {
                       <input
                         type="text"
                         id="firstname"
-                        name="firstname"
-                        value={formData.firstname}
-                        onChange={handleChange}
+                        name="firstName"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
                         className="border border-gray-500 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="First Name"
+                        autoComplete="off"
                         required
                       />
                     </div>
@@ -148,11 +170,12 @@ const Contact = () => {
                       <input
                         type="text"
                         id="lastname"
-                        name="lastname"
-                        value={formData.lastname}
-                        onChange={handleChange}
+                        name="lastName"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
                         className="border border-gray-500 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="Last Name"
+                        autoComplete="off"
                         required
                       />
                     </div>
@@ -170,10 +193,11 @@ const Contact = () => {
                         type="email"
                         id="email"
                         name="email"
-                        value={formData.email}
-                        onChange={handleChange}
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         className="border border-gray-500 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="Your Email"
+                        autoComplete="off"
                         required
                       />
                     </div>
@@ -185,32 +209,16 @@ const Contact = () => {
                       >
                         Phone Number
                       </label>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5 text-gray-500"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M4 2a1 1 0 011 1v2.1a.5.5 0 00.15.35l7 7a.5.5 0 00.35.15H16a2 2 0 012 2v5a2 2 0 01-2 2H4a2 2 0 01-2-2V4a2 2 0 012-2zm5.7 1.91A6.97 6.97 0 0110 9.893 6.97 6.97 0 0114.293 6.1c.177-.178.36-.36.552-.552A2.5 2.5 0 0016 5V4c0-.55-.21-.975-.552-1.31A2.5 2.5 0 0013.148 2.552 7.02 7.02 0 009.028 3.09z"
-                            />
-                          </svg>
-                        </div>
-                        <select
-                          id="phone"
-                          name="phone"
-                          value={formData.phone}
-                          onChange={handleChange}
-                          className="border border-gray-500 rounded-md pl-10 pr-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
-                        >
-                          <option value="+977">+977 (Nepal)</option>
-                          <option value="+1">+1 (USA)</option>
-                          <option value="+91">+91 (India)</option>
-                        </select>
-                      </div>
+
+                      <input
+                        id="text"
+                        name="phone"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        placeholder="Enter your phone number"
+                        autoComplete="off"
+                        className="border border-gray-500 rounded-md pl-3 pr-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+                      />
                     </div>
                   </div>
                   <div className="mb-6">
@@ -223,19 +231,17 @@ const Contact = () => {
                     <textarea
                       id="message"
                       name="message"
-                      value={formData.message}
-                      onChange={handleChange}
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
                       rows="4"
                       className="border border-gray-500 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                       placeholder="Enter your message"
                       maxLength="120"
                     ></textarea>
-                    <p className="text-gray-800 text-sm mt-1">0/120</p>
                   </div>
-
                   <button
                     type="submit"
-                    className="bg-gradient-to-r from-blue-400 to-blue-300 text-white font-medium py-2 px-4 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-300"
+                    className="bg-gradient-to-r from-blue-400 to-blue-300 text-white hover:shadow-[skyblue ] cursor-pointer font-medium py-2 px-4 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-300"
                   >
                     Submit
                   </button>
@@ -269,10 +275,12 @@ const Contact = () => {
         </div>
 
         <div className="my-20 mx-10 flex justify-between items-center">
-          <div className="text-8xl font-semibold w-[400px]">
+          
+          <div className="text-7xl font-semibold w-[400px]">
+            <p className="text-lg pb-3 pl-2 font-bold">FAQs</p>
             Frequently Asked Questions
           </div>
-          <div className="rounded-lg shadow-[0px_0px_10px_gray] p-8 w-[600px]">
+          <div className="rounded-lg shadow-[0px_0px_10px_gray] p-8 w-[650px]">
             {faqData.map((faq, index) => (
               <div key={index} className="mb-4 border-b border-gray-200 pb-4">
                 <div
@@ -303,6 +311,11 @@ const Contact = () => {
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={true}
+      />
     </div>
   );
 };
