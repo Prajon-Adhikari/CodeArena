@@ -1,7 +1,11 @@
 import { useState } from "react";
 import backgroundImg from "../assets/contact.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faPhone, faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEnvelope,
+  faPhone,
+  faLocationDot,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -58,7 +62,7 @@ const Contact = () => {
           backgroundImage: `url(${backgroundImg})`,
         }}
       ></div>
-      <div className="bg-white text-gray-800 py-12 px-[140px]">
+      <div className="bg-white text-gray-800 py-8 px-[140px]">
         <div className="container mx-auto px-4 my-20">
           <div className="flex flex-col md:flex-row gap-8 items-center">
             <div className="md:w-1/2">
@@ -154,62 +158,61 @@ const Contact = () => {
                     </div>
                   </div>
 
-                 <div className="grid grid-cols-2 gap-4 mb-4">
-                   <div className="mb-4">
-                    <label
-                      htmlFor="email"
-                      className="block text-gray-900 font-medium mb-2"
-                    >
-                      Your Email
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      className="border border-gray-500 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="Your Email"
-                      required
-                    />
-                  </div>
-
-                  <div className="mb-4">
-                    <label
-                      htmlFor="phone"
-                      className="block text-gray-900 font-medium mb-2"
-                    >
-                      Phone Number
-                    </label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 text-gray-500"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M4 2a1 1 0 011 1v2.1a.5.5 0 00.15.35l7 7a.5.5 0 00.35.15H16a2 2 0 012 2v5a2 2 0 01-2 2H4a2 2 0 01-2-2V4a2 2 0 012-2zm5.7 1.91A6.97 6.97 0 0110 9.893 6.97 6.97 0 0114.293 6.1c.177-.178.36-.36.552-.552A2.5 2.5 0 0016 5V4c0-.55-.21-.975-.552-1.31A2.5 2.5 0 0013.148 2.552 7.02 7.02 0 009.028 3.09z"
-                          />
-                        </svg>
-                      </div>
-                      <select
-                        id="phone"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        className="border border-gray-500 rounded-md pl-10 pr-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div className="mb-4">
+                      <label
+                        htmlFor="email"
+                        className="block text-gray-900 font-medium mb-2"
                       >
-                        <option value="+977">+977 (Nepal)</option>
-                        <option value="+1">+1 (USA)</option>
-                        <option value="+91">+91 (India)</option>
-                      </select>
+                        Your Email
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        className="border border-gray-500 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Your Email"
+                        required
+                      />
+                    </div>
+
+                    <div className="mb-4">
+                      <label
+                        htmlFor="phone"
+                        className="block text-gray-900 font-medium mb-2"
+                      >
+                        Phone Number
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5 text-gray-500"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M4 2a1 1 0 011 1v2.1a.5.5 0 00.15.35l7 7a.5.5 0 00.35.15H16a2 2 0 012 2v5a2 2 0 01-2 2H4a2 2 0 01-2-2V4a2 2 0 012-2zm5.7 1.91A6.97 6.97 0 0110 9.893 6.97 6.97 0 0114.293 6.1c.177-.178.36-.36.552-.552A2.5 2.5 0 0016 5V4c0-.55-.21-.975-.552-1.31A2.5 2.5 0 0013.148 2.552 7.02 7.02 0 009.028 3.09z"
+                            />
+                          </svg>
+                        </div>
+                        <select
+                          id="phone"
+                          name="phone"
+                          value={formData.phone}
+                          onChange={handleChange}
+                          className="border border-gray-500 rounded-md pl-10 pr-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+                        >
+                          <option value="+977">+977 (Nepal)</option>
+                          <option value="+1">+1 (USA)</option>
+                          <option value="+91">+91 (India)</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
-
-                 </div>
                   <div className="mb-6">
                     <label
                       htmlFor="message"
@@ -253,100 +256,50 @@ const Contact = () => {
             </div>
           </div>
         </div>
-        <div className="location-container mt-12 flex flex-col md:flex-row px-4">
-          <div className="locationMap md:w-1/2">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d113085.33583457788!2d84.32349143692478!3d27.658047437493362!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3994fb37e078d531%3A0x973f22922ea702f7!2sBharatpur%2044200!5e0!3m2!1sen!2snp!4v1740031122154!5m2!1sen!2snp"
-              referrerPolicy="no-referrer-when-downgrade"
-              width="100%"
-              height="450"
-              loading="lazy"
-              title="Bharatpur. Location"
-            ></iframe>
-          </div>
-
-          <div className="location  md:w-1/2 md:pl-14 p-18  ">
-            <h2 className="text-4xl font-semibold mb-4">Our Location</h2>
-            <p className="text-lg font-medium text-gray-700 mb-2">
-              Connecting Near and Far
-            </p>
-            <h3 className="text-2xl font-semibold mb-2">Headquarters</h3>
-            <p className="text-gray-700 text-lg">Code Arena</p>
-            <p className="text-gray-700 text-lg">Chitwan, Nepal</p>
-            <p className="text-gray-700 text-lg">TechByte</p>
-            <p className="text-gray-700 text-lg">Bharatpur, Ward-12</p>
-            <a
-              href=""
-              className="text-blue-500 text-2xl underline mt-4 inline-block"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Open Google Maps
-            </a>
-          </div>
+        <div className="locationMap">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d113085.33583457788!2d84.32349143692478!3d27.658047437493362!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3994fb37e078d531%3A0x973f22922ea702f7!2sBharatpur%2044200!5e0!3m2!1sen!2snp!4v1740031122154!5m2!1sen!2snp"
+            referrerPolicy="no-referrer-when-downgrade"
+            width="100%"
+            height="450"
+            loading="lazy"
+            title="Bharatpur. Location"
+            className="rounded-xl"
+          ></iframe>
         </div>
 
-        <div className="container mx-auto px-4 py-16">
-          <div className="flex flex-col md:flex-row gap-8">
-            <div className="md:w-1/2">
-              {/* Left side: Question and Email Input */}
-              <div className="bg-gray-100 rounded-lg shadow-blue-600/50  shadow-lg p-8">
-                <h2 className="text-2xl font-semibold mb-4">FAQ</h2>
-                <p className="text-gray-900 mb-6">
-                  Do you have any questions for us?
-                </p>
-                <p className="text-gray-900 mb-6">
-                  If there are questions you want to ask. We will answer all
-                  your questions.
-                </p>
-                <div className="flex items-center">
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    className="border border-gray-500 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 mr-4"
-                  />
-                  <button className="bg-gradient-to-r from-[#D69ADE] to-[#AA60C8] text-white font-medium py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300">
-                    Submit
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="md:w-1/2">
-              {/* Right side: FAQ Items */}
-              <div className="bg-gray-100 rounded-lg shadow-lg shadow-blue-600/50 p-8">
-                {faqData.map((faq, index) => (
-                  <div
-                    key={index}
-                    className="mb-4 border-b border-gray-200 pb-4"
+        <div className="my-20 mx-10 flex justify-between items-center">
+          <div className="text-8xl font-semibold w-[400px]">
+            Frequently Asked Questions
+          </div>
+          <div className="rounded-lg shadow-[0px_0px_10px_gray] p-8 w-[600px]">
+            {faqData.map((faq, index) => (
+              <div key={index} className="mb-4 border-b border-gray-200 pb-4">
+                <div
+                  className="flex items-center justify-between text-lg font-medium cursor-pointer"
+                  onClick={() => toggleExpand(index)}
+                >
+                  {faq.question}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className={`h-5 w-5 transition-transform ${
+                      expanded[index] ? "rotate-180" : ""
+                    }`}
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
                   >
-                    <div
-                      className="flex items-center justify-between text-lg font-medium cursor-pointer"
-                      onClick={() => toggleExpand(index)}
-                    >
-                      {faq.question}
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className={`h-5 w-5 transition-transform ${
-                          expanded[index] ? "rotate-180" : ""
-                        }`}
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </div>
-                    {expanded[index] && (
-                      <div className="mt-2 text-gray-700">{faq.answer}</div>
-                    )}
-                  </div>
-                ))}
+                    <path
+                      fillRule="evenodd"
+                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                {expanded[index] && (
+                  <div className="mt-2 text-gray-700">{faq.answer}</div>
+                )}
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
