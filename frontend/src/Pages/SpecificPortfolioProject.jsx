@@ -1,10 +1,12 @@
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation } from "react-router-dom";
 
 export default function SpecificBlog() {
   const { id } = useParams();
+  const location = useLocation();
+  const lastPath = location.state?.from || "/profile";
   const [portfolioProject, setPortfolioProject] = useState({});
 
   useEffect(() => {
@@ -32,7 +34,7 @@ export default function SpecificBlog() {
     <div className="mt-[80px]">
       <div className="px-[140px] py-10">
         <p className="font-semibold text-xl">
-          <Link to="/profile" className="pr-2 ">
+          <Link to={lastPath} className="pr-2 ">
             Profile
           </Link>{" "}
           <span className="text-orange-600">&rarr;</span>{" "}

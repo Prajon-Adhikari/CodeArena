@@ -6,6 +6,7 @@ import { connectDB } from "./libs/db.js";
 
 import authRoute from "./routes/user.route.js";
 import hackathonRoute from "./routes/hackathon.route.js";
+import searchRoutes from "./routes/search.route.js";
 
 dotenv.config();
 const app = express();
@@ -24,6 +25,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/auth", authRoute);
+app.use("/api/search", searchRoutes);
 app.use("/home", hackathonRoute);
 
 app.listen(PORT, () => {

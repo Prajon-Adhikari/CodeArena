@@ -31,6 +31,7 @@ import Prizes from "./Pages/Prizes.jsx";
 import Judges from "./Pages/Judges.jsx";
 import SpecificBlog from "./Pages/SpecificBlog.jsx";
 import SpecificPortfolioProject from "./Pages/SpecificPortfolioProject.jsx";
+import SearchProfile from "./Pages/SearchProfile.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -63,6 +64,7 @@ const router = createBrowserRouter(
           <Route path="portfolio" /> {/* nested, no element */}
         </Route>
         <Route path="profile/:id" element={<SpecificPortfolioProject/>}/>
+        <Route path="/:id/profile" element={<SearchProfile/>}/>
         <Route path="blog" element={<BlogPage />} />
         <Route path="blog/:id" element={<SpecificBlog/>}/>
         <Route path="about" element={<About />} />

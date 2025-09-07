@@ -1,15 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass, faBell, faMessage } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMagnifyingGlass,
+  faBell,
+  faMessage,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => {
   const { pathname } = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState(null);
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [results, setResults] = useState({ users: [], hackathons: [] });
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null); // store selected item
+
   const isHostPage = pathname === "/hackathon";
+
+  const navigate = useNavigate();
 
   const navLinks = [
     { to: "/join/hackathon", label: "Join a hackathon" },
@@ -66,6 +77,47 @@ const Navbar = () => {
     fetchLoggedInUser();
   }, []);
 
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setResults({ users: [], hackathons: [] });
+      return;
+    }
+
+    const delayDebounce = setTimeout(async () => {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_API_BASE_URL}/api/search?q=${searchQuery}`
+        );
+        const data = await res.json();
+        setResults(data);
+        setShowDropdown(true);
+      } catch (err) {
+        console.error("Search failed:", err);
+      }
+    }, 400);
+
+    return () => clearTimeout(delayDebounce);
+  }, [searchQuery]);
+
+  // 🔹 Reset search when route changes
+  useEffect(() => {
+    setSearchQuery("");
+    setShowDropdown(false);
+  }, [pathname]);
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && selectedItem) {
+      if (selectedItem.type === "user") {
+        navigate(`/${selectedItem.id}/profile`);
+      } else if (selectedItem.type === "hackathon") {
+        navigate(`/${selectedItem.id}/overview`);
+      }
+      setShowDropdown(false);
+      setSearchQuery("");
+      setSelectedItem(null);
+    }
+  };
+
   return (
     <nav className="bg-white shadow text-gray-800 fixed left-0 right-0 top-0 z-50">
       <div className=" mx-[60px] px-4 md:px-8 py-5 flex items-center justify-between">
@@ -93,12 +145,81 @@ const Navbar = () => {
             <input
               type="text"
               placeholder="Search..."
+              value={searchQuery}
+              onKeyDown={handleKeyDown}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full rounded-lg border border-gray-400 pl-10 pr-4 py-[6px] text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-300"
+              onFocus={() => setShowDropdown(true)}
+              onBlur={() => setTimeout(() => setShowDropdown(false), 200)} // small delay to allow click
             />
+
+            {showDropdown &&
+              (results?.users?.length > 0 ||
+                results?.hackathons?.length > 0) && (
+                <div className="absolute top-full left-0 w-full bg-white shadow-lg border rounded mt-1 z-50 max-h-64 overflow-y-auto">
+                  {results?.users?.length > 0 && (
+                    <div className="p-2 border-b">
+                      <div className="text-gray-500 text-sm font-semibold">
+                        Users
+                      </div>
+                      {results.users.map((user) => (
+                        <div className="flex mb-2">
+                          {user?.profilePic ? (
+                            <img
+                              src={user?.profilePic}
+                              alt="avatar"
+                              className="w-[40px] h-[40px] rounded-full object-cover border-4 border-white"
+                            />
+                          ) : (
+                            <div className="w-[40px] h-[40px] rounded-full border-4 flex items-center justify-center bg-indigo-900 text-white text-sm">
+                              {user.fullName.charAt(0).toUpperCase()}
+                            </div>
+                          )}
+                          <div
+                            key={user._id}
+                            className="block px-2 py-1 hover:bg-gray-100 cursor-pointer"
+                            onMouseDown={() => {
+                              setSearchQuery(user.fullName); // set search input
+                              setSelectedItem({ type: "user", id: user._id });
+                            }}
+                          >
+                            {user.fullName}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {results?.hackathons?.length > 0 && (
+                    <div className="p-2">
+                      <div className="text-gray-500 text-sm font-semibold">
+                        Hackathons
+                      </div>
+                      {results.hackathons.map((hack) => (
+                        <div
+                          key={hack._id}
+                          className="block px-2 py-1 hover:bg-gray-100 cursor-pointer mb-2"
+                          onMouseDown={() => {
+                            setSearchQuery(hack.title); // set search input
+                            setSelectedItem({
+                              type: "hackathon",
+                              id: hack._id,
+                            });
+                          }}
+                        >
+                          {hack.title}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
           </div>
-          
+
           <div>
-            <FontAwesomeIcon icon={faBell} className="text-gray-400 text-2xl cursor-pointer"/>
+            <FontAwesomeIcon
+              icon={faBell}
+              className="text-gray-400 text-2xl cursor-pointer"
+            />
           </div>
           {/* Right Side: Auth / Profile */}
           <div className="flex items-center gap-4">

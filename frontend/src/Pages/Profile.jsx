@@ -245,7 +245,7 @@ const Profile = () => {
               <div className="grid grid-cols-3 gap-10 ">
                 {portfolioProjects.map((project, index) => {
                   return (
-                    <Link to={`/profile/${project._id}`}>
+                    <Link to={`/profile/${project._id}`} state={{ from: location.pathname }}>
                       <div className=" h-[280px] shadow-lg p-2 rounded-lg hover:shadow-[0px_0px_5px_gray] cursor-pointer">
                         {project?.images?.map((img, index) => (
                           <img

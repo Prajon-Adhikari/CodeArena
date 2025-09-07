@@ -25,6 +25,7 @@ import { fetchBlog, getSpecificBlogDetails, submitBlog } from "../controllers/bl
 import { getPortfolioProject, getSpecificPortfolioProject, submitPortfolioProject } from "../controllers/portfolio.controller.js";
 import {uploadPortfolio} from "../middlewares/uploadPortfolio.js";
 import { submitContact } from "../controllers/contact.controller.js";
+import { getSearchedProfile } from "../controllers/searchProfile.controller.js";
 
 const router = express.Router();
 
@@ -55,6 +56,8 @@ router.post("/profile/portfolio",protectRoute,uploadPortfolio, submitPortfolioPr
 router.get("/:id", protectRoute, getSpecificHackathonDetails);
 
 router.get("/:id/myproject", protectRoute, getSubmittedProject);
+
+router.get("/:id/profile",getSearchedProfile);
 
 router.get("/:id/rules", protectRoute, getRules);
 
