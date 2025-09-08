@@ -18,9 +18,14 @@ const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null); // store selected item
 
+  const [notifications, setNotifications] = useState([]);
+  const [showNotifications, setShowNotifications] = useState(false);
+
   const isHostPage = pathname === "/hackathon";
 
   const navigate = useNavigate();
+
+  const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   const navLinks = [
     { to: "/join/hackathon", label: "Join a hackathon" },
@@ -115,6 +120,69 @@ const Navbar = () => {
       setShowDropdown(false);
       setSearchQuery("");
       setSelectedItem(null);
+    }
+  };
+
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_API_BASE_URL}/home/notifications`,
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        );
+        const data = await res.json();
+        setNotifications(data.notifications);
+      } catch (error) {
+        console.error("Failed to fetch notifications:", error);
+      }
+    };
+
+    fetchNotifications();
+  }, []);
+
+  const handleAcceptRequest = async (id) => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/home/notifications/${id}/accept`,
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
+      if (res.ok) {
+        setNotifications((prev) =>
+          prev.map((n) =>
+            n._id === id ? { ...n, status: "accepted" } : n
+          )
+        );
+      }
+    } catch (err) {
+      console.error("Failed to accept request:", err);
+    }
+  };
+
+  // ❌ Handle Reject Request
+  const handleRejectRequest = async (id) => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/home/notifications/${id}/reject`,
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
+      if (res.ok) {
+        setNotifications((prev) =>
+          prev.map((n) =>
+            n._id === id ? { ...n, status: "rejected" } : n
+          )
+        );
+      }
+    } catch (err) {
+      console.error("Failed to reject request:", err);
     }
   };
 
@@ -215,12 +283,71 @@ const Navbar = () => {
               )}
           </div>
 
-          <div>
+          <div className="relative">
             <FontAwesomeIcon
               icon={faBell}
               className="text-gray-400 text-2xl cursor-pointer"
+              onClick={() => {
+                setShowNotifications(!showNotifications);
+                setNotifications((prev) =>
+                  prev.map((n) => ({ ...n, isRead: true }))
+                );
+              }}
             />
+
+            {unreadCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                {unreadCount}
+              </span>
+            )}
+
+            {showNotifications && (
+              <div className="absolute right-0 mt-2 w-100 bg-white shadow-lg rounded border z-50 max-h-96 overflow-y-auto">
+                {notifications.length === 0 ? (
+                  <div className="p-4 text-gray-500">No notifications</div>
+                ) : (
+                  notifications.map((notif) => (
+                    <div
+                      key={notif._id}
+                      className="p-3 border-b hover:bg-gray-100 flex justify-between items-center"
+                    >
+                      <div>
+                        {notif.data.message}
+                        <div className="text-xs text-gray-400">
+                          {new Date(notif.createdAt).toLocaleString()}
+                        </div>
+                      </div>
+
+                      {notif.type === "friend_request" &&
+                         (
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => handleAcceptRequest(notif._id)}
+                              className="text-green-600 font-bold cursor-pointer"
+                            >
+                              ✔️
+                            </button>
+                            <button
+                              onClick={() => handleRejectRequest(notif._id)}
+                              className="text-red-600 font-bold cursor-pointer"
+                            >
+                              ❌
+                            </button>
+                          </div>
+                        )}
+                      {notif.status === "accepted" && (
+                        <span className="text-green-600 text-sm">Accepted</span>
+                      )}
+                      {notif.status === "rejected" && (
+                        <span className="text-red-600 text-sm">Rejected</span>
+                      )}
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
           </div>
+
           {/* Right Side: Auth / Profile */}
           <div className="flex items-center gap-4">
             {user?.fullName ? (

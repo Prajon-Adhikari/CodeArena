@@ -26,6 +26,9 @@ import { getPortfolioProject, getSpecificPortfolioProject, submitPortfolioProjec
 import {uploadPortfolio} from "../middlewares/uploadPortfolio.js";
 import { submitContact } from "../controllers/contact.controller.js";
 import { getSearchedProfile } from "../controllers/searchProfile.controller.js";
+import { sentFriendRequest } from "../controllers/friendRequest.controller.js";
+import { getNotifications } from "../controllers/notifications.controller.js";
+import { acceptFriendRequest, rejectFriendRequest } from "../controllers/friendRequest.controller.js";
 
 const router = express.Router();
 
@@ -38,6 +41,12 @@ router.get("/", protectRoute, getTopHackathon);
 router.get("/profile", protectRoute, getPortfolioProject);
 
 router.get("/profile/:id", getSpecificPortfolioProject);
+
+router.get("/notifications", protectRoute, getNotifications);
+
+router.post("/notifications/:id/accept", protectRoute, acceptFriendRequest);
+
+router.post("/notifications/:id/reject", protectRoute, rejectFriendRequest);
 
 router.get("/blogs", protectRoute, fetchBlog);
 
@@ -53,11 +62,13 @@ router.get("/myhostedhackathon", protectRoute, getHostedHackathon);
 
 router.post("/profile/portfolio",protectRoute,uploadPortfolio, submitPortfolioProject);
 
-router.get("/:id", protectRoute, getSpecificHackathonDetails);
-
 router.get("/:id/myproject", protectRoute, getSubmittedProject);
 
-router.get("/:id/profile",getSearchedProfile);
+router.get("/:id/profile",protectRoute, getSearchedProfile);
+
+router.get("/:id", protectRoute, getSpecificHackathonDetails);
+
+router.post("/:id/friend-request", protectRoute, sentFriendRequest);
 
 router.get("/:id/rules", protectRoute, getRules);
 

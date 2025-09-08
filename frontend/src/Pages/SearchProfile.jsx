@@ -25,6 +25,8 @@ const SearchProfile = () => {
   const [profileData, setProfileData] = useState({});
   const [loading, setLoading] = useState(true);
   const [portfolioProjects, setPortfolioProjects] = useState([]);
+  const [friendRequest, setFriendRequest] = useState({});
+  const [friends, setFriends] = useState([]);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -34,19 +36,43 @@ const SearchProfile = () => {
     const fetchPortfolioProjects = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/home/${id}/profile`
+          `${import.meta.env.VITE_API_BASE_URL}/home/${id}/profile`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
         );
         const data = await response.json();
         setPortfolioProjects(data.portfolioProjects);
         setProfileData(data.user);
+        setFriendRequest(data.friendRequest);
+        setFriends(data.friends);
         setLoading(false);
-        console.log(data.user);
       } catch (error) {
         console.log("Error while fetching portfolio projects", error);
       }
     };
     fetchPortfolioProjects();
   }, [id]);
+
+  const sentFriendRequest = async () => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/home/${id}/friend-request`,
+        {}, // body (empty if backend only needs id from params)
+        {
+          withCredentials: true, // ✅ ensures cookies are sent
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setFriendRequest({ sender: true });
+    } catch (error) {}
+  };
 
   if (loading) {
     return <div className="text-center mt-10 text-gray-500">Loading...</div>;
@@ -84,18 +110,28 @@ const SearchProfile = () => {
                 <FontAwesomeIcon icon={faLocationDot} className="pr-3" />
                 London, United Kingdom
               </p>
-              <div className="text-gray-500 pl-[1px] text-lg font-semibold mt-4">
-                <span className="pr-2">100</span>
-                <span>Follower</span>
-                <span className="pl-10 pr-2">100</span>
-                <span>Following</span>
+              <div className="text-gray-500 pl-[1px] font-semibold mt-4">
+                <span className="pr-2">{friends.length}</span>
+                <span>Friends</span>
               </div>
             </div>
           </div>
           <div className="pt-4">
-            <button className="bg-blue-400 text-white rounded-2xl px-8 py-2">
-              Add Friend
-            </button>
+            {Object.keys(friendRequest).length === 0 ? (
+              <button
+                onClick={sentFriendRequest} // ✅ add click handler
+                className="bg-blue-400 cursor-pointer hover:bg-blue-300 text-white rounded-2xl px-8 py-2"
+              >
+                Add Friend
+              </button>
+            ) : (
+              <button
+                className="bg-red-400 text-white cursor-pointer hover:bg-red-300 rounded-2xl px-8 py-2"
+                disabled
+              >
+                Request Sent
+              </button>
+            )}
           </div>
         </div>
         <div className="border-l-2 border-gray-400 text-lg px-20">
@@ -172,7 +208,10 @@ const SearchProfile = () => {
               <div className="grid grid-cols-3 gap-10 ">
                 {portfolioProjects.map((project, index) => {
                   return (
-                    <Link to={`/profile/${project._id}`} state={{ from: location.pathname }}>
+                    <Link
+                      to={`/profile/${project._id}`}
+                      state={{ from: location.pathname }}
+                    >
                       <div className=" h-[280px] shadow-lg p-2 rounded-lg hover:shadow-[0px_0px_5px_gray] cursor-pointer">
                         {project?.images?.map((img, index) => (
                           <img

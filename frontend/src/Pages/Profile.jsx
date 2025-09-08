@@ -42,6 +42,7 @@ const Profile = () => {
   const [projectDescription, setProjectDescription] = useState("");
   const [projectLink, setProjectLink] = useState("");
   const [portfolioProjects, setPortfolioProjects] = useState([]);
+   const [friends, setFriends] = useState([]);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -63,6 +64,7 @@ const Profile = () => {
         const data = await response.json();
         setPortfolioProjects(data.portfolioProjects);
         setProfileData(data.user);
+        setFriends(data.friends);
         setLoading(false);
         console.log(data.user);
       } catch (error) {
@@ -152,11 +154,9 @@ const Profile = () => {
                 <FontAwesomeIcon icon={faLocationDot} className="pr-3" />
                 London, United Kingdom
               </p>
-              <div className="text-gray-500 pl-[1px] text-lg font-semibold mt-4">
-                <span className="pr-2">100</span>
-                <span>Follower</span>
-                <span className="pl-10 pr-2">100</span>
-                <span>Following</span>
+              <div className="text-gray-500 pl-[1px] font-semibold mt-4">
+                <span className="pr-2">{friends.length}</span>
+                <span>Friends</span>
               </div>
             </div>
           </div>
