@@ -17,7 +17,7 @@ const JoinHackathon = () => {
     mode: [],
     theme: [],
   });
-  const [sortBy, setSortBy] = useState("recent"); // Options: "recent", "deadline", "prize"
+  const [sortBy, setSortBy] = useState("recent");
 
   const hackthonData = [
     { theme: "IoT", hackathonNumber: 53, totalPrizes: 1749000 },
@@ -72,6 +72,10 @@ const JoinHackathon = () => {
     });
   };
 
+  const allThemes = Array.from(
+    new Set(hackathons.flatMap((h) => h.themes || []))
+  );
+
   const filteredHackathons = hackathons.filter((hackathon) => {
     // Mode filter
     if (
@@ -82,10 +86,12 @@ const JoinHackathon = () => {
     }
 
     // Theme filter
-    if (filters.theme.length > 0 && !filters.theme.includes(hackathon.theme)) {
+    if (
+      filters.theme.length > 0 &&
+      !hackathon.themes?.some((t) => filters.theme.includes(t))
+    ) {
       return false;
     }
-
     return true;
   });
 
@@ -129,7 +135,8 @@ const JoinHackathon = () => {
       <div className="flex mx-[90px] gap-30">
         <div>
           <h3 className="text-xl text-gray-500 pt-2">
-            Search by filters <FontAwesomeIcon icon={faFilter} className="pl-2" />
+            Search by filters{" "}
+            <FontAwesomeIcon icon={faFilter} className="pl-2" />
           </h3>
           <div className="pt-12">
             <h3 className="text-xl font-semibold pb-3">Mode</h3>
@@ -142,7 +149,7 @@ const JoinHackathon = () => {
                 checked={filters.mode.includes("online")}
                 onChange={() => handleCheckboxChange("mode", "online")}
               />{" "}
-              <label className=" pl-2" htmlFor="online">
+              <label className=" pl-2 cursor-pointer" htmlFor="online">
                 Online
               </label>
             </div>
@@ -155,7 +162,7 @@ const JoinHackathon = () => {
                 checked={filters.mode.includes("offline")}
                 onChange={() => handleCheckboxChange("mode", "offline")}
               />{" "}
-              <label className=" pl-2" htmlFor="offline">
+              <label className=" pl-2 cursor-pointer" htmlFor="offline">
                 Offline
               </label>
             </div>
@@ -163,23 +170,21 @@ const JoinHackathon = () => {
 
           <div className="pt-9">
             <h3 className="text-xl font-semibold pb-3">Interested tags</h3>
-            {hackthonData.map((hack, index) => {
-              return (
-                <div key={index} className="pb-2">
-                  <input
-                    type="checkbox"
-                    name="theme"
-                    id={hack.theme}
-                    value={hack.theme}
-                    checked={filters.theme.includes(hack.theme)}
-                    onChange={() => handleCheckboxChange("theme", hack.theme)}
-                  />{" "}
-                  <label className="pl-2 " htmlFor={hack.theme}>
-                    {hack.theme}
-                  </label>
-                </div>
-              );
-            })}
+            {allThemes.map((theme, index) => (
+              <div key={index} className="pb-2">
+                <input
+                  type="checkbox"
+                  name="theme"
+                  id={theme}
+                  value={theme}
+                  checked={filters.theme.includes(theme)}
+                  onChange={() => handleCheckboxChange("theme", theme)}
+                />{" "}
+                <label className="pl-2 capitalize cursor-pointer" htmlFor={theme}>
+                  {theme}
+                </label>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -192,19 +197,25 @@ const JoinHackathon = () => {
               <span>Sort :</span>
               <div className="flex gap-10 text-md border-2 px-10 py-2 rounded-sm border-blue-200">
                 <li
-                  className={`cursor-pointer ${sortBy === "recent" ? "text-blue-300" : ""}`}
+                  className={`cursor-pointer ${
+                    sortBy === "recent" ? "text-blue-300" : ""
+                  }`}
                   onClick={() => setSortBy("recent")}
                 >
                   Most recent
                 </li>
                 <li
-                  className={`cursor-pointer ${sortBy === "deadline" ? "text-blue-300" : ""}`}
+                  className={`cursor-pointer ${
+                    sortBy === "deadline" ? "text-blue-300" : ""
+                  }`}
                   onClick={() => setSortBy("deadline")}
                 >
                   Submission Date
                 </li>
                 <li
-                  className={`cursor-pointer ${sortBy === "prize" ? "text-blue-300" : ""}`}
+                  className={`cursor-pointer ${
+                    sortBy === "prize" ? "text-blue-300" : ""
+                  }`}
                   onClick={() => setSortBy("prize")}
                 >
                   Prize amount
@@ -231,38 +242,77 @@ const JoinHackathon = () => {
                           </h2>
                           <div className="flex justify-between pr-10 py-3">
                             <p className="text-lg text-gray-500">
-                              Starts: <span className="text-black">{new Date(hackathon.startDate).toLocaleDateString()}</span>
+                              Starts:{" "}
+                              <span className="text-black">
+                                {new Date(
+                                  hackathon.startDate
+                                ).toLocaleDateString()}
+                              </span>
                             </p>
                             <p className="text-lg text-gray-500">
-                              Ends: <span className="text-black">{new Date(hackathon.endDate).toLocaleDateString()}</span>
+                              Ends:{" "}
+                              <span className="text-black">
+                                {new Date(
+                                  hackathon.endDate
+                                ).toLocaleDateString()}
+                              </span>
                             </p>
                           </div>
                           <div className="flex justify-between pr-10 pt-3">
                             <p className="text-lg text-gray-500">
-                              Registration Deadline: <span className="text-black">{new Date(hackathon.registrationDeadline).toLocaleDateString()}</span>
+                              Registration Deadline:{" "}
+                              <span className="text-black">
+                                {new Date(
+                                  hackathon.registrationDeadline
+                                ).toLocaleDateString()}
+                              </span>
                             </p>
                             <p className="text-lg">
-                              <FontAwesomeIcon icon={faGlobe} className="text-gray-500" />
-                              <span className="ml-2 capitalize">{hackathon.mode}</span>
+                              <FontAwesomeIcon
+                                icon={faGlobe}
+                                className="text-gray-500"
+                              />
+                              <span className="ml-2 capitalize">
+                                {hackathon.mode}
+                              </span>
                             </p>
                           </div>
                         </div>
                       </div>
                       <div className="my-6 py-2 px-7 w-[428px] flex flex-col gap-5 border-l border-gray-500">
                         <div className="flex items-center justify-start gap-5 text-lg">
-                          <FontAwesomeIcon icon={faFlag} className="text-slate-700 text-xl" />
+                          <FontAwesomeIcon
+                            icon={faFlag}
+                            className="text-slate-700 text-xl"
+                          />
                           <span>Google</span>
                         </div>
                         <div className="flex items-center justify-start gap-5 text-lg">
-                          <FontAwesomeIcon icon={faCalendar} className="text-slate-700 text-xl" />
-                          <span>{new Date(hackathon.endDate).toLocaleDateString()} - {new Date(hackathon.endDate).toLocaleDateString()}</span>
+                          <FontAwesomeIcon
+                            icon={faCalendar}
+                            className="text-slate-700 text-xl"
+                          />
+                          <span>
+                            {new Date(hackathon.endDate).toLocaleDateString()} -{" "}
+                            {new Date(hackathon.endDate).toLocaleDateString()}
+                          </span>
                         </div>
                         <div className="flex justify-start gap-5 text-sm">
-                          <FontAwesomeIcon icon={faTags} className="text-slate-700 text-xl pt-1" />
+                          <FontAwesomeIcon
+                            icon={faTags}
+                            className="text-slate-700 text-xl pt-1"
+                          />
                           <span>
-                            {hackthonData.slice(0, 3).map((data, index) => (
-                              <div key={index} className="bg-orange-200 mb-1 mr-1 inline-block px-4 py-1">{data.theme}</div>
-                            ))}
+                            {(hackathon.themes || [])
+                              .slice(0, 3)
+                              .map((theme, index) => (
+                                <div
+                                  key={index}
+                                  className="bg-orange-200 capitalize mb-1 mr-1 inline-block px-4 py-1"
+                                >
+                                  {theme}
+                                </div>
+                              ))}
                           </span>
                         </div>
                       </div>
