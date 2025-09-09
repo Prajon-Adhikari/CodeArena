@@ -29,6 +29,7 @@ import { getSearchedProfile } from "../controllers/searchProfile.controller.js";
 import { sentFriendRequest } from "../controllers/friendRequest.controller.js";
 import { getNotifications } from "../controllers/notifications.controller.js";
 import { acceptFriendRequest, rejectFriendRequest } from "../controllers/friendRequest.controller.js";
+import { getAllUsers } from "../controllers/user.controllers.js";
 
 const router = express.Router();
 
@@ -37,6 +38,8 @@ router.post("/host/hackathon", protectRoute, hackathon);
 router.get("/join/hackathon", protectRoute, getHackathonTournament);
 
 router.get("/", protectRoute, getTopHackathon);
+
+router.get("/users",getAllUsers);
 
 router.get("/profile", protectRoute, getPortfolioProject);
 

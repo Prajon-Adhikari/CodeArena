@@ -37,11 +37,31 @@ export default function Hosting() {
   const [prizes, setPrizes] = useState([]);
   const [judges, setJudges] = useState([]);
 
+  const [users, setUsers] = useState([]);
+
   const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [step]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_BASE_URL}/home/users`,
+          {
+            withCredentials: true,
+          }
+        );
+        setUsers(res.data); // make sure backend returns [{_id, fullName, email}, ...]
+      } catch (err) {
+        console.error("Error fetching users:", err);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   const handlePrizeChange = (index, field, value) => {
     const updatedPrizes = [...prizes];
@@ -565,16 +585,23 @@ export default function Hosting() {
                 >
                   <h3 className="text-lg font-semibold">Judge {index + 1}</h3>
 
-                  {/* Name */}
-                  <input
-                    type="text"
-                    placeholder="Full Name"
+                  {/* Name Dropdown */}
+                  <select
                     value={judge.name}
                     onChange={(e) =>
                       handleJudgeChange(index, "name", e.target.value)
                     }
                     className="w-full border-b-2 border-gray-300 focus:outline-none pb-1"
-                  />
+                  >
+                    <option value="">
+                      Select Judge (must have CodeArena account)
+                    </option>
+                    {users.map((user) => (
+                      <option key={user._id} value={user.fullName}>
+                        {user.fullName} ({user.email})
+                      </option>
+                    ))}
+                  </select>
 
                   {/* Role */}
                   <input

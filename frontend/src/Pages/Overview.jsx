@@ -60,19 +60,33 @@ export default function Overview() {
 
   useEffect(() => {
     if (hackathon?.startDate && hackathon?.endDate) {
+      const registrationStart = moment(
+        hackathon.registrationStart,
+        "YYYY-MM-DD"
+      ).toDate();
+      const registrationEnd = moment(
+        hackathon.registrationDeadline,
+        "YYYY-MM-DD"
+      ).toDate();
+      const submissionStart = moment(
+        hackathon.startDate,
+        "YYYY-MM-DD"
+      ).toDate();
+      const submissionEnd = moment(hackathon.endDate, "YYYY-MM-DD").toDate();
+
       setEvents([
         {
           title: "Registration Period",
-          start: moment(hackathon.registrationDeadline).toDate(),
-          end: moment(hackathon.startDate).subtract(4, "days").toDate(),
+          start: registrationStart,
+          end: registrationEnd,
         },
         {
           title: "Submission Period",
-          start: moment(hackathon.startDate).toDate(),
-          end: moment(hackathon.endDate).toDate(),
+          start: submissionStart,
+          end: submissionEnd,
         },
       ]);
-      setCurrentDate(moment(hackathon.registrationDeadline).toDate());
+      setCurrentDate(registrationStart);
     }
   }, [hackathon]);
 
@@ -306,24 +320,30 @@ export default function Overview() {
               <p className="pt-6 font-semibold text-xl pb-2">
                 <span className="text-red-600">*</span> Team Name
               </p>
-              <input type="text" placeholder="Enter you team name" className="border-2 border-gray-400 w-[90%] px-4 py-2 rounded-lg" value={teamName} onChange={(e) => setTeamName(e.target.value)}/>
+              <input
+                type="text"
+                placeholder="Enter you team name"
+                className="border-2 border-gray-400 w-[90%] px-4 py-2 rounded-lg"
+                value={teamName}
+                onChange={(e) => setTeamName(e.target.value)}
+              />
             </div>
             <p className="pt-6 font-semibold text-xl pb-2">
-              <span className="text-red-600">*</span> Are you working solo or
-              with a team?
+              <span className="text-red-600">*</span> Indicate your
+              participation type
             </p>
             <div className="flex items-center text-lg">
               <input
                 type="radio"
                 name="teamStatus"
-                value="solo"
-                checked={teamStatus === "solo"}
+                value="individual"
+                checked={teamStatus === "indivdual"}
                 onChange={(e) => setTeamStatus(e.target.value)}
                 id="solo"
                 required
               />
               <label className="pl-2 pr-18 cursor-pointer" htmlFor="solo">
-                Working solo
+                Indivdual
               </label>
               <input
                 type="radio"

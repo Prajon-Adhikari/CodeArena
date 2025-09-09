@@ -109,7 +109,7 @@ export default function Judges() {
                   )}
                   <div>
                     <div className="font-bold text-[24px] pb-2">
-                      {judge.name}
+                      {judge.name.split(" (")[0]}
                     </div>
 
                     <div className="text-lg pb-1.5 line-clamp-2 overflow-hidden break-words">

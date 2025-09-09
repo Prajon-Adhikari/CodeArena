@@ -154,9 +154,7 @@ const Navbar = () => {
       );
       if (res.ok) {
         setNotifications((prev) =>
-          prev.map((n) =>
-            n._id === id ? { ...n, status: "accepted" } : n
-          )
+          prev.map((n) => (n._id === id ? { ...n, status: "accepted" } : n))
         );
       }
     } catch (err) {
@@ -176,9 +174,7 @@ const Navbar = () => {
       );
       if (res.ok) {
         setNotifications((prev) =>
-          prev.map((n) =>
-            n._id === id ? { ...n, status: "rejected" } : n
-          )
+          prev.map((n) => (n._id === id ? { ...n, status: "rejected" } : n))
         );
       }
     } catch (err) {
@@ -318,23 +314,23 @@ const Navbar = () => {
                         </div>
                       </div>
 
-                      {notif.type === "friend_request" &&
-                         (
-                          <div className="flex gap-2">
-                            <button
-                              onClick={() => handleAcceptRequest(notif._id)}
-                              className="text-green-600 font-bold cursor-pointer"
-                            >
-                              ✔️
-                            </button>
-                            <button
-                              onClick={() => handleRejectRequest(notif._id)}
-                              className="text-red-600 font-bold cursor-pointer"
-                            >
-                              ❌
-                            </button>
-                          </div>
-                        )}
+                      {notif.type === "friend_request" && !notif.status && (
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => handleAcceptRequest(notif._id)}
+                            className="text-green-600 font-bold cursor-pointer"
+                          >
+                            ✔️
+                          </button>
+                          <button
+                            onClick={() => handleRejectRequest(notif._id)}
+                            className="text-red-600 font-bold cursor-pointer"
+                          >
+                            ❌
+                          </button>
+                        </div>
+                      )}
+
                       {notif.status === "accepted" && (
                         <span className="text-green-600 text-sm">Accepted</span>
                       )}

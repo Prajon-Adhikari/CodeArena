@@ -17,7 +17,7 @@ const joinedHackathonSchema = new mongoose.Schema(
     teamStatus: {
       type: String,
       rquired: true,
-      enum: ["solo", "team"],
+      enum: ["individual", "team"],
     },
     referer: {
       type: String,
