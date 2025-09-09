@@ -116,7 +116,7 @@ export default function Judges() {
                       {judge.bio}
                     </div>
                     <div className="text-gray-700 pb-2 italic">
-                      {judge.role} winner
+                      {judge.role}
                     </div>
                   </div>
                 </div>
