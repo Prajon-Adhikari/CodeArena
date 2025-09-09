@@ -182,6 +182,46 @@ const Navbar = () => {
     }
   };
 
+  const handleAcceptProjectRequest = async (notifId) => {
+    try {
+      const res = await fetch(
+        `${
+          import.meta.env.VITE_API_BASE_URL
+        }/home/projects/notifications/${notifId}/accept`,
+        { method: "POST", credentials: "include" }
+      );
+      if (res.ok) {
+        setNotifications((prev) =>
+          prev.map((n) =>
+            n._id === notifId ? { ...n, status: "accepted" } : n
+          )
+        );
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleRejectProjectRequest = async (notifId) => {
+    try {
+      const res = await fetch(
+        `${
+          import.meta.env.VITE_API_BASE_URL
+        }/home/projects/notifications/${notifId}/reject`,
+        { method: "POST", credentials: "include" }
+      );
+      if (res.ok) {
+        setNotifications((prev) =>
+          prev.map((n) =>
+            n._id === notifId ? { ...n, status: "rejected" } : n
+          )
+        );
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <nav className="bg-white shadow text-gray-800 fixed left-0 right-0 top-0 z-50">
       <div className=" mx-[60px] px-4 md:px-8 py-5 flex items-center justify-between">
@@ -324,6 +364,27 @@ const Navbar = () => {
                           </button>
                           <button
                             onClick={() => handleRejectRequest(notif._id)}
+                            className="text-red-600 font-bold cursor-pointer"
+                          >
+                            ❌
+                          </button>
+                        </div>
+                      )}
+
+                      {notif.type === "project_invite" && !notif.status && (
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() =>
+                              handleAcceptProjectRequest(notif._id)
+                            }
+                            className="text-green-600 font-bold cursor-pointer"
+                          >
+                            ✔️
+                          </button>
+                          <button
+                            onClick={() =>
+                              handleRejectProjectRequest(notif._id)
+                            }
                             className="text-red-600 font-bold cursor-pointer"
                           >
                             ❌

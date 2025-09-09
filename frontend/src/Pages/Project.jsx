@@ -16,13 +16,6 @@ const skillsOptions = [
   { value: "express", label: "Express" },
 ];
 
-const tagsOptions = [
-  { value: "sarthak", label: "Sarthak" },
-  { value: "sagar", label: "Sagar" },
-  { value: "ritik", label: "Ritik" },
-  { value: "prakash", label: "Prakash" },
-];
-
 export default function Project() {
   const { id } = useParams();
   const location = useLocation();
@@ -39,6 +32,7 @@ export default function Project() {
   const [projectDescription, setProjectDescription] = useState("");
   const [githubLink, setGithubLink] = useState("");
   const [projectLink, setProjectLink] = useState("");
+  const [tagsOptions, setTagsOptions] = useState([]);
 
   const tabs = [
     { path: "overview", label: "Overview" },
@@ -70,6 +64,27 @@ export default function Project() {
     };
     fetchHackathonDetails();
   }, [id]);
+
+  useEffect(() => {
+    const fetchFriends = async () => {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_API_BASE_URL}/home/friends`,
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+          }
+        );
+        const data = await res.json();
+        setTagsOptions(data.friends);
+      } catch (err) {
+        console.error("Failed to fetch friends", err);
+      }
+    };
+
+    fetchFriends();
+  }, []);
 
   const fetchSubmittedProject = async () => {
     try {
@@ -103,7 +118,7 @@ export default function Project() {
       formData.append("projectTitle", projectTitle);
       formData.append("projectDescription", projectDescription);
       formData.append("tech", selectedSkills.map((s) => s.value).join(","));
-      formData.append("tags", selectedTags.map((t) => t.value).join(","));
+      formData.append("tags", JSON.stringify(selectedTags.map((t) => t.value)));
       formData.append("githubLink", githubLink);
       formData.append("projectLink", projectLink);
 
@@ -209,7 +224,7 @@ export default function Project() {
                     );
                   })}
                 </div>
-                <h3 className="font-bold text-3xl mt-12">Tags</h3>
+                <h3 className="font-bold text-3xl mt-10">Tags</h3>
                 <div className="pt-3 flex flex-wrap">
                   {submittedProject.tags.map((t, index) => {
                     return (
@@ -217,10 +232,44 @@ export default function Project() {
                         key={index}
                         className="border-2 mr-4 px-6 py-1 mt-3 rounded-3xl text-xl"
                       >
-                        {t}
+                        {t.fullName}
                       </span>
                     );
                   })}
+                </div>
+                <div className="pt-10">
+                  {submittedProject.githubLink && (
+                    <div className="border p-4 rounded-lg shadow-md bg-gray-50">
+                      <h2 className="text-gray-700 font-semibold">
+                        Github Link
+                      </h2>
+                      <a
+                        href={submittedProject.githubLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline break-all"
+                      >
+                        {submittedProject.githubLink}
+                      </a>
+                    </div>
+                  )}
+                </div>
+                <div className="pt-10">
+                  {submittedProject.projectLink && (
+                    <div className="border p-4 rounded-lg shadow-md bg-gray-50">
+                      <h2 className="text-gray-700 font-semibold">
+                        Project Link
+                      </h2>
+                      <a
+                        href={submittedProject.projectLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline break-all"
+                      >
+                        {submittedProject.projectLink}
+                      </a>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

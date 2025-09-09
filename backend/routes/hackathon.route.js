@@ -30,6 +30,8 @@ import { sentFriendRequest } from "../controllers/friendRequest.controller.js";
 import { getNotifications } from "../controllers/notifications.controller.js";
 import { acceptFriendRequest, rejectFriendRequest } from "../controllers/friendRequest.controller.js";
 import { getAllUsers } from "../controllers/user.controllers.js";
+import { fetchFriends } from "../controllers/friend.controller.js";
+import { acceptProjectRequest, rejectProjectRequest } from "../controllers/projectRequest.controller.js";
 
 const router = express.Router();
 
@@ -41,6 +43,8 @@ router.get("/", protectRoute, getTopHackathon);
 
 router.get("/users",getAllUsers);
 
+router.get("/friends", protectRoute, fetchFriends);
+
 router.get("/profile", protectRoute, getPortfolioProject);
 
 router.get("/profile/:id", getSpecificPortfolioProject);
@@ -50,6 +54,10 @@ router.get("/notifications", protectRoute, getNotifications);
 router.post("/notifications/:id/accept", protectRoute, acceptFriendRequest);
 
 router.post("/notifications/:id/reject", protectRoute, rejectFriendRequest);
+
+router.post("/projects/notifications/:id/accept", protectRoute, acceptProjectRequest);
+
+router.post("/projects/notifications/:id/reject", protectRoute, rejectProjectRequest);
 
 router.get("/blogs", protectRoute, fetchBlog);
 

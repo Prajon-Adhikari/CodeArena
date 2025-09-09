@@ -1,5 +1,7 @@
 import SubmittedProject from "../models/submitedProject.model.js";
 import User from "../models/user.model.js";
+import Notification from "../models/notifications.model.js";
+import projectRequest from "../models/projectRequest.model.js";
 
 export const getSubmittedProject = async (req, res) => {
   try {
@@ -15,9 +17,9 @@ export const getSubmittedProject = async (req, res) => {
     }
 
     const submittedProject = await SubmittedProject.findOne({
-      userId,
       hackathonId,
-    });
+      tags: { $in: [userId] },
+    }).populate({ path: "tags", model: "user", select: "fullName email" });
 
     if (!submittedProject) {
       return res.json(null);
@@ -74,9 +76,16 @@ export const submitProject = async (req, res) => {
 
     // Convert comma separated strings to arrays
     const techArray = tech ? tech.split(",").map((t) => t.trim()) : [];
-    const tagsArray = tags ? tags.split(",").map((t) => t.trim()) : [];
+    let tagsArray = [];
+    if (tags) {
+      try {
+        tagsArray = JSON.parse(tags); // comes as '["65af23...", "65af24..."]'
+      } catch (e) {
+        console.error("Failed to parse tags", e);
+        tagsArray = [];
+      }
+    }
 
-    // Video info from multer-cloudinary
     const videoUrl = req.file?.path || "";
     const videoPublicId = req.file?.filename || req.file?.public_id || "";
 
@@ -90,15 +99,43 @@ export const submitProject = async (req, res) => {
           public_id: videoPublicId,
         },
       ],
-      tags: tagsArray,
       userName,
       userId,
       hackathonId,
       githubLink,
       projectLink,
+      tags: [userId],
     });
 
     await newProject.save();
+
+    for (let friendId of tagsArray) {
+      if (friendId !== userId) {
+        // Create Requested entry
+        await projectRequest.create({
+          sender: userId,
+          receiver: friendId,
+          projectId: newProject._id,
+          hackathonId,
+          status: "pending",
+        });
+
+        const user = await User.findById(userId);
+        const userName = user.fullName;
+
+        // Create Notification
+        await Notification.create({
+          user: friendId, // who will receive notification
+          type: "project_invite",
+          data: {
+            senderId: userId,
+            senderName: userName,
+            projectId: newProject._id,
+            message: `${userName} invited you to join their project`,
+          },
+        });
+      }
+    }
 
     res
       .status(200)

@@ -24,11 +24,12 @@ const submittedProjectSchema = new mongoose.Schema(
       },
     ],
 
-    // Tags field for categorization or filtering
-    tags: {
-      type: [String], // e.g., ["AI", "HealthTech"]
-      default: [],
-    },
+    tags: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
 
     userName: {
       type: "String",
