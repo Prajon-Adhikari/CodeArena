@@ -13,6 +13,7 @@ export default function Prizes() {
   const location = useLocation();
   const [hackathon, setHackathon] = useState("");
   const [prizes, setPrizes] = useState([]);
+    const [participants, setParticipants] = useState([]);
 
   const tabs = [
     { path: "overview", label: "Overview" },
@@ -37,6 +38,7 @@ export default function Prizes() {
         );
         const data = await response.json();
         setHackathon(data.hackathon);
+        setParticipants(data.participants);
       } catch (error) {
         console.log("Failed to fetch hackathon", error);
       }
@@ -91,7 +93,7 @@ export default function Prizes() {
           ))}
         </div>
       </div>
-      <div className="px-[180px] py-20 flex gap-10">
+      <div className="px-[180px] py-20 flex justify-between">
         <div>
           <h2 className="text-5xl font-bold mb-10 pb-1 pl-1">Prizes</h2>
           <div className="grid grid-cols-2 gap-10">
@@ -168,7 +170,7 @@ export default function Prizes() {
                   Public
                 </p>
                 <p>
-                  <span className="font-bold">923</span> participants
+                  <span className="font-bold">{participants.length}</span> participants
                 </p>
               </div>
             </div>

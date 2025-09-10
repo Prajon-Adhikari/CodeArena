@@ -13,6 +13,7 @@ export default function Rules() {
   const location = useLocation();
   const [hackathon, setHackathon] = useState("");
   const [hackathonRules, setHackathonRules] = useState({});
+    const [participants, setParticipants] = useState([]);
 
   const tabs = [
     { path: "overview", label: "Overview" },
@@ -43,6 +44,7 @@ export default function Rules() {
         );
         const data = await response.json();
         setHackathon(data.hackathon);
+        setParticipants(data.participants);
       } catch (error) {
         console.log("Failed to fetch hackathon", error);
       }
@@ -97,11 +99,9 @@ export default function Rules() {
           ))}
         </div>
       </div>
-      <div className="flex px-[200px] py-20  gap-20">
+      <div className="flex px-[200px] py-20 justify-between">
         <div className="">
-          <h2 className="text-5xl font-bold mb-10 pb-1">
-            Rules
-          </h2>
+          <h2 className="text-5xl font-bold mb-10 pb-1">Rules</h2>
 
           {hackathonRules?.eligibility && (
             <div style={ruleStyle}>
@@ -224,7 +224,7 @@ export default function Rules() {
                   Public
                 </p>
                 <p>
-                  <span className="font-bold">923</span> participants
+                  <span className="font-bold">{participants.length}</span> participants
                 </p>
               </div>
             </div>
@@ -235,22 +235,22 @@ export default function Rules() {
                   className="text-slate-700 text-xl"
                 />
                 <span>{hackathon.organizerName}</span>
-                              </div>
-                              <div className="flex justify-start gap-5 text-sm">
-                                <FontAwesomeIcon
-                                  icon={faTags}
-                                  className="text-slate-700 text-xl pt-1"
-                                />
-                                <span>
-                                  {(hackathon.themes || []).slice(0, 3).map((theme, index) => (
-                                    <div
-                                      key={index}
-                                      className="bg-orange-200 capitalize mb-1 mr-1 inline-block px-4 py-1"
-                                    >
-                                      {theme}
-                                    </div>
-                                  ))}
-                                </span>
+              </div>
+              <div className="flex justify-start gap-5 text-sm">
+                <FontAwesomeIcon
+                  icon={faTags}
+                  className="text-slate-700 text-xl pt-1"
+                />
+                <span>
+                  {(hackathon.themes || []).slice(0, 3).map((theme, index) => (
+                    <div
+                      key={index}
+                      className="bg-orange-200 capitalize mb-1 mr-1 inline-block px-4 py-1"
+                    >
+                      {theme}
+                    </div>
+                  ))}
+                </span>
               </div>
             </div>
           </div>

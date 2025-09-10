@@ -14,6 +14,7 @@ export default function Judges() {
   const location = useLocation();
   const [hackathon, setHackathon] = useState("");
   const [judges, setJudges] = useState([]);
+  const [participants, setParticipants] = useState([]);
 
   const tabs = [
     { path: "overview", label: "Overview" },
@@ -38,6 +39,7 @@ export default function Judges() {
         );
         const data = await response.json();
         setHackathon(data.hackathon);
+        setParticipants(data.participants);
       } catch (error) {
         console.log("Failed to fetch hackathon", error);
       }
@@ -92,7 +94,7 @@ export default function Judges() {
           ))}
         </div>
       </div>
-      <div className="px-[180px] py-20 flex gap-10">
+      <div className="px-[180px] py-20 flex justify-between">
         <div>
           <h2 className="text-5xl font-bold mb-10 pb-4 pl-1">Judges</h2>
           <div className="grid grid-cols-2 gap-10">
@@ -175,7 +177,8 @@ export default function Judges() {
                   Public
                 </p>
                 <p>
-                  <span className="font-bold">923</span> participants
+                  <span className="font-bold">{participants.length}</span>{" "}
+                  participants
                 </p>
               </div>
             </div>

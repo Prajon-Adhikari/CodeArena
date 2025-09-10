@@ -26,6 +26,7 @@ export default function Overview() {
   const [showUnregisterConfirm, setShowUnregisterConfirm] = useState(false);
   const [events, setEvents] = useState([]);
   const [currentDate, setCurrentDate] = useState(null);
+  const [participants, setParticipants] = useState([]);
 
   const tabs = [
     { path: "overview", label: "Overview" },
@@ -51,6 +52,7 @@ export default function Overview() {
         const data = await response.json();
         setHackathon(data.hackathon);
         setIsRegistered(data.isRegistered);
+        setParticipants(data.participants);
       } catch (error) {
         console.log("Failed to fetch hackathon", error);
       }
@@ -156,7 +158,7 @@ export default function Overview() {
           ))}
         </div>
       </div>
-      <div className="px-[140px] py-16 flex gap-20">
+      <div className="px-[140px] py-16 flex justify-between">
         <div className="w-[800px] ">
           <h1 className="text-4xl font-bold">{hackathon.title}</h1>
           <p className="text-[22px] pt-8">{hackathon.description}</p>
@@ -225,7 +227,7 @@ export default function Overview() {
                   Public
                 </p>
                 <p>
-                  <span className="font-bold">923</span> participants
+                  <span className="font-bold">{participants.length}</span> participants
                 </p>
               </div>
             </div>

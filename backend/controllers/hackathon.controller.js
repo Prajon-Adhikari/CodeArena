@@ -113,10 +113,15 @@ export const getSpecificHackathonDetails = async (req, res) => {
       }
     }
 
+    const participants = await JoinedHackathon.find({
+      hackathonId: id
+    })
+
     return res.status(200).json({
       message: "Successfully fetched specific hackathon details",
       hackathon,
       isRegistered,
+      participants,
     });
   } catch (error) {
     console.log("Error while fetching specific hackathon details", error);
