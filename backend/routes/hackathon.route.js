@@ -32,6 +32,7 @@ import { acceptFriendRequest, rejectFriendRequest } from "../controllers/friendR
 import { getAllUsers } from "../controllers/user.controllers.js";
 import { fetchFriends } from "../controllers/friend.controller.js";
 import { acceptProjectRequest, rejectProjectRequest } from "../controllers/projectRequest.controller.js";
+import { unfriendUser } from "../controllers/unfriend.controller.js";
 
 const router = express.Router();
 
@@ -80,6 +81,8 @@ router.get("/:id/profile",protectRoute, getSearchedProfile);
 router.get("/:id", protectRoute, getSpecificHackathonDetails);
 
 router.post("/:id/friend-request", protectRoute, sentFriendRequest);
+
+router.delete("/:id/unfriend",protectRoute, unfriendUser);
 
 router.get("/:id/rules", protectRoute, getRules);
 

@@ -27,13 +27,13 @@ const SearchProfile = () => {
   const [portfolioProjects, setPortfolioProjects] = useState([]);
   const [friendRequest, setFriendRequest] = useState({});
   const [friends, setFriends] = useState([]);
+  const [isFriend, setIsFriend] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
   const portfolioModal = location.pathname === "/profile/portfolio";
 
-  useEffect(() => {
-    const fetchPortfolioProjects = async () => {
+  const fetchPortfolioProjects = async () => {
       try {
         const response = await fetch(
           `${import.meta.env.VITE_API_BASE_URL}/home/${id}/profile`,
@@ -50,11 +50,15 @@ const SearchProfile = () => {
         setProfileData(data.user);
         setFriendRequest(data.friendRequest);
         setFriends(data.friends);
+        setIsFriend(data.isFriend);
         setLoading(false);
       } catch (error) {
         console.log("Error while fetching portfolio projects", error);
       }
     };
+
+  useEffect(() => {
+    
     fetchPortfolioProjects();
   }, [id]);
 
@@ -72,6 +76,18 @@ const SearchProfile = () => {
       );
       setFriendRequest({ sender: true });
     } catch (error) {}
+  };
+
+  const handleUnfriend = async () => {
+    try {
+      await axios.delete(
+        `${import.meta.env.VITE_API_BASE_URL}/home/${id}/unfriend`,
+        { withCredentials: true }
+      );
+      fetchPortfolioProjects();
+    } catch (error) {
+      console.error("Error while unfriending", error);
+    }
   };
 
   if (loading) {
@@ -117,17 +133,24 @@ const SearchProfile = () => {
             </div>
           </div>
           <div className="pt-4">
-            {Object.keys(friendRequest).length === 0 ? (
+            {isFriend ? (
               <button
-                onClick={sentFriendRequest} // ✅ add click handler
-                className="bg-blue-400 cursor-pointer hover:bg-blue-300 text-white rounded-2xl px-8 py-2"
+                onClick={handleUnfriend}
+                className="bg-red-400 text-white cursor-pointer hover:bg-red-300 px-8 py-2 rounded-2xl"
+              >
+                Unfriend
+              </button>
+            ) : !friendRequest ? (
+              <button
+                onClick={sentFriendRequest}
+                className="bg-blue-400 text-white cursor-pointer hover:bg-blue-300 px-8 py-2 rounded-2xl"
               >
                 Add Friend
               </button>
             ) : (
               <button
-                className="bg-red-400 text-white cursor-pointer hover:bg-red-300 rounded-2xl px-8 py-2"
                 disabled
+                className="bg-gray-400 text-white cursor-pointer hover:bg-gray-300 px-8 py-2 rounded-2xl"
               >
                 Request Sent
               </button>
@@ -237,8 +260,8 @@ const SearchProfile = () => {
                 <div className="flex flex-col items-center">
                   <img src={folder} alt="" className="w-[220px] h-[220px]" />
                   <p className="font-bold text-lg">
-                    No projects yet, When you create a new project it appears
-                    here
+                    No projects yet, When {profileData.fullName} create a new
+                    project it appears here
                   </p>
                 </div>
               </div>

@@ -22,19 +22,26 @@ export const getSearchedProfile = async (req, res) =>{
 
     const hackathons = await Hackathon.find({searchId});
 
+    const isFriend = await Friend.findOne({
+      $or: [
+        { user1: userId, user2: searchId },
+        { user1: searchId, user2: userId },
+      ],
+    });
+
     const portfolioProjects = await Portfolio.find({
       userId: searchId
     });
 
-    const friendRequest = await FriendRequest.find({
-      sender: userId,
-      reciever: searchId
-    });
+    const friendRequest = await FriendRequest.findOne({
+  sender: userId,
+  reciever: searchId
+});
 
    const friends = await Friend.find({
   $or: [{ user1: searchId }, { user2: searchId }]
 });
-    return res.status(200).json({message: "Fetching portfolio projects", portfolioProjects,friendRequest,friends, hackathons, user });
+    return res.status(200).json({message: "Fetching portfolio projects", portfolioProjects,friendRequest,friends, isFriend, hackathons, user });
   } catch (error) {
     console.log("Internal error while fetching portfolio projects");
     return res.status(500).json({message: "Internal error while fetching portfolio projects"});
