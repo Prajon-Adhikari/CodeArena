@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import CreatableSelect from "react-select/creatable";
 
 const themeOptions = [
@@ -62,6 +64,65 @@ export default function Hosting() {
 
     fetchUsers();
   }, []);
+
+const validateStep = () => {
+  if (step === 1) {
+    if (!title || !description || !organizerName || !contactEmail || selectedThemes.length === 0 || !mode) {
+      toast.error("⚠️ All fields must be filled.");
+      return false;
+    }
+  }
+
+  if (step === 2) {
+    if (!registrationStart || !registrationDeadline || !startDate || !endDate) {
+      toast.error("⚠️ All fields must be filled.");
+      return false;
+    }
+  }
+
+  if (step === 3) {
+    if (
+      !rules.eligibility ||
+      !rules.teamFormation ||
+      !rules.submissionRequirements ||
+      !rules.codeOfConduct ||
+      !rules.prohibited ||
+      !rules.disqualification
+    ) {
+      toast.error("⚠️ All fields must be filled.");
+      return false;
+    }
+  }
+
+  if (step === 4) {
+    if (prizes.length === 0) {
+      toast.error("⚠️ Please add at least one prize.");
+      return false;
+    }
+    for (const prize of prizes) {
+      if (!prize.title || !prize.description || !prize.prizeValue) {
+        toast.error("⚠️ Fill all prize fields.");
+        return false;
+      }
+    }
+  }
+
+  if (step === 5) {
+    if (judges.length === 0) {
+      toast.error("⚠️ Please add at least one judge.");
+      return false;
+    }
+    for (const judge of judges) {
+      if (!judge.name || !judge.role || !judge.bio) {
+        toast.error("⚠️ Fill all judge fields.");
+        return false;
+      }
+    }
+  }
+
+  return true;
+};
+
 
   const handlePrizeChange = (index, field, value) => {
     const updatedPrizes = [...prizes];
@@ -135,8 +196,11 @@ export default function Hosting() {
     }
   };
 
-  const nextStep = () => setStep((prev) => prev + 1);
-  const prevStep = () => setStep((prev) => prev - 1);
+const nextStep = () => {
+  if (validateStep()) {
+    setStep((prev) => prev + 1);
+  }
+};  const prevStep = () => setStep((prev) => prev - 1);
 
   return (
     <div className="flex justify-center my-14 pt-[50px] mt-20 pb-10">
@@ -157,6 +221,7 @@ export default function Hosting() {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   className="bg-transparent focus:outline-none w-full"
+                  required
                 />
               </div>
             </div>
@@ -169,6 +234,7 @@ export default function Hosting() {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   className="bg-transparent focus:outline-none w-full min-h-30"
+                  required
                 />
               </div>
             </div>
@@ -184,6 +250,7 @@ export default function Hosting() {
                   value={organizerName}
                   onChange={(e) => setOrganizerName(e.target.value)}
                   className="bg-transparent focus:outline-none w-full"
+                  required
                 />
               </div>
             </div>
@@ -197,6 +264,7 @@ export default function Hosting() {
                   value={contactEmail}
                   onChange={(e) => setContactEmail(e.target.value)}
                   className="bg-transparent focus:outline-none w-full"
+                  required
                 />
               </div>
             </div>
@@ -216,6 +284,7 @@ export default function Hosting() {
                 onChange={setSelectedThemes}
                 placeholder="Select or create themes..."
                 className="text-[18px]"
+                required
                 styles={{
                   control: (base) => ({
                     ...base,
@@ -263,6 +332,7 @@ export default function Hosting() {
                   value={mode}
                   onChange={(e) => setMode(e.target.value)}
                   className="bg-transparent focus:outline-none w-full"
+                  required
                 />
               </div>
             </div>
@@ -307,32 +377,8 @@ export default function Hosting() {
             <h2 className="text-2xl font-bold mb-4">Timelines</h2>
 
             <div>
-              <h1 className="text-xl font-semibold pl-2 pb-1">Start Date</h1>
-              <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
-                <input
-                  type="date"
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
-                  className="bg-transparent focus:outline-none w-full"
-                />
-              </div>
-            </div>
-
-            <div>
-              <h1 className="text-xl font-semibold pl-2 pb-1">End Date</h1>
-              <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
-                <input
-                  type="date"
-                  value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
-                  className="bg-transparent focus:outline-none w-full"
-                />
-              </div>
-            </div>
-
-            <div>
               <h1 className="text-xl font-semibold pl-2 pb-1">
-                Registration Start
+                Registration Start Date
               </h1>
               <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
                 <input
@@ -340,6 +386,7 @@ export default function Hosting() {
                   value={registrationStart}
                   onChange={(e) => setRegistrationStart(e.target.value)}
                   className="bg-transparent focus:outline-none w-full"
+                  required
                 />
               </div>
             </div>
@@ -354,9 +401,38 @@ export default function Hosting() {
                   value={registrationDeadline}
                   onChange={(e) => setRegistrationDeadline(e.target.value)}
                   className="bg-transparent focus:outline-none w-full"
+                  required
                 />
               </div>
             </div>
+
+            <div>
+              <h1 className="text-xl font-semibold pl-2 pb-1">Submission Start Date</h1>
+              <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
+                <input
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  className="bg-transparent focus:outline-none w-full"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <h1 className="text-xl font-semibold pl-2 pb-1">Submission Deadline</h1>
+              <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
+                <input
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  className="bg-transparent focus:outline-none w-full"
+                  required
+                />
+              </div>
+            </div>
+
+            
 
             <div className="flex justify-between">
               <button
@@ -392,6 +468,7 @@ export default function Hosting() {
                   setRules({ ...rules, eligibility: e.target.value })
                 }
                 className="bg-transparent border-2 rounded-lg px-4 py-3 text-lg focus:outline-none w-full"
+                required
               />
             </div>
 
@@ -407,6 +484,7 @@ export default function Hosting() {
                   setRules({ ...rules, teamFormation: e.target.value })
                 }
                 className="bg-transparent border-2 rounded-lg px-4 py-3 text-lg focus:outline-none w-full"
+                required
               />
             </div>
 
@@ -422,6 +500,7 @@ export default function Hosting() {
                   setRules({ ...rules, submissionRequirements: e.target.value })
                 }
                 className="bg-transparent border-2 rounded-lg px-4 py-3 text-lg focus:outline-none w-full"
+                required
               />
             </div>
 
@@ -437,6 +516,7 @@ export default function Hosting() {
                   setRules({ ...rules, codeOfConduct: e.target.value })
                 }
                 className="bg-transparent border-2 rounded-lg px-4 py-3 text-lg focus:outline-none w-full"
+                required
               />
             </div>
 
@@ -452,6 +532,7 @@ export default function Hosting() {
                   setRules({ ...rules, prohibited: e.target.value })
                 }
                 className="bg-transparent border-2 rounded-lg px-4 py-3 text-lg focus:outline-none w-full"
+                required
               />
             </div>
 
@@ -467,6 +548,7 @@ export default function Hosting() {
                   setRules({ ...rules, disqualification: e.target.value })
                 }
                 className="bg-transparent border-2 rounded-lg px-4 py-3 text-lg focus:outline-none w-full"
+                required
               />
             </div>
 
@@ -507,6 +589,7 @@ export default function Hosting() {
                       handlePrizeChange(index, "title", e.target.value)
                     }
                     className="w-full mb-2 border-b-2 border-gray-300 outline-0"
+                    required
                   />
                   <textarea
                     placeholder="Prize Description"
@@ -515,6 +598,7 @@ export default function Hosting() {
                       handlePrizeChange(index, "description", e.target.value)
                     }
                     className="w-full mb-2 border-b-2 border-gray-300 outline-0"
+                    required
                   />
                   <input
                     type="number"
@@ -526,13 +610,14 @@ export default function Hosting() {
                     className="w-full mb-2 border-b-2 border-gray-300 outline-0"
                   />
                   <input
-                    type="text"
+                    type="number"
                     placeholder="Prize Value"
                     value={prize.prizeValue}
                     onChange={(e) =>
                       handlePrizeChange(index, "prizeValue", e.target.value)
                     }
                     className="w-full mb-2 border-b-2 border-gray-300 outline-0"
+                    required
                   />
 
                   <button
@@ -592,6 +677,7 @@ export default function Hosting() {
                       handleJudgeChange(index, "name", e.target.value)
                     }
                     className="w-full border-b-2 border-gray-300 focus:outline-none pb-1"
+                    required
                   >
                     <option value="">
                       Select Judge (must have CodeArena account)
@@ -612,6 +698,7 @@ export default function Hosting() {
                       handleJudgeChange(index, "role", e.target.value)
                     }
                     className="w-full border-b-2 border-gray-300 focus:outline-none pb-1"
+                    required
                   />
 
                   {/* Bio */}
@@ -622,6 +709,7 @@ export default function Hosting() {
                       handleJudgeChange(index, "bio", e.target.value)
                     }
                     className="w-full border-b-2 border-gray-300 focus:outline-none pb-1"
+                    required
                   />
 
                   {/* Photo */}
@@ -673,6 +761,11 @@ export default function Hosting() {
           </div>
         )}
       </form>
+       <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={true}
+      />
     </div>
   );
 }

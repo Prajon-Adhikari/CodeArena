@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 
 const prizeSchema = new mongoose.Schema(
   {
-    title: { type: String },
-    description: { type: String },
-    winnersCount: { type: Number, default: 1 },
-    prizeValue: { type: String },
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    winnersCount: { type: Number, default: 1, required: true },
+    prizeValue: { type: Number, required: true },
   },
   { timestamps: true }
 );

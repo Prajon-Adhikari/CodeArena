@@ -279,13 +279,13 @@ const JoinHackathon = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="my-6 py-2 px-7 w-[428px] flex flex-col gap-5 border-l border-gray-500">
+                      <div className="my-6 py-2 px-7 w-[428px] flex flex-col justify-between gap-5 border-l border-gray-500">
                         <div className="flex items-center justify-start gap-5 text-lg">
                           <FontAwesomeIcon
                             icon={faFlag}
                             className="text-slate-700 text-xl"
                           />
-                          <span>Google</span>
+                          <span>{hackathon.organizerName}</span>
                         </div>
                         <div className="flex items-center justify-start gap-5 text-lg">
                           <FontAwesomeIcon
@@ -293,7 +293,7 @@ const JoinHackathon = () => {
                             className="text-slate-700 text-xl"
                           />
                           <span>
-                            {new Date(hackathon.endDate).toLocaleDateString()} -{" "}
+                            {new Date(hackathon.registrationStart).toLocaleDateString()} -{" "}
                             {new Date(hackathon.endDate).toLocaleDateString()}
                           </span>
                         </div>

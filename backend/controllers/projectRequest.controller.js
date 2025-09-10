@@ -1,5 +1,5 @@
-import FriendRequest from "../models/friendRequest.model.js";
 import Notification from "../models/notifications.model.js";
+import projectRequest from "../models/projectRequest.model.js";
 import SubmittedProject from "../models/submitedProject.model.js";
 
 export const acceptProjectRequest = async (req, res) => {
@@ -16,7 +16,7 @@ export const acceptProjectRequest = async (req, res) => {
     await Notification.findByIdAndDelete(notifId);
 
     // update requested
-    await FriendRequest.findOneAndUpdate(
+    await projectRequest.findOneAndUpdate(
       { sender: senderId, receiver: userId, projectId },
       { status: "accepted" }
     );
@@ -45,7 +45,7 @@ export const rejectProjectRequest = async (req, res) => {
     await Notification.findByIdAndDelete(notifId);
 
     // update requested entry to rejected
-    await FriendRequest.findOneAndUpdate(
+    await projectRequest.findOneAndUpdate(
       { sender: senderId, receiver: userId, projectId },
       { status: "rejected" }
     );

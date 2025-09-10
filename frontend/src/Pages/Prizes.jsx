@@ -109,7 +109,7 @@ export default function Prizes() {
                       {prize.description}
                     </div>
                     <div className="text-lg font-semibold pb-2">
-                      {prize.prizeValue} in cash
+                      $ {prize.prizeValue} in cash
                     </div>
                   </div>
                 </div>
