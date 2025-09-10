@@ -178,7 +178,7 @@ export default function Prizes() {
                   icon={faFlag}
                   className="text-slate-700 text-xl"
                 />
-                <span>Google</span>
+                <span>{hackathon.organizerName}</span>
               </div>
               <div className="flex justify-start gap-5 text-sm">
                 <FontAwesomeIcon
@@ -186,15 +186,14 @@ export default function Prizes() {
                   className="text-slate-700 text-xl pt-1"
                 />
                 <span>
-                  <div className="bg-orange-200 mb-1 mr-1 inline-block  px-4 py-1">
-                    Machine Learning
-                  </div>
-                  <div className="bg-orange-200 mb-1 mr-1 inline-block  px-4 py-1">
-                    IoT
-                  </div>
-                  <div className="bg-orange-200 mb-1 mr-1 inline-block  px-4 py-1">
-                    Beginner Friendly
-                  </div>
+                  {(hackathon.themes || []).slice(0, 3).map((theme, index) => (
+                    <div
+                      key={index}
+                      className="bg-orange-200 capitalize mb-1 mr-1 inline-block px-4 py-1"
+                    >
+                      {theme}
+                    </div>
+                  ))}
                 </span>
               </div>
             </div>
