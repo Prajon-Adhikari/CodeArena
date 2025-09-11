@@ -4,6 +4,7 @@ import JoinedHackathon from "../models/joinedHackathon.model.js";
 import Prize from "../models/prize.model.js";
 import Judge from "../models/judge.model.js";
 import Rules from "../models/rules.model.js";
+import SubmittedProject from "../models/submitedProject.model.js";
 
 export const hackathon = async (req, res) => {
   const organizerId = req.user._id;
@@ -93,6 +94,7 @@ export const getTopHackathon = async (req, res) => {
 
 export const getSpecificHackathonDetails = async (req, res) => {
   const { id } = req.params;
+  const userId = req.user._id;
   try {
     const hackathon = await Hackathon.findById(id);
 
@@ -100,29 +102,62 @@ export const getSpecificHackathonDetails = async (req, res) => {
       return res.status(404).json({ message: "Hackathon not found" });
     }
 
-    let isRegistered = false;
+    const isHostedHackathon =
+      hackathon.organizerId.toString() === userId.toString();
 
-    if (req.user?._id) {
+    const participants = await JoinedHackathon.find({ hackathonId: id });
+
+    if (isHostedHackathon) {
+      const submittedProjects = await SubmittedProject.find({ hackathonId: id })
+        .populate("tags", "fullName email") // tags = team members
+        .lean();
+
+      // Get all joined records for this hackathon in one query
+      const joinedRecords = await JoinedHackathon.find({
+        hackathonId: id,
+      }).lean();
+
+      // Create a map: userId -> teamName
+      const teamMap = {};
+      joinedRecords.forEach((record) => {
+        teamMap[record.userId.toString()] = record.teamName;
+      });
+
+      // Attach teamName to each project
+      submittedProjects.forEach((project) => {
+        const teamMemberIds =
+          project.tags?.map((tag) => tag._id.toString()) || [];
+        const teamNames = teamMemberIds
+          .map((uid) => teamMap[uid])
+          .filter(Boolean);
+        project.teamName = teamNames.length > 0 ? teamNames[0] : "N/A";
+      });
+
+      return res.status(200).json({
+        message: "Successfully fetched hosted hackathon details",
+        hackathon,
+        isHostedHackathon,
+        participants,
+        submittedProjects,
+      });
+    } else {
+      let isRegistered = false;
+
       const alreadyJoined = await JoinedHackathon.findOne({
         userId: req.user._id,
         hackathonId: id,
       });
 
-      if (alreadyJoined) {
-        isRegistered = true;
-      }
+      if (alreadyJoined) isRegistered = true;
+
+      return res.status(200).json({
+        message: "Successfully fetched hackathon details",
+        hackathon,
+        isRegistered,
+        participants,
+        isHostedHackathon: false,
+      });
     }
-
-    const participants = await JoinedHackathon.find({
-      hackathonId: id
-    })
-
-    return res.status(200).json({
-      message: "Successfully fetched specific hackathon details",
-      hackathon,
-      isRegistered,
-      participants,
-    });
   } catch (error) {
     console.log("Error while fetching specific hackathon details", error);
     res.status(500).json({
