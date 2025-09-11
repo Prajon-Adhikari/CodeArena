@@ -11,6 +11,7 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
+import Select from "react-select";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 const localizer = momentLocalizer(moment);
@@ -28,6 +29,7 @@ export default function Overview() {
   const [currentDate, setCurrentDate] = useState(null);
   const [participants, setParticipants] = useState([]);
   const [isMyHostedHackathon, setIsMyHostedHackathon] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   const tabs = [
     { path: "overview", label: "Overview" },
@@ -37,28 +39,29 @@ export default function Overview() {
     { path: "judges", label: "Judges" },
   ];
 
+  const fetchHackathonDetails = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/home/${id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
+      const data = await response.json();
+      setHackathon(data.hackathon);
+      setIsRegistered(data.isRegistered);
+      setParticipants(data.participants);
+      setIsMyHostedHackathon(data.isHostedHackathon || false);
+    } catch (error) {
+      console.log("Failed to fetch hackathon", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchHackathonDetails = async () => {
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/home/${id}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-          }
-        );
-        const data = await response.json();
-        setHackathon(data.hackathon);
-        setIsRegistered(data.isRegistered);
-        setParticipants(data.participants);
-        setIsMyHostedHackathon(data.isHostedHackathon || false);
-      } catch (error) {
-        console.log("Failed to fetch hackathon", error);
-      }
-    };
     fetchHackathonDetails();
   }, [id]);
 
@@ -93,6 +96,23 @@ export default function Overview() {
       setCurrentDate(registrationStart);
     }
   }, [hackathon]);
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.put(
+        `${import.meta.env.VITE_API_BASE_URL}/home/hackathons/${id}`,
+        hackathon, // send updated hackathon
+        { withCredentials: true }
+      );
+      toast.success("Hackathon updated!");
+      setIsEditing(false);
+      fetchHackathonDetails();
+    } catch (error) {
+      console.error("Update failed:", error);
+      toast.error("Failed to update hackathon");
+    }
+  };
 
   const handleHackathonRegistration = async (e) => {
     e.preventDefault();
@@ -167,7 +187,10 @@ export default function Overview() {
               <div className="flex justify-between items-center mr-20">
                 <h2 className="text-4xl font-bold pb-1 ">{hackathon.title}</h2>
                 {isMyHostedHackathon ? (
-                  <button className="border-2 cursor-pointer hover:shadow-[0px_0px_5px_gray] border-gray-600 px-8 rounded-lg text-lg">
+                  <button
+                    onClick={() => setIsEditing(true)}
+                    className="border-2 cursor-pointer hover:shadow-[0px_0px_5px_gray] border-gray-600 px-8 rounded-lg text-lg"
+                  >
                     Edit
                   </button>
                 ) : (
@@ -317,6 +340,200 @@ export default function Overview() {
             autoClose={2000}
             hideProgressBar={true}
           />
+          {isEditing && (
+            <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-md z-50">
+              <div className="bg-white p-8 rounded-lg shadow-xl w-[700px] max-h-[90vh] overflow-y-auto">
+                <form onSubmit={handleUpdate}>
+                  <h2 className="text-3xl font-bold mb-6">Update Hackathon</h2>
+
+                  {/* Title */}
+                  <label className="block font-semibold mb-2">Title</label>
+                  <input
+                    type="text"
+                    value={hackathon.title}
+                    onChange={(e) =>
+                      setHackathon({ ...hackathon, title: e.target.value })
+                    }
+                    className="border px-4 py-2 w-full mb-4 rounded"
+                  />
+
+                  {/* Description */}
+                  <label className="block font-semibold mb-2">
+                    Description
+                  </label>
+                  <textarea
+                    value={hackathon.description}
+                    onChange={(e) =>
+                      setHackathon({
+                        ...hackathon,
+                        description: e.target.value,
+                      })
+                    }
+                    className="border px-4 py-2 w-full mb-4 rounded"
+                  />
+
+                  {/* Organizer Name */}
+                  <label className="block font-semibold mb-2">
+                    Organizer Name
+                  </label>
+                  <input
+                    type="text"
+                    value={hackathon.organizerName || ""}
+                    onChange={(e) =>
+                      setHackathon({
+                        ...hackathon,
+                        organizerName: e.target.value,
+                      })
+                    }
+                    className="border px-4 py-2 w-full mb-4 rounded"
+                  />
+
+                  {/* Contact Email */}
+                  <label className="block font-semibold mb-2">
+                    Contact Email
+                  </label>
+                  <input
+                    type="email"
+                    value={hackathon.contactEmail || ""}
+                    onChange={(e) =>
+                      setHackathon({
+                        ...hackathon,
+                        contactEmail: e.target.value,
+                      })
+                    }
+                    className="border px-4 py-2 w-full mb-4 rounded"
+                  />
+
+                  {/* Themes */}
+                  <label className="block font-semibold mb-2">Themes</label>
+                  <Select
+                    isMulti
+                    name="themes"
+                    value={(hackathon.themes || []).map((theme) => ({
+                      value: theme,
+                      label: theme,
+                    }))}
+                    onChange={(selectedOptions) =>
+                      setHackathon({
+                        ...hackathon,
+                        themes: selectedOptions.map((option) => option.value),
+                      })
+                    }
+                    options={[
+                      { value: "AI", label: "AI" },
+                      { value: "Blockchain", label: "Blockchain" },
+                      { value: "Healthcare", label: "Healthcare" },
+                      { value: "Education", label: "Education" },
+                      { value: "Environment", label: "Environment" },
+                    ]}
+                    className="basic-multi-select mb-4 capitalize"
+                    classNamePrefix="select"
+                    styles={{
+                      control: (base) => ({
+                        ...base,
+                        borderWidth: "2px",
+                        borderRadius: "12px",
+                        borderColor: "#B7B7B7",
+                        padding: "7px 6px",
+                        boxShadow: "none",
+                        "&:hover": { borderColor: "#6B7280" },
+                      }),
+                      multiValue: (base) => ({
+                        ...base,
+                        borderWidth: "2px",
+                        borderRadius: "9999px",
+                        borderColor: "#000000",
+                        backgroundColor: "#FFFFFF",
+                        padding: "1px 8px",
+                        "&:hover": { backgroundColor: "#EEEEEE" },
+                      }),
+                      multiValueLabel: (base) => ({
+                        ...base,
+                        color: "#000000", // Tailwind blue-900
+                        fontWeight: "500",
+                      }),
+                      multiValueRemove: (base) => ({
+                        ...base,
+                        borderRadius: "9999px",
+                        color: "black",
+                        "&:hover": {
+                          backgroundColor: "#EEEEEE",
+                          cursor: "pointer",
+                          color: "#000000",
+                        },
+                      }),
+                    }}
+                  />
+                  {/* Mode */}
+                  <label className="block font-semibold mb-2">Mode</label>
+                  <input
+                    type="text"
+                    value={hackathon.mode || ""}
+                    onChange={(e) =>
+                      setHackathon({ ...hackathon, mode: e.target.value })
+                    }
+                    className="border px-4 py-2 w-full mb-4 rounded"
+                  />
+
+                  {/* Start Date */}
+                  <label className="block font-semibold mb-2">Start Date</label>
+                  <input
+                    type="date"
+                    value={hackathon.startDate?.split("T")[0]}
+                    onChange={(e) =>
+                      setHackathon({ ...hackathon, startDate: e.target.value })
+                    }
+                    className="border px-4 py-2 w-full mb-4 rounded"
+                  />
+
+                  {/* End Date */}
+                  <label className="block font-semibold mb-2">End Date</label>
+                  <input
+                    type="date"
+                    value={hackathon.endDate?.split("T")[0]}
+                    onChange={(e) =>
+                      setHackathon({ ...hackathon, endDate: e.target.value })
+                    }
+                    className="border px-4 py-2 w-full mb-4 rounded"
+                  />
+
+                  {/* Registration Deadline */}
+                  <label className="block font-semibold mb-2">
+                    Registration Deadline
+                  </label>
+                  <input
+                    type="date"
+                    value={hackathon.registrationDeadline?.split("T")[0]}
+                    onChange={(e) =>
+                      setHackathon({
+                        ...hackathon,
+                        registrationDeadline: e.target.value,
+                      })
+                    }
+                    className="border px-4 py-2 w-full mb-4 rounded"
+                  />
+
+                  {/* Buttons */}
+                  <div className="flex gap-4 mt-6 justify-end">
+                    <button
+                      type="submit"
+                      className="bg-blue-500 cursor-pointer text-white px-6 py-2 rounded hover:bg-blue-400"
+                    >
+                      Save
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setIsEditing(false)}
+                      className="bg-gray-400 text-white  cursor-pointer px-6 py-2 rounded hover:bg-gray-300"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
           {showUnregisterConfirm && (
             <div className="fixed inset-0 flex justify-center items-center backdrop-blur-sm bg-black/20 z-50">
               <div className="bg-white p-8 rounded-lg shadow-lg text-center w-[400px]">

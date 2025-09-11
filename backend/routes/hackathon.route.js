@@ -5,6 +5,7 @@ import {
   getTopHackathon,
   getSpecificHackathonDetails,
   joinedHackathon,
+  updateHackathon,
 } from "../controllers/hackathon.controller.js";
 import { protectRoute } from "../middlewares/auth.middleware.js";
 import {
@@ -67,6 +68,8 @@ router.post("/blogs", protectRoute, uploadImage, submitBlog);
 router.get("/blog/:id", getSpecificBlogDetails);
 
 router.post("/contact",protectRoute, submitContact);
+
+router.put("/hackathons/:id",protectRoute, updateHackathon);
 
 router.get("/myjoinedhackathon", protectRoute, getMyJoinedHackathon);
 

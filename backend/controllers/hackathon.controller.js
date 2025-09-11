@@ -214,3 +214,17 @@ export const joinedHackathon = async (req, res) => {
       .json({ message: "Internal error while registering to hackathon" });
   }
 };
+
+export const updateHackathon = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedHackathon = await Hackathon.findByIdAndUpdate(
+      id,
+      req.body,
+      { new: true }
+    );
+    res.json(updatedHackathon);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to update hackathon" });
+  }
+};
