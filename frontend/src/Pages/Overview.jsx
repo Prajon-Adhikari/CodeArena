@@ -164,8 +164,17 @@ export default function Overview() {
         <>
           <div className="px-[140px] py-16 flex justify-between">
             <div className="w-[800px] ">
-              <h1 className="text-4xl font-bold">{hackathon.title}</h1>
-              <p className="text-[22px] pt-8">{hackathon.description}</p>
+              <div className="flex justify-between items-center mr-20">
+                <h2 className="text-4xl font-bold pb-1 ">{hackathon.title}</h2>
+                {isMyHostedHackathon ? (
+                  <button className="border-2 cursor-pointer hover:shadow-[0px_0px_5px_gray] border-gray-600 px-8 rounded-lg text-lg">
+                    Edit
+                  </button>
+                ) : (
+                  <div></div>
+                )}
+              </div>
+              <p className="text-[21px] pt-8">{hackathon.description}</p>
             </div>
             <div>
               <div className="bg-[#F8F8F8] border-1 border-gray-400 p-6  w-[400px] rounded-lg">

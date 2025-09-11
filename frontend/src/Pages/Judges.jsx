@@ -15,6 +15,7 @@ export default function Judges() {
   const [hackathon, setHackathon] = useState("");
   const [judges, setJudges] = useState([]);
   const [participants, setParticipants] = useState([]);
+  const [isMyHostedHackathon, setIsMyHostedHackathon] = useState(false);
 
   const tabs = [
     { path: "overview", label: "Overview" },
@@ -40,6 +41,7 @@ export default function Judges() {
         const data = await response.json();
         setHackathon(data.hackathon);
         setParticipants(data.participants);
+        setIsMyHostedHackathon(data.isHostedHackathon || false);
       } catch (error) {
         console.log("Failed to fetch hackathon", error);
       }
@@ -94,9 +96,12 @@ export default function Judges() {
           ))}
         </div>
       </div>
-      <div className="px-[180px] py-20 flex justify-between">
+      <div className="px-[180px] py-20 flex gap-6">
         <div>
-          <h2 className="text-5xl font-bold mb-10 pb-4 pl-1">Judges</h2>
+          <div className="flex justify-between items-center mb-10 mr-20">
+            <h2 className="text-5xl font-bold pb-1 ">Judges</h2>
+            {isMyHostedHackathon?<button className="border-2 cursor-pointer hover:shadow-[0px_0px_5px_gray] border-gray-600 px-8 rounded-lg text-lg">Edit</button>:<div></div>}
+          </div>
           <div className="grid grid-cols-2 gap-10">
             {judges.map((judge, index) => {
               return (

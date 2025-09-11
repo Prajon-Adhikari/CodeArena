@@ -13,7 +13,8 @@ export default function Rules() {
   const location = useLocation();
   const [hackathon, setHackathon] = useState("");
   const [hackathonRules, setHackathonRules] = useState({});
-    const [participants, setParticipants] = useState([]);
+  const [participants, setParticipants] = useState([]);
+  const [isMyHostedHackathon, setIsMyHostedHackathon] = useState(false);
 
   const tabs = [
     { path: "overview", label: "Overview" },
@@ -45,6 +46,7 @@ export default function Rules() {
         const data = await response.json();
         setHackathon(data.hackathon);
         setParticipants(data.participants);
+        setIsMyHostedHackathon(data.isHostedHackathon || false);
       } catch (error) {
         console.log("Failed to fetch hackathon", error);
       }
@@ -101,8 +103,10 @@ export default function Rules() {
       </div>
       <div className="flex px-[200px] py-20 justify-between">
         <div className="">
-          <h2 className="text-5xl font-bold mb-10 pb-1">Rules</h2>
-
+          <div className="flex justify-between items-center mb-10 mr-20">
+            <h2 className="text-5xl font-bold pb-1 ">Rules</h2>
+            {isMyHostedHackathon?<button className="border-2 cursor-pointer hover:shadow-[0px_0px_5px_gray] border-gray-600 px-8 rounded-lg text-lg">Edit</button>:<div></div>}
+          </div>
           {hackathonRules?.eligibility && (
             <div style={ruleStyle}>
               <h3 className="text-2xl font-bold pb-2">Eligibility</h3>
@@ -138,7 +142,6 @@ export default function Rules() {
                 ))}
             </div>
           )}
-
           {hackathonRules?.codeOfConduct && (
             <div style={ruleStyle}>
               <h3 className="text-2xl font-bold pb-2 pt-6">Code of Conduct</h3>
