@@ -35,3 +35,31 @@ export const getPrizeDetails = async (req, res) => {
       .json({ message: "Internal error while fetching prizes" });
   }
 };
+
+export const updatePrizes = async (req, res) => {
+  try {
+    const { prizes } = req.body;
+    const { id } = req.params;
+
+    const hackathon = await Hackathon.findById(id);
+    if (!hackathon) return res.status(404).json({ message: "Hackathon not found" });
+
+    // Delete old prizes
+    await Prize.deleteMany({ _id: { $in: hackathon.prizes } });
+
+    // Create new prizes
+    const createdPrizes = await Prize.insertMany(prizes);
+
+    // Update hackathon prizes array without overwriting other fields
+    const updatedHackathon = await Hackathon.findByIdAndUpdate(
+      id,
+      { prizes: createdPrizes.map((p) => p._id) },
+      { new: true } // return updated document
+    );
+
+    return res.json({ prizes: createdPrizes });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Server error" });
+  }
+};

@@ -7,6 +7,8 @@ import {
   faFlag,
   faTags,
 } from "@fortawesome/free-solid-svg-icons";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Prizes() {
   const { id } = useParams();
@@ -15,6 +17,8 @@ export default function Prizes() {
   const [prizes, setPrizes] = useState([]);
   const [participants, setParticipants] = useState([]);
   const [isMyHostedHackathon, setIsMyHostedHackathon] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [originalPrizes, setOriginalPrizes] = useState([]);
 
   const tabs = [
     { path: "overview", label: "Overview" },
@@ -24,6 +28,7 @@ export default function Prizes() {
     { path: "judges", label: "Judges" },
   ];
 
+  // Fetch hackathon details
   useEffect(() => {
     const fetchHackathonDetails = async () => {
       try {
@@ -31,9 +36,7 @@ export default function Prizes() {
           `${import.meta.env.VITE_API_BASE_URL}/home/${id}`,
           {
             method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
             credentials: "include",
           }
         );
@@ -48,6 +51,7 @@ export default function Prizes() {
     fetchHackathonDetails();
   }, [id]);
 
+  // Fetch prizes
   useEffect(() => {
     const fetchPrizesDetails = async () => {
       try {
@@ -55,22 +59,68 @@ export default function Prizes() {
           `${import.meta.env.VITE_API_BASE_URL}/home/${id}/prizes`,
           {
             method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
             credentials: "include",
           }
         );
         const data = await response.json();
         setPrizes(data.prizes);
+        setOriginalPrizes(data.prizes);
       } catch (error) {
         console.log("Error while fetching prizes details", error);
       }
     };
     fetchPrizesDetails();
   }, [id]);
+
+  const handlePrizeChange = (index, field, value) => {
+    const updatedPrizes = [...prizes];
+    updatedPrizes[index][field] = value;
+    setPrizes(updatedPrizes);
+  };
+
+  const removePrize = (index) => {
+    const updatedPrizes = prizes.filter((_, i) => i !== index);
+    setPrizes(updatedPrizes);
+  };
+
+  const addPrize = () => {
+    setPrizes([
+      ...prizes,
+      { title: "", description: "", winnersCount: 1, prizeValue: 0 },
+    ]);
+  };
+
+  const savePrizes = async () => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/home/${id}/prizes`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ prizes }),
+        }
+      );
+      const data = await res.json();
+      setPrizes(data.prizes);
+      setOriginalPrizes(data.prizes);
+      setEditing(false);
+      toast.success("Prizes updated successfully!");
+    } catch (err) {
+      console.log(err);
+      toast.error("Failed to update prizes.");
+    }
+  };
+
+  const cancelEdit = () => {
+    setPrizes(originalPrizes);
+    setEditing(false);
+  };
+
   return (
-    <div className="pt-[60px] pb-10">
+    <div className="pt-[60px] pb-10 relative">
+      <ToastContainer />
       <div>
         {hackathon && hackathon.bannerUrl ? (
           <img src={hackathon.bannerUrl} />
@@ -95,65 +145,65 @@ export default function Prizes() {
           ))}
         </div>
       </div>
+
       <div className="px-[180px] py-20 flex justify-between">
         <div>
           <div className="flex justify-between items-center mb-10 mr-20">
             <h2 className="text-5xl font-bold pb-1 ">Prizes</h2>
-            {isMyHostedHackathon?<button className="border-2 cursor-pointer hover:shadow-[0px_0px_5px_gray] border-gray-600 px-8 rounded-lg text-lg">Edit</button>:<div></div>}
+            {isMyHostedHackathon && !editing && (
+              <button
+                onClick={() => setEditing(true)}
+                className="border-2 cursor-pointer hover:shadow-[0px_0px_5px_gray] border-gray-600 px-8 rounded-lg text-lg"
+              >
+                Edit
+              </button>
+            )}
           </div>
           <div className="grid grid-cols-2 gap-10">
-            {prizes.map((prize, index) => {
-              return (
-                <div key={index} className="w-[360px] mb-8">
-                  <div className="font-bold text-[24px] pb-2">
-                    ⭐ {prize.title}
+            {prizes.map((prize, index) => (
+              <div key={index} className="w-[360px] mb-8">
+                <div className="font-bold text-[24px] pb-2">
+                  ⭐ {prize.title}
+                </div>
+                <div className="pl-10">
+                  <div className="text-gray-700 pb-2">
+                    {prize.winnersCount} winner
                   </div>
-                  <div className="pl-10">
-                    <div className="text-gray-700 pb-2">
-                      {prize.winnersCount} winner
-                    </div>
-                    <div className="text-lg font-semibold pb-2">
-                      {prize.description}
-                    </div>
-                    <div className="text-lg font-semibold pb-2">
-                      $ {prize.prizeValue} in cash
-                    </div>
+                  <div className="text-lg font-semibold pb-2">
+                    {prize.description}
+                  </div>
+                  <div className="text-lg font-semibold pb-2">
+                    $ {prize.prizeValue} in cash
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         </div>
 
         <div>
-          <div className="bg-[#F8F8F8] border-1 border-gray-400 p-6  w-[400px] rounded-lg">
+          <div className="bg-[#F8F8F8] border-1 border-gray-400 p-6 w-[400px] rounded-lg">
             <p className="bg-orange-200 w-45 text-center py-1 rounded-3xl">
-              {" "}
               {(() => {
                 const deadline = new Date(hackathon.registrationDeadline);
                 const today = new Date();
-                const timeDiff = deadline.getTime() - today.getTime();
                 const remainingDays = Math.ceil(
-                  timeDiff / (1000 * 60 * 60 * 24)
+                  (deadline.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
                 );
-
                 return remainingDays > 0
                   ? `${remainingDays} days to deadline`
                   : "Deadline passed";
               })()}
             </p>
-            <p className="text-lg font-bold mt-2 pl-2">Registraion Deadline</p>
+            <p className="text-lg font-bold mt-2 pl-2">Registration Deadline</p>
             <p className="pl-2 pt-1 pb-4 border-b-1 border-gray-400">
-              {" "}
               {(() => {
                 const deadline = new Date(hackathon.registrationDeadline);
-                const formattedDate = deadline.toLocaleDateString("en-US", {
+                return deadline.toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "short",
                   day: "numeric",
                 });
-
-                return formattedDate;
               })()}
             </p>
             <div className="flex justify-between px-4 py-8 text-lg border-b-1 border-gray-400">
@@ -208,6 +258,103 @@ export default function Prizes() {
           </div>
         </div>
       </div>
+
+      {/* Edit Modal Overlay */}
+      {editing && (
+        <>
+          {/* Full-screen dark glass overlay */}
+          <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-md z-50">
+            {/* Modal on top */}
+            <div className="fixed inset-0 z-50 flex justify-center  items-start pt-20 overflow-auto">
+              <div className="bg-white rounded-xl p-10  m-4 shadow-lg">
+                <h2 className="text-3xl font-bold mb-6">Edit Prizes</h2>
+                <div className="grid grid-cols-2 gap-6">
+                  {prizes.map((prize, index) => (
+                    <div
+                      key={index}
+                      className="border p-4 rounded-lg flex flex-col h-[300px] w-[400px]   justify-between"
+                    >
+                      <input
+                        type="text"
+                        placeholder="Prize Title"
+                        value={prize.title}
+                        onChange={(e) =>
+                          handlePrizeChange(index, "title", e.target.value)
+                        }
+                        className="border-b-2 border-gray-300 mb-2 outline-none"
+                        required
+                      />
+                      <textarea
+                        placeholder="Prize Description"
+                        value={prize.description}
+                        onChange={(e) =>
+                          handlePrizeChange(
+                            index,
+                            "description",
+                            e.target.value
+                          )
+                        }
+                        className="border-b-2 border-gray-300 mb-2 outline-none"
+                        required
+                      />
+                      <input
+                        type="number"
+                        placeholder="Number of Winners"
+                        value={prize.winnersCount}
+                        onChange={(e) =>
+                          handlePrizeChange(
+                            index,
+                            "winnersCount",
+                            e.target.value
+                          )
+                        }
+                        className="border-b-2 border-gray-300 mb-2 outline-none"
+                      />
+                      <input
+                        type="number"
+                        placeholder="Prize Value"
+                        value={prize.prizeValue}
+                        onChange={(e) =>
+                          handlePrizeChange(index, "prizeValue", e.target.value)
+                        }
+                        className="border-b-2 border-gray-300 mb-2 outline-none"
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removePrize(index)}
+                        className="bg-red-400 cursor-pointer hover:bg-red-300 text-white py-1 rounded mt-2"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-6 flex gap-4">
+                  <button
+                    onClick={addPrize}
+                    className="bg-green-400 text-white cursor-pointer hover:bg-green-300 px-4 py-2 rounded"
+                  >
+                    Add Prize
+                  </button>
+                  <button
+                    onClick={savePrizes}
+                    className="bg-blue-400 cursor-pointer hover:bg-blue-300 text-white px-4 py-2 rounded"
+                  >
+                    Update
+                  </button>
+                  <button
+                    onClick={cancelEdit}
+                    className="bg-gray-400 cursor-pointerhover:bg-gray-300 text-white px-4 py-2 rounded"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

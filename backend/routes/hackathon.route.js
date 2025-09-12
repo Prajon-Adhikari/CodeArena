@@ -19,7 +19,7 @@ import {
 } from "../controllers/submittedProject.controller.js";
 import { getRules, updateRules } from "../controllers/rules.controller.js";
 import upload from "../middlewares/video.js";
-import { getPrizeDetails } from "../controllers/prize.controller.js";
+import { getPrizeDetails, updatePrizes } from "../controllers/prize.controller.js";
 import { getJudgesDetails } from "../controllers/judges.controller.js";
 import uploadImage from "../middlewares/image.js";
 import { fetchBlog, getSpecificBlogDetails, submitBlog } from "../controllers/blog.controller.js";
@@ -92,6 +92,8 @@ router.get("/:id/rules", protectRoute, getRules);
 router.put("/:id/rules", updateRules);
 
 router.get("/:id/prizes", protectRoute, getPrizeDetails);
+
+router.put("/:id/prizes", updatePrizes);
 
 router.get("/:id/judges", protectRoute, getJudgesDetails);
 

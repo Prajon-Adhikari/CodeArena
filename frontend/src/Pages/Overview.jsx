@@ -74,12 +74,16 @@ export default function Overview() {
       const registrationEnd = moment(
         hackathon.registrationDeadline,
         "YYYY-MM-DD"
-      ).toDate();
+      )
+        .add(1, "days")
+        .toDate();
       const submissionStart = moment(
         hackathon.startDate,
         "YYYY-MM-DD"
       ).toDate();
-      const submissionEnd = moment(hackathon.endDate, "YYYY-MM-DD").toDate();
+      const submissionEnd = moment(hackathon.endDate, "YYYY-MM-DD")
+        .add(1, "days")
+        .toDate();
 
       setEvents([
         {
@@ -475,24 +479,18 @@ export default function Overview() {
                     className="border px-4 py-2 w-full mb-4 rounded"
                   />
 
-                  {/* Start Date */}
-                  <label className="block font-semibold mb-2">Start Date</label>
+                  {/* Registration Start */}
+                  <label className="block font-semibold mb-2">
+                    Registration Start
+                  </label>
                   <input
                     type="date"
-                    value={hackathon.startDate?.split("T")[0]}
+                    value={hackathon.registrationStart?.split("T")[0]}
                     onChange={(e) =>
-                      setHackathon({ ...hackathon, startDate: e.target.value })
-                    }
-                    className="border px-4 py-2 w-full mb-4 rounded"
-                  />
-
-                  {/* End Date */}
-                  <label className="block font-semibold mb-2">End Date</label>
-                  <input
-                    type="date"
-                    value={hackathon.endDate?.split("T")[0]}
-                    onChange={(e) =>
-                      setHackathon({ ...hackathon, endDate: e.target.value })
+                      setHackathon({
+                        ...hackathon,
+                        registrationStart: e.target.value,
+                      })
                     }
                     className="border px-4 py-2 w-full mb-4 rounded"
                   />
@@ -509,6 +507,32 @@ export default function Overview() {
                         ...hackathon,
                         registrationDeadline: e.target.value,
                       })
+                    }
+                    className="border px-4 py-2 w-full mb-4 rounded"
+                  />
+
+                  {/* Start Date */}
+                  <label className="block font-semibold mb-2">
+                    Submission Start
+                  </label>
+                  <input
+                    type="date"
+                    value={hackathon.startDate?.split("T")[0]}
+                    onChange={(e) =>
+                      setHackathon({ ...hackathon, startDate: e.target.value })
+                    }
+                    className="border px-4 py-2 w-full mb-4 rounded"
+                  />
+
+                  {/* End Date */}
+                  <label className="block font-semibold mb-2">
+                    Submission End
+                  </label>
+                  <input
+                    type="date"
+                    value={hackathon.endDate?.split("T")[0]}
+                    onChange={(e) =>
+                      setHackathon({ ...hackathon, endDate: e.target.value })
                     }
                     className="border px-4 py-2 w-full mb-4 rounded"
                   />
