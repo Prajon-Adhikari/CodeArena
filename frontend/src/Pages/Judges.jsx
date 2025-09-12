@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useParams, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
 import {
   faGlobe,
   faBuildingColumns,
@@ -8,14 +9,18 @@ import {
   faTags,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function Judges() {
   const { id } = useParams();
   const location = useLocation();
   const [hackathon, setHackathon] = useState("");
   const [judges, setJudges] = useState([]);
+  const [users, setUsers] = useState([]);
   const [participants, setParticipants] = useState([]);
   const [isMyHostedHackathon, setIsMyHostedHackathon] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [originalJudges, setOriginalJudges] = useState([]);
 
   const tabs = [
     { path: "overview", label: "Overview" },
@@ -24,6 +29,24 @@ export default function Judges() {
     { path: "prizes", label: "Prizes" },
     { path: "judges", label: "Judges" },
   ];
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_BASE_URL}/home/users`,
+          {
+            withCredentials: true,
+          }
+        );
+        setUsers(res.data); // make sure backend returns [{_id, fullName, email}, ...]
+      } catch (err) {
+        console.error("Error fetching users:", err);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   useEffect(() => {
     const fetchHackathonDetails = async () => {
@@ -64,14 +87,59 @@ export default function Judges() {
         );
         const data = await response.json();
         setJudges(data.judges);
+        setOriginalJudges(data.judges);
       } catch (error) {
         console.log("Error while fetching judges data", error);
       }
     };
     fetchJudgesDetails();
   }, [id]);
+
+  const handleJudgeChange = (index, field, value) => {
+    const updated = [...judges];
+    updated[index][field] = value;
+    setJudges(updated);
+  };
+
+  const removeJudge = (index) => {
+    const updated = judges.filter((_, i) => i !== index);
+    setJudges(updated);
+  };
+
+  const addJudge = () => {
+    setJudges([...judges, { name: "", bio: "", role: "", photoUrl: "" }]);
+  };
+
+  const saveJudges = async () => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/home/${id}/judges`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ judges }),
+        }
+      );
+      const data = await res.json();
+      setJudges(data.judges);
+      setOriginalJudges(data.judges);
+      setEditing(false);
+      toast.success("Judges updated successfully!");
+    } catch (err) {
+      console.log(err);
+      toast.error("Failed to update judges.");
+    }
+  };
+
+  const cancelEdit = () => {
+    setJudges(originalJudges);
+    setEditing(false);
+  };
+
   return (
     <div className="pt-[60px] pb-10">
+      <ToastContainer />
       <div>
         {hackathon && hackathon.bannerUrl ? (
           <img src={hackathon.bannerUrl} />
@@ -100,7 +168,14 @@ export default function Judges() {
         <div>
           <div className="flex justify-between items-center mb-10 mr-20">
             <h2 className="text-5xl font-bold pb-1 ">Judges</h2>
-            {isMyHostedHackathon?<button className="border-2 cursor-pointer hover:shadow-[0px_0px_5px_gray] border-gray-600 px-8 rounded-lg text-lg">Edit</button>:<div></div>}
+            {isMyHostedHackathon && !editing && (
+              <button
+                onClick={() => setEditing(true)}
+                className="border-2 cursor-pointer hover:shadow-[0px_0px_5px_gray] border-gray-600 px-8 rounded-lg text-lg"
+              >
+                Edit
+              </button>
+            )}{" "}
           </div>
           <div className="grid grid-cols-2 gap-10">
             {judges.map((judge, index) => {
@@ -215,6 +290,100 @@ export default function Judges() {
           </div>
         </div>
       </div>
+      {editing && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-md z-50">
+          <div className="fixed inset-0 z-50 flex justify-center items-start pt-20 overflow-auto">
+            <div className="bg-white rounded-xl p-10 m-4 shadow-lg w-[900px]">
+              <h2 className="text-3xl font-bold mb-6">Edit Judges</h2>
+              <div className="grid grid-cols-2 gap-6">
+                {judges.map((judge, index) => (
+                  <div
+                    key={index}
+                    className="border p-4 rounded-lg flex flex-col justify-between h-[300px]"
+                  >
+                    <h3 className="text-lg font-semibold mb-2">
+                      Judge {index + 1}
+                    </h3>
+
+                    {/* Name Dropdown */}
+                    <select
+                      value={judge.name}
+                      onChange={(e) =>
+                        handleJudgeChange(index, "name", e.target.value)
+                      }
+                      className="w-full border-b-2 border-gray-300 focus:outline-none pb-1"
+                      required
+                    >
+                      <option value="">
+                        Select Judge (must have CodeArena account)
+                      </option>
+                      {users.map((user) => (
+                        <option key={user._id} value={user.fullName}>
+                          {user.fullName} ({user.email})
+                        </option>
+                      ))}
+                    </select>
+                    <input
+                      type="text"
+                      placeholder="Judge Role"
+                      value={judge.role}
+                      onChange={(e) =>
+                        handleJudgeChange(index, "role", e.target.value)
+                      }
+                      className="border-b-2 border-gray-300 mb-2 outline-none"
+                    />
+                    <textarea
+                      placeholder="Judge Bio"
+                      value={judge.bio}
+                      onChange={(e) =>
+                        handleJudgeChange(index, "bio", e.target.value)
+                      }
+                      className="border-b-2 border-gray-300 mb-2 outline-none"
+                      required
+                    />
+                    <input
+                      type="text"
+                      placeholder="Photo URL"
+                      value={judge.photoUrl}
+                      onChange={(e) =>
+                        handleJudgeChange(index, "photoUrl", e.target.value)
+                      }
+                      className="border-b-2 border-gray-300 mb-2 outline-none"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeJudge(index)}
+                      className="bg-red-400 cursor-pointer hover:bg-red-300 text-white py-1 rounded mt-2"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-6 flex gap-4">
+                <button
+                  onClick={addJudge}
+                  className="bg-green-400 text-white cursor-pointer hover:bg-green-300 px-4 py-2 rounded"
+                >
+                  Add Judge
+                </button>
+                <button
+                  onClick={saveJudges}
+                  className="bg-blue-400 cursor-pointer hover:bg-blue-300 text-white px-4 py-2 rounded"
+                >
+                  Update
+                </button>
+                <button
+                  onClick={cancelEdit}
+                  className="bg-gray-400 cursor-pointer hover:bg-gray-300 text-white px-4 py-2 rounded"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -20,7 +20,7 @@ import {
 import { getRules, updateRules } from "../controllers/rules.controller.js";
 import upload from "../middlewares/video.js";
 import { getPrizeDetails, updatePrizes } from "../controllers/prize.controller.js";
-import { getJudgesDetails } from "../controllers/judges.controller.js";
+import { getJudgesDetails, updateJudges } from "../controllers/judges.controller.js";
 import uploadImage from "../middlewares/image.js";
 import { fetchBlog, getSpecificBlogDetails, submitBlog } from "../controllers/blog.controller.js";
 import { getPortfolioProject, getSpecificPortfolioProject, submitPortfolioProject } from "../controllers/portfolio.controller.js";
@@ -96,6 +96,8 @@ router.get("/:id/prizes", protectRoute, getPrizeDetails);
 router.put("/:id/prizes", updatePrizes);
 
 router.get("/:id/judges", protectRoute, getJudgesDetails);
+
+router.put("/:id/judges", updateJudges);
 
 router.post("/:id/overview", protectRoute, joinedHackathon);
 
