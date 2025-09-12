@@ -17,7 +17,7 @@ import {
   getSubmittedProject,
   submitProject,
 } from "../controllers/submittedProject.controller.js";
-import { getRules } from "../controllers/rules.controller.js";
+import { getRules, updateRules } from "../controllers/rules.controller.js";
 import upload from "../middlewares/video.js";
 import { getPrizeDetails } from "../controllers/prize.controller.js";
 import { getJudgesDetails } from "../controllers/judges.controller.js";
@@ -88,6 +88,8 @@ router.post("/:id/friend-request", protectRoute, sentFriendRequest);
 router.delete("/:id/unfriend",protectRoute, unfriendUser);
 
 router.get("/:id/rules", protectRoute, getRules);
+
+router.put("/:id/rules", updateRules);
 
 router.get("/:id/prizes", protectRoute, getPrizeDetails);
 

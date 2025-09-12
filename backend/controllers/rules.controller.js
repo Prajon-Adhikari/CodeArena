@@ -39,3 +39,25 @@ export const getRules = async (req, res) => {
       .json({ message: "Internal error while fetching rules" });
   }
 };
+
+
+export const updateRules = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedRules = req.body;
+
+    const rules = await Rules.findByIdAndUpdate(id, updatedRules, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!rules) {
+      return res.status(404).json({ message: "Rules not found" });
+    }
+
+    res.json({ message: "Rules updated successfully", rules });
+  } catch (error) {
+    console.error("Error updating rules:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};

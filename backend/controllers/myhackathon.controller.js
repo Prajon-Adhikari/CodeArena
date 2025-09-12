@@ -10,12 +10,6 @@ export const getMyJoinedHackathon = async (req, res) => {
 
     const joinedHackathons = await JoinedHackathon.find({ userId });
 
-    if (!joinedHackathons || joinedHackathons.length === 0) {
-      return res
-        .status(400)
-        .json({ message: "You have not joined any hackathon" });
-    }
-
     const hackathonIDs = joinedHackathons.map((record) => record.hackathonId);
 
     const hackathons = await Hackathon.find({ _id: { $in: hackathonIDs } });
@@ -40,12 +34,6 @@ export const getHostedHackathon = async (req, res) => {
     const hostedHackathons = await Hackathon.find({
       organizerId: userId,
     });
-
-    if (!hostedHackathons || hostedHackathons.length === 0) {
-      return res
-        .status(400)
-        .json({ message: "You haven't hosted any hackathons" });
-    }
 
     const hackathonsIds = hostedHackathons.map((record) => record._id);
 

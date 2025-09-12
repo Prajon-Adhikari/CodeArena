@@ -749,7 +749,7 @@ export default function Overview() {
                     type="radio"
                     name="teamStatus"
                     value="individual"
-                    checked={teamStatus === "indivdual"}
+                    checked={teamStatus === "individual"}
                     onChange={(e) => setTeamStatus(e.target.value)}
                     id="solo"
                     required

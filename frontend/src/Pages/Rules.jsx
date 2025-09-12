@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link, useParams, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
 import {
   faGlobe,
   faBuildingColumns,
   faFlag,
   faTags,
 } from "@fortawesome/free-solid-svg-icons";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function Rules() {
   const { id } = useParams();
@@ -15,6 +17,7 @@ export default function Rules() {
   const [hackathonRules, setHackathonRules] = useState({});
   const [participants, setParticipants] = useState([]);
   const [isMyHostedHackathon, setIsMyHostedHackathon] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   const tabs = [
     { path: "overview", label: "Overview" },
@@ -30,27 +33,51 @@ export default function Rules() {
     paddingLeft: "8px",
   };
 
+  const [rulesForm, setRulesForm] = useState({
+    eligibility: "",
+    teamFormation: "",
+    submissionRequirements: "",
+    codeOfConduct: "",
+    prohibited: "",
+    disqualification: "",
+  });
+
+  // sync when fetched
   useEffect(() => {
-    const fetchHackathonDetails = async () => {
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/home/${id}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-          }
-        );
-        const data = await response.json();
-        setHackathon(data.hackathon);
-        setParticipants(data.participants);
-        setIsMyHostedHackathon(data.isHostedHackathon || false);
-      } catch (error) {
-        console.log("Failed to fetch hackathon", error);
-      }
-    };
+    if (hackathonRules) {
+      setRulesForm({
+        eligibility: hackathonRules.eligibility || "",
+        teamFormation: hackathonRules.teamFormation || "",
+        submissionRequirements: hackathonRules.submissionRequirements || "",
+        codeOfConduct: hackathonRules.codeOfConduct || "",
+        prohibited: hackathonRules.prohibited || "",
+        disqualification: hackathonRules.disqualification || "",
+      });
+    }
+  }, [hackathonRules]);
+
+  const fetchHackathonDetails = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/home/${id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
+      const data = await response.json();
+      setHackathon(data.hackathon);
+      setParticipants(data.participants);
+      setIsMyHostedHackathon(data.isHostedHackathon || false);
+    } catch (error) {
+      console.log("Failed to fetch hackathon", error);
+    }
+  };
+
+  useEffect(() => {
     fetchHackathonDetails();
   }, [id]);
 
@@ -75,6 +102,30 @@ export default function Rules() {
     };
     fetchHackathonRules();
   }, [id]);
+
+  const handleUpdateRules = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.put(
+        `${import.meta.env.VITE_API_BASE_URL}/home/${hackathonRules._id}/rules`,
+        rulesForm,
+        { withCredentials: true }
+      );
+      toast.success("Rules updated!");
+      setIsEditing(false);
+      // refetch rules to update UI
+      const res = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/home/${id}/rules`,
+        { credentials: "include" }
+      );
+      const data = await res.json();
+      setHackathonRules(data.rules);
+    } catch (error) {
+      console.error("Rules update failed:", error);
+      toast.error("Failed to update rules");
+    }
+  };
+
   return (
     <div className="pt-[60px] pb-10">
       <div>
@@ -105,7 +156,16 @@ export default function Rules() {
         <div className="">
           <div className="flex justify-between items-center mb-10 mr-20">
             <h2 className="text-5xl font-bold pb-1 ">Rules</h2>
-            {isMyHostedHackathon?<button className="border-2 cursor-pointer hover:shadow-[0px_0px_5px_gray] border-gray-600 px-8 rounded-lg text-lg">Edit</button>:<div></div>}
+            {isMyHostedHackathon ? (
+              <button
+                onClick={() => setIsEditing(true)}
+                className="border-2 cursor-pointer hover:shadow-[0px_0px_5px_gray] border-gray-600 px-8 rounded-lg text-lg"
+              >
+                Edit
+              </button>
+            ) : (
+              <div></div>
+            )}
           </div>
           {hackathonRules?.eligibility && (
             <div style={ruleStyle}>
@@ -227,7 +287,8 @@ export default function Rules() {
                   Public
                 </p>
                 <p>
-                  <span className="font-bold">{participants.length}</span> participants
+                  <span className="font-bold">{participants.length}</span>{" "}
+                  participants
                 </p>
               </div>
             </div>
@@ -259,6 +320,101 @@ export default function Rules() {
           </div>
         </div>
       </div>
+      {isEditing && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-md z-50">
+          <div className="bg-white p-8 rounded-lg shadow-xl w-[700px] max-h-[90vh] overflow-y-auto">
+            <form onSubmit={handleUpdateRules}>
+              <h2 className="text-3xl font-bold mb-6">Update Rules</h2>
+
+              <label className="block font-semibold mb-2">Eligibility</label>
+              <textarea
+                value={rulesForm.eligibility}
+                onChange={(e) =>
+                  setRulesForm({ ...rulesForm, eligibility: e.target.value })
+                }
+                className="border px-4 py-2 w-full mb-4 rounded"
+              />
+
+              <label className="block font-semibold mb-2">Team Formation</label>
+              <textarea
+                value={rulesForm.teamFormation}
+                onChange={(e) =>
+                  setRulesForm({ ...rulesForm, teamFormation: e.target.value })
+                }
+                className="border px-4 py-2 w-full mb-4 rounded"
+              />
+
+              <label className="block font-semibold mb-2">
+                Submission Requirements
+              </label>
+              <textarea
+                value={rulesForm.submissionRequirements}
+                onChange={(e) =>
+                  setRulesForm({
+                    ...rulesForm,
+                    submissionRequirements: e.target.value,
+                  })
+                }
+                className="border px-4 py-2 w-full mb-4 rounded"
+              />
+
+              <label className="block font-semibold mb-2">
+                Code of Conduct
+              </label>
+              <textarea
+                value={rulesForm.codeOfConduct}
+                onChange={(e) =>
+                  setRulesForm({ ...rulesForm, codeOfConduct: e.target.value })
+                }
+                className="border px-4 py-2 w-full mb-4 rounded"
+              />
+
+              <label className="block font-semibold mb-2">Prohibited</label>
+              <textarea
+                value={rulesForm.prohibited}
+                onChange={(e) =>
+                  setRulesForm({ ...rulesForm, prohibited: e.target.value })
+                }
+                className="border px-4 py-2 w-full mb-4 rounded"
+              />
+
+              <label className="block font-semibold mb-2">
+                Disqualification
+              </label>
+              <textarea
+                value={rulesForm.disqualification}
+                onChange={(e) =>
+                  setRulesForm({
+                    ...rulesForm,
+                    disqualification: e.target.value,
+                  })
+                }
+                className="border px-4 py-2 w-full mb-4 rounded"
+              />
+              <div className="flex justify-end gap-4 mt-6">
+                <button
+                  type="button"
+                  onClick={() => setIsEditing(false)}
+                  className="px-6 py-2 rounded bg-gray-300 cursor-pointer hover:bg-gray-400"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-2 rounded bg-blue-600 cursor-pointer text-white hover:bg-blue-700"
+                >
+                  Update
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={true}
+      />
     </div>
   );
 }
