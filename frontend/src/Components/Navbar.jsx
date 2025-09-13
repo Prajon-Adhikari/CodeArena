@@ -20,6 +20,7 @@ const Navbar = () => {
 
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
 
   const isHostPage = pathname === "/hackathon";
 
@@ -143,6 +144,18 @@ const Navbar = () => {
 
     fetchNotifications();
   }, []);
+
+  const handleLogout = async () => {
+    try {
+      await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+      window.location.href = "/api/auth/signin"; // redirect to signin
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
 
   const handleAcceptRequest = async (id) => {
     try {
@@ -409,11 +422,31 @@ const Navbar = () => {
           {/* Right Side: Auth / Profile */}
           <div className="flex items-center gap-4">
             {user?.fullName ? (
-              <Link to="/profile">
-                <div className="w-[40px] h-[40px] rounded-full bg-indigo-900 text-white flex items-center justify-center font-bold ">
+              <div className="relative">
+                <div
+                  onClick={() => setShowProfileMenu(!showProfileMenu)}
+                  className="w-[40px] h-[40px] rounded-full bg-indigo-900 text-white flex items-center justify-center font-bold cursor-pointer"
+                >
                   {user.fullName.charAt(0).toUpperCase()}
                 </div>
-              </Link>
+
+                {showProfileMenu && (
+                  <div className="absolute right-0 mt-2 w-40 bg-white border rounded shadow-md">
+                    <button
+                      onClick={() => navigate("/profile")}
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                    >
+                      Profile
+                    </button>
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
             ) : (
               <div className="hidden md:flex items-center gap-4">
                 <Link to="/api/auth/signin" className="text-sm hover:underline">

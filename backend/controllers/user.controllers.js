@@ -187,3 +187,13 @@ export const getAllUsers = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch users" });
   }
 };
+
+export const logout = (req, res) => {
+  res.clearCookie("jwt", {
+    httpOnly: true,
+    sameSite: "Lax",
+    secure: false, // set true if using HTTPS in production
+  });
+  return res.status(200).json({ message: "Logged out successfully" });
+};
+
