@@ -42,7 +42,8 @@ export const updateJudges = async (req, res) => {
     const { id } = req.params;
 
     const hackathon = await Hackathon.findById(id);
-    if (!hackathon) return res.status(404).json({ message: "Hackathon not found" });
+    if (!hackathon)
+      return res.status(404).json({ message: "Hackathon not found" });
 
     // Delete old prizes
     await Judge.deleteMany({ _id: { $in: hackathon.judges } });
@@ -51,7 +52,7 @@ export const updateJudges = async (req, res) => {
     const createdJudges = await Judge.insertMany(judges);
 
     // Update hackathon prizes array without overwriting other fields
-   hackathon.judges = createdJudges.map((j) => j._id);
+    hackathon.judges = createdJudges.map((j) => j._id);
     await hackathon.save();
 
     return res.json({ judges: createdJudges });

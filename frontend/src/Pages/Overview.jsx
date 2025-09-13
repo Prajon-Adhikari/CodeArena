@@ -13,6 +13,7 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import Select from "react-select";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import ReactApexChart from "react-apexcharts";
 
 const localizer = momentLocalizer(moment);
 
@@ -30,6 +31,7 @@ export default function Overview() {
   const [participants, setParticipants] = useState([]);
   const [isMyHostedHackathon, setIsMyHostedHackathon] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [submittedProjects, setSubmittedProjects] = useState([]);
 
   const tabs = [
     { path: "overview", label: "Overview" },
@@ -56,11 +58,11 @@ export default function Overview() {
       setIsRegistered(data.isRegistered);
       setParticipants(data.participants);
       setIsMyHostedHackathon(data.isHostedHackathon || false);
+      setSubmittedProjects(data.submittedProjects);
     } catch (error) {
       console.log("Failed to fetch hackathon", error);
     }
   };
-
   useEffect(() => {
     fetchHackathonDetails();
   }, [id]);
@@ -158,6 +160,24 @@ export default function Overview() {
     }
   };
 
+  // Compute chart data based on participants
+ const refererCounts = (participants || []).reduce((acc, participant) => {
+  const key = participant.referer || "Unknown";
+  acc[key] = (acc[key] || 0) + 1;
+  return acc;
+}, {});
+
+  const chartLabels = Object.keys(refererCounts); // ["codearena", "college", ...]
+  const chartSeries = Object.values(refererCounts); // [1, 2, ...]
+
+  const projectLabels = (submittedProjects || []).map(
+    (project, index) => project.title || `Project ${index + 1}`
+  );
+
+  const projectMembersCount = (submittedProjects || []).map((project) =>
+    project.tags ? project.tags.length : 0
+  );
+
   return (
     <div className="pt-[60px] pb-10">
       <div>
@@ -202,6 +222,19 @@ export default function Overview() {
                 )}
               </div>
               <p className="text-[21px] pt-8">{hackathon.description}</p>
+              <div>
+                <h2 className="mt-10 font-semibold text-2xl mb-2">Themes</h2>
+                <span>
+                  {(hackathon.themes || []).map((theme, index) => (
+                    <div
+                      key={index}
+                      className="bg-orange-200 text-lg capitalize mb-1 mr-2 rounded-lg inline-block px-4 py-1"
+                    >
+                      {theme}
+                    </div>
+                  ))}
+                </span>
+              </div>
             </div>
             <div>
               <div className="bg-[#F8F8F8] border-1 border-gray-400 p-6  w-[400px] rounded-lg">
@@ -338,6 +371,115 @@ export default function Overview() {
               />
             </div>
           )}
+
+          <div className="px-[140px] mt-16 flex justify-between">
+            <div className="shadow-[0px_0px_5px_gray] rounded-lg py-6 px-2">
+              <h2 className="text-xl font-bold mb-4 px-6">
+                Project Members Count
+              </h2>
+              <ReactApexChart
+                options={{
+                  chart: {
+                    type: "bar",
+                    height: 350,
+                  },
+                  plotOptions: {
+                    bar: {
+                      horizontal: true,
+                      borderRadius: 6,
+                    },
+                  },
+                  dataLabels: {
+                    enabled: true,
+                    formatter: (val) => `${val} members`,
+                  },
+                  xaxis: {
+                    categories: projectLabels,
+                  },
+                }}
+                series={[
+                  {
+                    name: "Members",
+                    data: projectMembersCount,
+                  },
+                ]}
+                type="bar"
+                height={200}
+                width={840}
+              />
+            </div>
+            <div className="shadow-[0px_0px_5px_gray] py-6 px-2 rounded-lg">
+              <h1 className="text-xl font-bold mb-4 px-6">Source of Visits</h1>
+              <ReactApexChart
+                options={{
+                  chart: { type: "pie" },
+                  labels: chartLabels.map(
+                    (label) => label.charAt(0).toUpperCase() + label.slice(1)
+                  ), // Capitalize
+                  responsive: [
+                    {
+                      breakpoint: 480,
+                      options: {
+                        chart: { width: 200 },
+                        legend: { position: "bottom" },
+                      },
+                    },
+                  ],
+                }}
+                series={chartSeries}
+                type="pie"
+                width={340}
+              />
+            </div>
+          </div>
+          <div className="px-[140px] mt-16">
+            <h2 className="text-3xl font-bold mb-4">Participants</h2>
+            {(participants || []).length > 0 ? (
+              <div className="overflow-x-auto border rounded-lg">
+                <table className="min-w-full border-collapse">
+                  <thead className="bg-gray-200">
+                    <tr>
+                      <th className="py-3 px-6 text-left border-b">#</th>
+                      <th className="py-3 px-6 text-left border-b">Full Name</th>
+                      <th className="py-3 px-6 text-left border-b">
+                        Team Name
+                      </th>
+                      <th className="py-3 px-6 text-left border-b">Referer</th>
+                      <th className="py-3 px-6 text-left border-b">
+                        Registration Date
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {participants.map((participant, index) => (
+                      <tr
+                        key={participant._id || index}
+                        className="hover:bg-gray-100"
+                      >
+                        <td className="py-3 px-6 border-b">{index + 1}</td>
+                        <td className="py-3 px-6 border-b">
+                          {participant.username}
+                        </td>
+                        <td className="py-3 px-6 border-b capitalize">
+                          {participant.teamName}
+                        </td>
+                        <td className="py-3 px-6 border-b capitalize">
+                          {participant.referer || "Unknown"}
+                        </td>
+                        <td className="py-3 px-6 border-b">
+                          {new Date(participant.createdAt).toLocaleDateString(
+                            "en-US"
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <p className="text-gray-600 text-lg">No participants yet.</p>
+            )}
+          </div>
 
           <ToastContainer
             position="top-center"
@@ -603,6 +745,19 @@ export default function Overview() {
                   Unregister
                 </button>
               )}
+              <div>
+                <h2 className="mt-5 font-semibold text-2xl mb-2">Themes</h2>
+                <span>
+                  {(hackathon.themes || []).map((theme, index) => (
+                    <div
+                      key={index}
+                      className="bg-orange-200 text-lg capitalize mb-1 mr-2 rounded-lg inline-block px-4 py-1"
+                    >
+                      {theme}
+                    </div>
+                  ))}
+                </span>
+              </div>
             </div>
             <div>
               <div className="bg-[#F8F8F8] border-1 border-gray-400 p-6  w-[400px] rounded-lg">

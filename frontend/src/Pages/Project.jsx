@@ -273,7 +273,9 @@ export default function Project() {
           ) : (
             <div className="px-[120px] py-20 ">
               {loadingProject ? (
-                <p>Loading...</p>
+                <div className="flex justify-center items-center h-[300px]">
+                  <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-500"></div>
+                </div>
               ) : submittedProject ? (
                 <div className="flex gap-30">
                   <div className="w-[710px]">
@@ -593,8 +595,11 @@ export default function Project() {
                     <div className="flex justify-end px-30 pt-10 w-full">
                       <input
                         type="submit"
-                        value="Submit Project"
-                        className="mt-12 cursor-pointer hover:bg-blue-300 bg-blue-400 text-white py-3 px-10 rounded-sm"
+                        value={submitting ? "Submitting..." : "Submit Project"}
+                        disabled={submitting}
+                        className={`mt-12 cursor-pointer hover:bg-blue-300 bg-blue-400 text-white py-3 px-10 rounded-sm ${
+                          submitting ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
                       />
                     </div>
                   </form>

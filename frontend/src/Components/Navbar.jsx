@@ -25,7 +25,7 @@ const Navbar = () => {
 
   const navigate = useNavigate();
 
-  const unreadCount = notifications.filter((n) => !n.isRead).length;
+  const unreadCount = (notifications || []).filter((n) => !n.isRead).length;
 
   const navLinks = [
     { to: "/join/hackathon", label: "Join a hackathon" },
@@ -134,9 +134,10 @@ const Navbar = () => {
           }
         );
         const data = await res.json();
-        setNotifications(data.notifications);
+        setNotifications(data.notifications || []);
       } catch (error) {
         console.error("Failed to fetch notifications:", error);
+        setNotifications([]);
       }
     };
 
