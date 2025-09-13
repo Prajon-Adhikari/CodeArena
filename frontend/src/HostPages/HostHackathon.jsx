@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import collaboration from "../assets/collaboration.jpg";
 import image2 from "../assets/aboutuscoding1.jpg";
@@ -12,6 +12,7 @@ import { faListCheck, faFlag, faUsers } from "@fortawesome/free-solid-svg-icons"
 
 export default function HostHackathon() {
   const [hackathons, setHackathons] = useState([]);
+  const location = useLocation();
 
   useEffect(() => {
     const fetchHackathons = async () => {
@@ -34,6 +35,8 @@ export default function HostHackathon() {
     };
     fetchHackathons();
   }, []);
+
+
 
   return (
     <div className="pt-[80px] pb-10">
@@ -173,8 +176,8 @@ export default function HostHackathon() {
               <p className="text-gray-600 mb-4">
                 Reach developers globally. Get planning and marketing support.
               </p>
-              <Link to="/host/hackathon">
-                <button className="bg-gradient-to-r from-[#60B5FF] to-[#8DD8FF] text-white py-2 px-4 rounded">
+              <Link to="/host/hackathon" state={{ from: location.pathname }}>
+                <button className="bg-gradient-to-r from-[#60B5FF] to-[#8DD8FF] text-white cursor-pointer py-2 px-4 rounded">
                   Host online
                 </button>
               </Link>
