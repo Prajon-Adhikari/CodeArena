@@ -147,3 +147,30 @@ export const submitProject = async (req, res) => {
       .json({ message: "Internal error while submitting project" });
   }
 };
+
+export const getSpecificProject = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const submittedProject = await SubmittedProject.findById(id).populate({
+      path: "tags",
+      model: "user",
+      select: "fullName email",
+    });
+
+    if (!submittedProject) {
+      return res
+        .status(400)
+        .json({ message: "There is not any project submitted" });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "Fetching specific project details", submittedProject });
+  } catch (error) {
+    console.log("Internal error while fetching specific project details");
+    return res.status(500).json({
+      message: "Internal error while fetching specific project details",
+    });
+  }
+};

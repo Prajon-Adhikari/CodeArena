@@ -14,6 +14,7 @@ import {
   getMyJoinedHackathon,
 } from "../controllers/myhackathon.controller.js";
 import {
+  getSpecificProject,
   getSubmittedProject,
   submitProject,
 } from "../controllers/submittedProject.controller.js";
@@ -66,6 +67,8 @@ router.get("/blogs", protectRoute, fetchBlog);
 router.post("/blogs", protectRoute, uploadImage, submitBlog);
 
 router.get("/blog/:id", getSpecificBlogDetails);
+
+router.get("/project/:id", getSpecificProject);
 
 router.post("/contact",protectRoute, submitContact);
 

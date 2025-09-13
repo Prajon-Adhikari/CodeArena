@@ -32,6 +32,7 @@ import Judges from "./Pages/Judges.jsx";
 import SpecificBlog from "./Pages/SpecificBlog.jsx";
 import SpecificPortfolioProject from "./Pages/SpecificPortfolioProject.jsx";
 import SearchProfile from "./Pages/SearchProfile.jsx";
+import SpecificProject from "./Pages/SpecificProject.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -56,6 +57,7 @@ const router = createBrowserRouter(
         <Route path="myhostedhackathon" element={<MyHostedHackathon />} />
         <Route path=":id/overview" element={<Overview />} />
         <Route path=":id/myproject" element={<Project />} />
+        <Route path="project/:id" element={<SpecificProject/>}/>
         <Route path=":id/rules" element={<Rules />} />
         <Route path=":id/prizes" element={<Prizes />} />
         <Route path=":id/judges" element={<Judges />} />
