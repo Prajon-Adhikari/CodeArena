@@ -9,6 +9,8 @@ export default function MyJoinedHackathon() {
 
   const isJoinedActive = location.pathname.includes("joined");
   const isHostedActive = location.pathname.includes("hosted");
+  const isJudgedActive = location.pathname.includes("judged");
+
 
   const [joinedHackathon, setJoinedHackathon] = useState([]);
 
@@ -54,6 +56,14 @@ export default function MyJoinedHackathon() {
           }`}
         >
           Hosted Hackathon
+        </Link>
+        <Link
+          to="/myjudgedhackathon"
+          className={`pb-2 ${
+            isJudgedActive ? "border-b-4 border-blue-400" : ""
+          }`}
+        >
+          Judged Hackathon
         </Link>
       </div>
       {joinedHackathon.length === 0 ? (

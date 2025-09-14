@@ -1,5 +1,6 @@
 import Hackathon from "../models/hackathon.model.js";
 import JoinedHackathon from "../models/joinedHackathon.model.js";
+import Judge from "../models/judge.model.js";
 
 export const getMyJoinedHackathon = async (req, res) => {
   const userId = req.user._id;
@@ -72,5 +73,44 @@ export const deleteAlreadyJoinedHackathon = async (req, res) => {
     return res
       .status(500)
       .json({ message: "Internal error while unregistering" });
+  }
+};
+
+export const getMyJudgedHackathon = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    if (!userId) {
+      return res.status(400).json({ message: "User Id not found" });
+    }
+
+    const judges = await Judge.find({
+      userId,
+    });
+
+    if (!judges || judges.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No hackathons found where you are a judge" });
+    }
+
+    const judgeIds = judges.map((j) => j._id); // extract userId values
+    
+    const hackathons = await Hackathon.find({
+      judges: { $in: judgeIds },
+    });
+
+    if (!hackathons || hackathons.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No hackathons found where you are a judge" });
+    }
+
+    res.status(200).json({ message: "Fetching judged hackathons", hackathons });
+  } catch (error) {
+    console.log("Internal error while fetching judged hackthons", error);
+    res
+      .status(500)
+      .json({ message: "Internal error while fetching judged hackathons" });
   }
 };

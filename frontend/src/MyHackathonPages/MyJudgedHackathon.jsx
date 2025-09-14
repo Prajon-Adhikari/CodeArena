@@ -9,16 +9,15 @@ export default function MyJoinedHackathon() {
 
   const isJoinedActive = location.pathname.includes("joined");
   const isHostedActive = location.pathname.includes("hosted");
-    const isJudgedActive = location.pathname.includes("judged");
-
-
-  const [hostedHackathon, setHostedHackathon] = useState([]);
+  const isJudgedActive = location.pathname.includes("judged");
+  
+  const [judgedHackathon, setJudgedHackathon] = useState([]);
 
   useEffect(() => {
     const fetchHostedHackathon = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/home/myhostedhackathon`,
+          `${import.meta.env.VITE_API_BASE_URL}/home/myjudgedhackathon`,
           {
             method: "GET",
             credentials: "include",
@@ -28,7 +27,7 @@ export default function MyJoinedHackathon() {
           }
         );
         const data = await response.json();
-        setHostedHackathon(data.hackathons || []);
+        setJudgedHackathon(data.hackathons || []);
       } catch (error) {
         console.log("Error while fetching hackathon tournaments", error);
       }
@@ -58,7 +57,7 @@ export default function MyJoinedHackathon() {
         >
           Hosted Hackathon
         </Link>
-         <Link
+        <Link
           to="/myjudgedhackathon"
           className={`pb-2 ${
             isJudgedActive ? "border-b-4 border-blue-400" : ""
@@ -68,19 +67,14 @@ export default function MyJoinedHackathon() {
         </Link>
       </div>
       <div>
-        {hostedHackathon.length === 0 ? (
+        {judgedHackathon.length === 0 ? (
           <div className="flex flex-col items-center my-30">
             <div className="text-5xl pb-10 font-bold text-gray-700">
-              You haven't hosted any hackathons yet.
+              You aren't judging any hackathons yet.
             </div>
-            <Link to="/hackathon">
-              <button className="bg-blue-400 text-white px-8 py-3 text-2xl rounded-md cursor-pointer">
-                Host Hackathon Now
-              </button>
-            </Link>
           </div>
         ) : (
-          hostedHackathon.map((hackathon) => (
+          judgedHackathon.map((hackathon) => (
             <Link to={`/${hackathon._id}/overview`} key={hackathon._id}>
               <div className="group relative bg-transparent pr-[50px] py-[2px] w-[800px] h-[250px] mb-6 overflow-hidden">
                 {/* Animated Background Layer */}

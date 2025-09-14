@@ -25,6 +25,7 @@ import Profile from "./Pages/Profile.jsx";
 import Overview from "./Pages/Overview.jsx";
 import MyJoinedHackathon from "./MyHackathonPages/MyJoinedHackathon.jsx";
 import MyHostedHackathon from "./MyHackathonPages/MyHostedHackathon";
+import MyJudgedHackathon from "./MyHackathonPages/MyJudgedHackathon.jsx";
 import Project from "./Pages/Project.jsx";
 import Rules from "./Pages/Rules.jsx";
 import Prizes from "./Pages/Prizes.jsx";
@@ -55,9 +56,10 @@ const router = createBrowserRouter(
         <Route path="hackathon" element={<HostHackathon />} />
         <Route path="myjoinedhackathon" element={<MyJoinedHackathon />} />
         <Route path="myhostedhackathon" element={<MyHostedHackathon />} />
+        <Route path="myjudgedhackathon" element={<MyJudgedHackathon/>} />
         <Route path=":id/overview" element={<Overview />} />
         <Route path=":id/myproject" element={<Project />} />
-        <Route path="project/:id" element={<SpecificProject/>}/>
+        <Route path="project/:id" element={<SpecificProject />} />
         <Route path=":id/rules" element={<Rules />} />
         <Route path=":id/prizes" element={<Prizes />} />
         <Route path=":id/judges" element={<Judges />} />
@@ -65,10 +67,10 @@ const router = createBrowserRouter(
         <Route path="profile" element={<Profile />}>
           <Route path="portfolio" /> {/* nested, no element */}
         </Route>
-        <Route path="profile/:id" element={<SpecificPortfolioProject/>}/>
-        <Route path="/:id/profile" element={<SearchProfile/>}/>
+        <Route path="profile/:id" element={<SpecificPortfolioProject />} />
+        <Route path="/:id/profile" element={<SearchProfile />} />
         <Route path="blog" element={<BlogPage />} />
-        <Route path="blog/:id" element={<SpecificBlog/>}/>
+        <Route path="blog/:id" element={<SpecificBlog />} />
         <Route path="about" element={<About />} />
         <Route path="contact" element={<Contact />} />
       </Route>
@@ -78,6 +80,6 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-      <RouterProvider router={router} />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );

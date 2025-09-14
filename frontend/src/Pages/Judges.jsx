@@ -107,7 +107,7 @@ export default function Judges() {
   };
 
   const addJudge = () => {
-    setJudges([...judges, { name: "", bio: "", role: "", photoUrl: "" }]);
+    setJudges([...judges, {userId: "", name: "", bio: "", role: "", photoUrl: "" }]);
   };
 
   const saveJudges = async () => {
@@ -307,10 +307,14 @@ export default function Judges() {
 
                     {/* Name Dropdown */}
                     <select
-                      value={judge.name}
-                      onChange={(e) =>
-                        handleJudgeChange(index, "name", e.target.value)
-                      }
+                      value={judge.userId || ""}
+                      onChange={(e) => {
+                        const selectedUser = users.find(
+                          (u) => u._id === e.target.value
+                        );
+                        handleJudgeChange(index, "userId", selectedUser._id);
+                        handleJudgeChange(index, "name", selectedUser.fullName);
+                      }}
                       className="w-full border-b-2 border-gray-300 focus:outline-none pb-1"
                       required
                     >
@@ -318,7 +322,7 @@ export default function Judges() {
                         Select Judge (must have CodeArena account)
                       </option>
                       {users.map((user) => (
-                        <option key={user._id} value={user.fullName}>
+                        <option key={user._id} value={user._id}>
                           {user.fullName} ({user.email})
                         </option>
                       ))}

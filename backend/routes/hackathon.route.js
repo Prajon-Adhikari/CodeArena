@@ -12,6 +12,7 @@ import {
   deleteAlreadyJoinedHackathon,
   getHostedHackathon,
   getMyJoinedHackathon,
+  getMyJudgedHackathon,
 } from "../controllers/myhackathon.controller.js";
 import {
   getSpecificProject,
@@ -77,6 +78,8 @@ router.put("/hackathons/:id",protectRoute, updateHackathon);
 router.get("/myjoinedhackathon", protectRoute, getMyJoinedHackathon);
 
 router.get("/myhostedhackathon", protectRoute, getHostedHackathon);
+
+router.get("/myjudgedhackathon", protectRoute, getMyJudgedHackathon);
 
 router.post("/profile/portfolio",protectRoute,uploadPortfolio, submitPortfolioProject);
 

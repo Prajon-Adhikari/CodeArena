@@ -37,7 +37,7 @@ const Navbar = () => {
   const navLinkClass = (to) => {
     if (
       to === "/myjoinedhackathon" &&
-      (pathname === "/myjoinedhackathon" || pathname === "/myhostedhackathon")
+      (pathname === "/myjoinedhackathon" || pathname === "/myhostedhackathon" || pathname === "/myjudgedhackathon")
     ) {
       return `relative text-base font-medium transition-colors duration-150 text-xl 
       text-blue-300 flex items-center

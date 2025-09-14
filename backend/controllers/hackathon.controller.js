@@ -102,12 +102,26 @@ export const getSpecificHackathonDetails = async (req, res) => {
       return res.status(404).json({ message: "Hackathon not found" });
     }
 
+    const judges = await Judge.find({
+      userId,
+    });
+
+    const judgeIds = judges.map((j) => j._id); // extract userId values
+
+    const judgedHackahons = await Hackathon.find({
+      judges: { $in: judgeIds },
+    });
+
+    const isJudgedHackathon = judgedHackahons.some(
+      (h) => h._id.toString() === hackathon._id.toString()
+    );
+
     const isHostedHackathon =
       hackathon.organizerId.toString() === userId.toString();
 
     const participants = await JoinedHackathon.find({ hackathonId: id });
 
-    if (isHostedHackathon) {
+    if (isHostedHackathon || isJudgedHackathon) {
       const submittedProjects = await SubmittedProject.find({ hackathonId: id })
         .populate("tags", "fullName email") // tags = team members
         .lean();
@@ -139,6 +153,7 @@ export const getSpecificHackathonDetails = async (req, res) => {
         isHostedHackathon,
         participants,
         submittedProjects,
+        isJudgedHackathon,
       });
     } else {
       let isRegistered = false;
@@ -156,6 +171,7 @@ export const getSpecificHackathonDetails = async (req, res) => {
         isRegistered,
         participants,
         isHostedHackathon: false,
+        isJudgedHackathon,
       });
     }
   } catch (error) {
@@ -218,11 +234,9 @@ export const joinedHackathon = async (req, res) => {
 export const updateHackathon = async (req, res) => {
   try {
     const { id } = req.params;
-    const updatedHackathon = await Hackathon.findByIdAndUpdate(
-      id,
-      req.body,
-      { new: true }
-    );
+    const updatedHackathon = await Hackathon.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
     res.json(updatedHackathon);
   } catch (err) {
     res.status(500).json({ error: "Failed to update hackathon" });

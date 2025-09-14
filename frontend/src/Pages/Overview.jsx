@@ -20,7 +20,7 @@ const localizer = momentLocalizer(moment);
 export default function Overview() {
   const { id } = useParams();
   const location = useLocation();
-  const [hackathon, setHackathon] = useState("");
+  const [hackathon, setHackathon] = useState({});
   const [teamStatus, setTeamStatus] = useState("");
   const [referer, setReferer] = useState("");
   const [teamName, setTeamName] = useState("");
@@ -32,6 +32,7 @@ export default function Overview() {
   const [isMyHostedHackathon, setIsMyHostedHackathon] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [submittedProjects, setSubmittedProjects] = useState([]);
+  const [isJudgedHackathon, setIsJudgedHackathon] = useState(false);
 
   const tabs = [
     { path: "overview", label: "Overview" },
@@ -59,6 +60,7 @@ export default function Overview() {
       setParticipants(data.participants);
       setIsMyHostedHackathon(data.isHostedHackathon || false);
       setSubmittedProjects(data.submittedProjects);
+      setIsJudgedHackathon(data.isJudgedHackathon);
     } catch (error) {
       console.log("Failed to fetch hackathon", error);
     }
@@ -161,11 +163,11 @@ export default function Overview() {
   };
 
   // Compute chart data based on participants
- const refererCounts = (participants || []).reduce((acc, participant) => {
-  const key = participant.referer || "Unknown";
-  acc[key] = (acc[key] || 0) + 1;
-  return acc;
-}, {});
+  const refererCounts = (participants || []).reduce((acc, participant) => {
+    const key = participant.referer || "Unknown";
+    acc[key] = (acc[key] || 0) + 1;
+    return acc;
+  }, {});
 
   const chartLabels = Object.keys(refererCounts); // ["codearena", "college", ...]
   const chartSeries = Object.values(refererCounts); // [1, 2, ...]
@@ -440,7 +442,9 @@ export default function Overview() {
                   <thead className="bg-gray-200">
                     <tr>
                       <th className="py-3 px-6 text-left border-b">#</th>
-                      <th className="py-3 px-6 text-left border-b">Full Name</th>
+                      <th className="py-3 px-6 text-left border-b">
+                        Full Name
+                      </th>
                       <th className="py-3 px-6 text-left border-b">
                         Team Name
                       </th>
@@ -731,19 +735,25 @@ export default function Overview() {
             <div className="w-[800px] ">
               <h1 className="text-4xl font-bold">{hackathon.title}</h1>
               <p className="text-[22px] pt-8">{hackathon.description}</p>
-              {!isRegistered ? (
-                <a href="#registration">
-                  <button className="bg-blue-400 cursor-pointer text-white py-2.5 px-8 my-14 text-xl rounded-[4px] hover:bg-blue-300">
-                    Join Hackathon
-                  </button>
-                </a>
+              {isJudgedHackathon ? (
+                ""
               ) : (
-                <button
-                  onClick={() => setShowUnregisterConfirm(true)}
-                  className="bg-orange-500 text-white cursor-pointer py-2.5 px-8 my-14 text-xl rounded-[4px] hover:bg-orange-400"
-                >
-                  Unregister
-                </button>
+                <>
+                  {!isRegistered ? (
+                    <a href="#registration">
+                      <button className="bg-blue-400 cursor-pointer text-white py-2.5 px-8 my-14 text-xl rounded-[4px] hover:bg-blue-300">
+                        Join Hackathon
+                      </button>
+                    </a>
+                  ) : (
+                    <button
+                      onClick={() => setShowUnregisterConfirm(true)}
+                      className="bg-orange-500 text-white cursor-pointer py-2.5 px-8 my-14 text-xl rounded-[4px] hover:bg-orange-400"
+                    >
+                      Unregister
+                    </button>
+                  )}
+                </>
               )}
               <div>
                 <h2 className="mt-5 font-semibold text-2xl mb-2">Themes</h2>
@@ -896,168 +906,177 @@ export default function Overview() {
           )}
 
           <div id="registration"></div>
-          {!isRegistered && (
-            <div className="px-[140px] py-26 flex gap-30 items-center">
-              <form
-                action=""
-                onSubmit={handleHackathonRegistration}
-                className=" border-1 rounded-lg border-gray-400 w-[660px] p-10"
-              >
-                <h1 className="font-bold text-4xl">Register</h1>
-                <p className="text-xl pt-2 pb-6 border-b-1 border-gray-400 text-gray-500">
-                  Please support our community guidelines
-                </p>
-                <div>
-                  <p className="pt-6 font-semibold text-xl pb-2">
-                    <span className="text-red-600">*</span> Team Name
-                  </p>
-                  <input
-                    type="text"
-                    placeholder="Enter you team name"
-                    className="border-2 border-gray-400 w-[90%] px-4 py-2 rounded-lg"
-                    value={teamName}
-                    onChange={(e) => setTeamName(e.target.value)}
-                  />
-                </div>
-                <p className="pt-6 font-semibold text-xl pb-2">
-                  <span className="text-red-600">*</span> Indicate your
-                  participation type
-                </p>
-                <div className="flex items-center text-lg">
-                  <input
-                    type="radio"
-                    name="teamStatus"
-                    value="individual"
-                    checked={teamStatus === "individual"}
-                    onChange={(e) => setTeamStatus(e.target.value)}
-                    id="solo"
-                    required
-                  />
-                  <label className="pl-2 pr-18 cursor-pointer" htmlFor="solo">
-                    Indivdual
-                  </label>
-                  <input
-                    type="radio"
-                    name="teamStatus"
-                    value="team"
-                    id="team"
-                    checked={teamStatus === "team"}
-                    onChange={(e) => setTeamStatus(e.target.value)}
-                  />
-                  <label className="pl-2 cursor-pointer" htmlFor="team">
-                    Already have team
-                  </label>
-                </div>
-                <p className="pt-8 pb-3 text-xl font-semibold">
-                  <span className="text-red-600">*</span> Who told you about{" "}
-                  {hackathon.title}?
-                </p>
-                <div className="flex items-center text-lg">
-                  <input
-                    type="radio"
-                    name="referer"
-                    value="codearena"
-                    id="codearena"
-                    checked={referer === "codearena"}
-                    onChange={(e) => setReferer(e.target.value)}
-                    required
-                  />
-                  <label
-                    className="pl-2 pr-18 cursor-pointer"
-                    htmlFor="codearena"
+          {isJudgedHackathon ? (
+            ""
+          ) : (
+            <>
+              {!isRegistered && (
+                <div className="px-[140px] py-26 flex gap-30 items-center">
+                  <form
+                    action=""
+                    onSubmit={handleHackathonRegistration}
+                    className=" border-1 rounded-lg border-gray-400 w-[660px] p-10"
                   >
-                    CodeArena
-                  </label>
-                  <input
-                    type="radio"
-                    name="referer"
-                    value="college"
-                    id="college"
-                    checked={referer === "college"}
-                    onChange={(e) => setReferer(e.target.value)}
-                  />
-                  <label
-                    className="pl-2 pr-18 cursor-pointer"
-                    htmlFor="college"
-                  >
-                    College
-                  </label>
-                  <input
-                    type="radio"
-                    name="referer"
-                    value="friend"
-                    id="friend"
-                    checked={referer === "friend"}
-                    onChange={(e) => setReferer(e.target.value)}
-                  />
-                  <label
-                    className="pl-2  pr-18 cursor-pointer"
-                    htmlFor="friend"
-                  >
-                    Friends
-                  </label>
-                  <input
-                    type="radio"
-                    name="referer"
-                    value="other"
-                    id="other"
-                    checked={referer === "other"}
-                    onChange={(e) => setReferer(e.target.value)}
-                  />
-                  <label className="pl-2 cursor-pointer" htmlFor="other">
-                    Others
-                  </label>
-                </div>
+                    <h1 className="font-bold text-4xl">Register</h1>
+                    <p className="text-xl pt-2 pb-6 border-b-1 border-gray-400 text-gray-500">
+                      Please support our community guidelines
+                    </p>
+                    <div>
+                      <p className="pt-6 font-semibold text-xl pb-2">
+                        <span className="text-red-600">*</span> Team Name
+                      </p>
+                      <input
+                        type="text"
+                        placeholder="Enter you team name"
+                        className="border-2 border-gray-400 w-[90%] px-4 py-2 rounded-lg"
+                        value={teamName}
+                        onChange={(e) => setTeamName(e.target.value)}
+                      />
+                    </div>
+                    <p className="pt-6 font-semibold text-xl pb-2">
+                      <span className="text-red-600">*</span> Indicate your
+                      participation type
+                    </p>
+                    <div className="flex items-center text-lg">
+                      <input
+                        type="radio"
+                        name="teamStatus"
+                        value="individual"
+                        checked={teamStatus === "individual"}
+                        onChange={(e) => setTeamStatus(e.target.value)}
+                        id="solo"
+                        required
+                      />
+                      <label
+                        className="pl-2 pr-18 cursor-pointer"
+                        htmlFor="solo"
+                      >
+                        Indivdual
+                      </label>
+                      <input
+                        type="radio"
+                        name="teamStatus"
+                        value="team"
+                        id="team"
+                        checked={teamStatus === "team"}
+                        onChange={(e) => setTeamStatus(e.target.value)}
+                      />
+                      <label className="pl-2 cursor-pointer" htmlFor="team">
+                        Already have team
+                      </label>
+                    </div>
+                    <p className="pt-8 pb-3 text-xl font-semibold">
+                      <span className="text-red-600">*</span> Who told you about{" "}
+                      {hackathon.title}?
+                    </p>
+                    <div className="flex items-center text-lg">
+                      <input
+                        type="radio"
+                        name="referer"
+                        value="codearena"
+                        id="codearena"
+                        checked={referer === "codearena"}
+                        onChange={(e) => setReferer(e.target.value)}
+                        required
+                      />
+                      <label
+                        className="pl-2 pr-18 cursor-pointer"
+                        htmlFor="codearena"
+                      >
+                        CodeArena
+                      </label>
+                      <input
+                        type="radio"
+                        name="referer"
+                        value="college"
+                        id="college"
+                        checked={referer === "college"}
+                        onChange={(e) => setReferer(e.target.value)}
+                      />
+                      <label
+                        className="pl-2 pr-18 cursor-pointer"
+                        htmlFor="college"
+                      >
+                        College
+                      </label>
+                      <input
+                        type="radio"
+                        name="referer"
+                        value="friend"
+                        id="friend"
+                        checked={referer === "friend"}
+                        onChange={(e) => setReferer(e.target.value)}
+                      />
+                      <label
+                        className="pl-2  pr-18 cursor-pointer"
+                        htmlFor="friend"
+                      >
+                        Friends
+                      </label>
+                      <input
+                        type="radio"
+                        name="referer"
+                        value="other"
+                        id="other"
+                        checked={referer === "other"}
+                        onChange={(e) => setReferer(e.target.value)}
+                      />
+                      <label className="pl-2 cursor-pointer" htmlFor="other">
+                        Others
+                      </label>
+                    </div>
 
-                <div className=" flex pt-8 border-t-1 border-gray-400 mt-8">
-                  <div>
+                    <div className=" flex pt-8 border-t-1 border-gray-400 mt-8">
+                      <div>
+                        <input
+                          type="checkbox"
+                          name="termsAndConditions"
+                          value="termsandconditions"
+                          id="terms"
+                          required
+                        />
+                      </div>
+                      <label
+                        htmlFor="terms"
+                        className="pl-2 text-xl font-semibold mb-8 cursor-pointer"
+                      >
+                        <span className="text-red-600">*</span> I have read and
+                        agree to your Community Guidelines and CodeArena Terms
+                        of Service
+                      </label>
+                    </div>
                     <input
-                      type="checkbox"
-                      name="termsAndConditions"
-                      value="termsandconditions"
-                      id="terms"
-                      required
+                      type="submit"
+                      value="Register"
+                      className=" bg-blue-400 text-white text-xl py-2 px-8 cursor-pointer rounded-sm"
                     />
+                  </form>
+                  <div>
+                    <h1 className="text-4xl font-bold ml-2 underline mb-8 text-red-400">
+                      Rules to Consider
+                    </h1>
+                    <ol className="list-decimal pl-6 space-y-2 text-2xl flex flex-col gap-6">
+                      <li>
+                        Please fill in all fields marked with an asterisk (
+                        <span className="font-bold text-red-600">*</span>).
+                      </li>
+                      <li>
+                        If you already have a team, make sure all members are
+                        registered bt their account before the deadline.
+                      </li>
+                      <li>
+                        Only one team leader should submit the project and
+                        invite the rest of the team during submission.
+                      </li>
+                      <li>
+                        If any team member is involved in multiple project
+                        submissions, the entire team will be disqualified.
+                      </li>
+                    </ol>
                   </div>
-                  <label
-                    htmlFor="terms"
-                    className="pl-2 text-xl font-semibold mb-8 cursor-pointer"
-                  >
-                    <span className="text-red-600">*</span> I have read and
-                    agree to your Community Guidelines and CodeArena Terms of
-                    Service
-                  </label>
                 </div>
-                <input
-                  type="submit"
-                  value="Register"
-                  className=" bg-blue-400 text-white text-xl py-2 px-8 cursor-pointer rounded-sm"
-                />
-              </form>
-              <div>
-                <h1 className="text-4xl font-bold ml-2 underline mb-8 text-red-400">
-                  Rules to Consider
-                </h1>
-                <ol className="list-decimal pl-6 space-y-2 text-2xl flex flex-col gap-6">
-                  <li>
-                    Please fill in all fields marked with an asterisk (
-                    <span className="font-bold text-red-600">*</span>).
-                  </li>
-                  <li>
-                    If you already have a team, make sure all members are
-                    registered bt their account before the deadline.
-                  </li>
-                  <li>
-                    Only one team leader should submit the project and invite
-                    the rest of the team during submission.
-                  </li>
-                  <li>
-                    If any team member is involved in multiple project
-                    submissions, the entire team will be disqualified.
-                  </li>
-                </ol>
-              </div>
-            </div>
+              )}
+            </>
           )}
           <ToastContainer
             position="top-center"
