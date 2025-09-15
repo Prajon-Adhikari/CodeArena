@@ -36,6 +36,7 @@ import { getAllUsers } from "../controllers/user.controllers.js";
 import { fetchFriends } from "../controllers/friend.controller.js";
 import { acceptProjectRequest, rejectProjectRequest } from "../controllers/projectRequest.controller.js";
 import { unfriendUser } from "../controllers/unfriend.controller.js";
+import { addJudgingScore, getJudgingScores } from "../controllers/judging.controller.js";
 
 const router = express.Router();
 
@@ -70,6 +71,10 @@ router.post("/blogs", protectRoute, uploadImage, submitBlog);
 router.get("/blog/:id", getSpecificBlogDetails);
 
 router.get("/project/:id", getSpecificProject);
+
+router.get("/project/:id/judging", protectRoute, getJudgingScores);
+
+router.post("/project/:id/judging", protectRoute, addJudgingScore);
 
 router.post("/contact",protectRoute, submitContact);
 
