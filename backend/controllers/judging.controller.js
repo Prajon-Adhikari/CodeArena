@@ -1,5 +1,7 @@
 import Judging from "../models/judging.model.js";
-
+import Judge from "../models/judge.model.js";
+import SubmittedProject from "../models/submitedProject.model.js";
+import Hackathon from "../models/hackathon.model.js";
 export const addJudgingScore = async (req, res) => {
   try {
     const {
@@ -25,9 +27,8 @@ export const addJudgingScore = async (req, res) => {
     }
 
     const existing = await Judging.findOne({
-              judgeId: userId,
+      judgeId: userId,
       projectId,
-
     });
     if (existing) await existing.deleteOne();
 
@@ -74,18 +75,43 @@ export const getJudgingScores = async (req, res) => {
       return res.status(400).json({ message: "Project Id is missing" });
     }
 
+    const project = await SubmittedProject.findById(projectId);
+
+    const hacakthonId = project.hackathonId;
+
     const judgingScore = await Judging.findOne({
       judgeId: userId,
       projectId,
     });
 
+    const judges = await Judge.find({
+      userId,
+    });
+
+    const judgeIds = judges.map((j) => j._id); // extract userId values
+
+    const judgedHackahons = await Hackathon.find({
+      judges: { $in: judgeIds },
+    });
+
+    const isJudgedHackathon = judgedHackahons.some(
+      (h) => h._id.toString() === hacakthonId.toString()
+    );
+
+
     return res
       .status(200)
-      .json({ message: "Fetching judging scores", judgingScore });
+      .json({ message: "Fetching judging scores", judgingScore, isJudgedHackathon });
   } catch (error) {
     console.log("Internal error while fetching judging scores", error);
     return res
       .status(500)
       .json({ message: "Internal error while fetching judging scores" });
   }
+};
+
+export const getOverallJudgingScores = async (req, res) => {
+  try {
+    const { id: projectId } = req.params;
+  } catch (error) {}
 };

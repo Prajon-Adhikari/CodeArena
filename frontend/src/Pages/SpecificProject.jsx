@@ -40,6 +40,7 @@ export default function SpecificProject() {
   const [showJudging, setShowJudging] = useState(false);
   const [manuallyOpened, setManuallyOpened] = useState(false);
   const [isJudgingAlreadyExist, setIsJudgingAlreadyExist] = useState(false);
+  const [isJudgedHackathon, setIsJudgedHackathon] = useState(false);
 
   const [scores, setScores] = useState([
     { label: "Innovation", value: 0 },
@@ -143,6 +144,7 @@ export default function SpecificProject() {
           setShowJudging(true); // automatically show sliders if scores exist
           setManuallyOpened(false);
           setIsJudgingAlreadyExist(true);
+          setIsJudgedHackathon(data.isJudgedHackathon);
         }
       } catch (error) {
         console.log("Error while fetching judging score", error);
@@ -186,7 +188,7 @@ export default function SpecificProject() {
           <div className="text-xl pt-3 text-gray-800">
             {submittedProject.projectDescription}
           </div>
-          {!showJudging && !manuallyOpened && (
+          {!showJudging && !manuallyOpened && isJudgedHackathon && (
             <button
               onClick={() => {
                 setShowJudging(true);
@@ -212,7 +214,8 @@ export default function SpecificProject() {
 
               {error && <p className="text-red-500 mb-3">{error}</p>}
 
-              <button
+              {isJudgedHackathon && (
+                <button
                 onClick={handleSubmit}
                 disabled={loading}
                 className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2 rounded-lg mt-4"
@@ -225,8 +228,9 @@ export default function SpecificProject() {
                   ? "Edit Scores"
                   : "Submit Scores"}
               </button>
+              )}
 
-              {showJudging && manuallyOpened && (
+              {showJudging && manuallyOpened && isJudgedHackathon && (
                 <button
                   onClick={() => {
                     setShowJudging(false);
