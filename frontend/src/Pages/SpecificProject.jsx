@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ProgressBar = ({ label, value, max = 10, onChange }) => {
   const percentage = (value / max) * 100;
 
   return (
-    <div className="mb-6">
+    <div className="mb-6 w-[80%]">
       {/* Label + Value */}
       <div className="flex justify-between mb-1">
         <span className="text-sm font-medium text-gray-700">{label}</span>
@@ -37,6 +39,7 @@ export default function SpecificProject() {
   const location = useLocation();
   const [showJudging, setShowJudging] = useState(false);
   const [manuallyOpened, setManuallyOpened] = useState(false);
+  const [isJudgingAlreadyExist, setIsJudgingAlreadyExist] = useState(false);
 
   const [scores, setScores] = useState([
     { label: "Innovation", value: 0 },
@@ -73,10 +76,8 @@ export default function SpecificProject() {
         }
       );
 
-      console.log("Server response:", response.data);
-      alert("Scores submitted successfully!");
+      toast.success("Edited successfully!");
     } catch (err) {
-      console.error(err);
 
       if (err.response) {
         // Server returned a response with error code
@@ -141,6 +142,7 @@ export default function SpecificProject() {
           ]);
           setShowJudging(true); // automatically show sliders if scores exist
           setManuallyOpened(false);
+          setIsJudgingAlreadyExist(true);
         }
       } catch (error) {
         console.log("Error while fetching judging score", error);
@@ -157,27 +159,6 @@ export default function SpecificProject() {
     );
   };
 
-  const editScore = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.put(
-        `${import.meta.env.VITE_API_BASE_URL}/home/project/${id}/judging`,
-        editScore,
-        { withCredentials: true }
-      );
-      toast.success("Rules updated!");
-      setIsEditing(false);
-      // refetch rules to update UI
-      const res = await fetch(
-       `${import.meta.env.VITE_API_BASE_URL}/home/project/${id}/judging`,
-        { credentials: "include" }
-      );
-      const data = await res.json();
-    } catch (error) {
-      console.error("Rules update failed:", error);
-      toast.error("Failed to update rules");
-    }
-  };
   return (
     <div className="mt-[140px] px-[140px] pb-20">
       <p className="font-semibold text-xl pb-10">
@@ -217,8 +198,8 @@ export default function SpecificProject() {
             </button>
           )}
           {showJudging && (
-            <div className="pt-6">
-              <h3 className="font-bold text-2xl mb-3">Judging Scores</h3>
+            <div className="pt-16">
+              <h3 className="font-bold text-3xl mb-3">Judging Scores</h3>
               {scores.map((s, i) => (
                 <ProgressBar
                   key={i}
@@ -231,23 +212,20 @@ export default function SpecificProject() {
 
               {error && <p className="text-red-500 mb-3">{error}</p>}
 
-              {showJudging ? (
-                <button
-                  onClick={editScore}
-                  disabled={loading}
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2 rounded-lg mt-4"
-                >
-                  {loading ? "Editing..." : "Edit Scores"}
-                </button>
-              ) : (
-                <button
-                  onClick={handleSubmit}
-                  disabled={loading}
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2 rounded-lg mt-4"
-                >
-                  {loading ? "Submitting..." : "Submit Scores"}
-                </button>
-              )}
+              <button
+                onClick={handleSubmit}
+                disabled={loading}
+                className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2 rounded-lg mt-4"
+              >
+                {loading
+                  ? isJudgingAlreadyExist
+                    ? "Editing..."
+                    : "Submitting..."
+                  : isJudgingAlreadyExist
+                  ? "Edit Scores"
+                  : "Submit Scores"}
+              </button>
+
               {showJudging && manuallyOpened && (
                 <button
                   onClick={() => {
@@ -321,6 +299,7 @@ export default function SpecificProject() {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }
