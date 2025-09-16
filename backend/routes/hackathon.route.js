@@ -37,6 +37,7 @@ import { fetchFriends } from "../controllers/friend.controller.js";
 import { acceptProjectRequest, rejectProjectRequest } from "../controllers/projectRequest.controller.js";
 import { unfriendUser } from "../controllers/unfriend.controller.js";
 import { addJudgingScore, getJudgingScores, getOverallJudgingScores } from "../controllers/judging.controller.js";
+import { getMessages, submitChatMessage } from "../controllers/message.controller.js";
 
 const router = express.Router();
 
@@ -53,6 +54,10 @@ router.get("/friends", protectRoute, fetchFriends);
 router.get("/profile", protectRoute, getPortfolioProject);
 
 router.get("/profile/:id", getSpecificPortfolioProject);
+
+router.get("/messages/:id", protectRoute, getMessages);
+
+router.post("/messages/:id", protectRoute, submitChatMessage);
 
 router.get("/notifications", protectRoute, getNotifications);
 
