@@ -50,6 +50,8 @@ export default function SpecificProject() {
     { label: "Presentation", value: 0 },
   ]);
 
+  const [overallScores, setOverallScores] = useState(null);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -79,7 +81,6 @@ export default function SpecificProject() {
 
       toast.success("Edited successfully!");
     } catch (err) {
-
       if (err.response) {
         // Server returned a response with error code
         setError(err.response.data.message || "Failed to submit scores");
@@ -153,6 +154,25 @@ export default function SpecificProject() {
     fetchJudgingScores();
   }, [id]);
 
+  useEffect(() => {
+    const fetchOverallJudingScore = async () => {
+      try {
+        const response = await fetch(
+          `${
+            import.meta.env.VITE_API_BASE_URL
+          }/home/project/${id}/overalljudging`
+        );
+        const data = await response.json();
+        if (data.overall) {
+          setOverallScores(data.overall);
+        }
+      } catch (error) {
+        console.log("Error while fetching overall judging score");
+      }
+    };
+    fetchOverallJudingScore();
+  }, [id]);
+
   const previousPath = location.state?.from || "/";
 
   const handleScoreChange = (index, newValue) => {
@@ -216,18 +236,18 @@ export default function SpecificProject() {
 
               {isJudgedHackathon && (
                 <button
-                onClick={handleSubmit}
-                disabled={loading}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2 rounded-lg mt-4"
-              >
-                {loading
-                  ? isJudgingAlreadyExist
-                    ? "Editing..."
-                    : "Submitting..."
-                  : isJudgingAlreadyExist
-                  ? "Edit Scores"
-                  : "Submit Scores"}
-              </button>
+                  onClick={handleSubmit}
+                  disabled={loading}
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2 rounded-lg mt-4"
+                >
+                  {loading
+                    ? isJudgingAlreadyExist
+                      ? "Editing..."
+                      : "Submitting..."
+                    : isJudgingAlreadyExist
+                    ? "Edit Scores"
+                    : "Submit Scores"}
+                </button>
               )}
 
               {showJudging && manuallyOpened && isJudgedHackathon && (
@@ -241,6 +261,51 @@ export default function SpecificProject() {
                   Cancel
                 </button>
               )}
+            </div>
+          )}
+
+          {!isJudgedHackathon && overallScores && (
+            <div className="pt-16">
+              <h3 className="font-bold text-3xl mb-3">Average Scores</h3>
+
+              <ProgressBar
+                label="Innovation"
+                value={overallScores.avgInnovation || 0}
+                max={10}
+                readOnly
+              />
+              <ProgressBar
+                label="Technical"
+                value={overallScores.avgTechnical || 0}
+                max={10}
+                readOnly
+              />
+              <ProgressBar
+                label="Design"
+                value={overallScores.avgDesign || 0}
+                max={10}
+                readOnly
+              />
+              <ProgressBar
+                label="Impact"
+                value={overallScores.avgImpact || 0}
+                max={10}
+                readOnly
+              />
+              <ProgressBar
+                label="Presentation"
+                value={overallScores.avgPresentation || 0}
+                max={10}
+                readOnly
+              />
+
+              <p className="mt-4 text-lg font-semibold text-gray-700">
+                Average Total Score: {overallScores.avgTotalScore}/50
+              </p>
+              <p className="text-sm text-gray-500">
+                Judged by {overallScores.judgesCount}{" "}
+                {overallScores.judgesCount === 1 ? "judge" : "judges"}
+              </p>
             </div>
           )}
         </div>
