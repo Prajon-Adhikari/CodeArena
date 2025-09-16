@@ -145,8 +145,8 @@ export default function SpecificProject() {
           setShowJudging(true); // automatically show sliders if scores exist
           setManuallyOpened(false);
           setIsJudgingAlreadyExist(true);
-          setIsJudgedHackathon(data.isJudgedHackathon);
         }
+        setIsJudgedHackathon(data.isJudgedHackathon);
       } catch (error) {
         console.log("Error while fetching judging score", error);
       }
@@ -263,7 +263,6 @@ export default function SpecificProject() {
               )}
             </div>
           )}
-
           {!isJudgedHackathon && overallScores && (
             <div className="pt-16">
               <h3 className="font-bold text-3xl mb-3">Average Scores</h3>
