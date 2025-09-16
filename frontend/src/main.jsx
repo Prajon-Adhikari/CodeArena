@@ -34,6 +34,7 @@ import SpecificBlog from "./Pages/SpecificBlog.jsx";
 import SpecificPortfolioProject from "./Pages/SpecificPortfolioProject.jsx";
 import SearchProfile from "./Pages/SearchProfile.jsx";
 import SpecificProject from "./Pages/SpecificProject.jsx";
+import Message from "./Pages/Message.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -72,6 +73,7 @@ const router = createBrowserRouter(
         <Route path="blog" element={<BlogPage />} />
         <Route path="blog/:id" element={<SpecificBlog />} />
         <Route path="about" element={<About />} />
+        <Route path="message" element={<Message/>}/>
         <Route path="contact" element={<Contact />} />
       </Route>
     </>

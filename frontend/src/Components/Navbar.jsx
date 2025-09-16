@@ -2,11 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faMagnifyingGlass,
-  faBell,
-  faMessage,
-} from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass, faBell } from "@fortawesome/free-solid-svg-icons";
+import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 
 const Navbar = () => {
   const { pathname } = useLocation();
@@ -37,7 +34,9 @@ const Navbar = () => {
   const navLinkClass = (to) => {
     if (
       to === "/myjoinedhackathon" &&
-      (pathname === "/myjoinedhackathon" || pathname === "/myhostedhackathon" || pathname === "/myjudgedhackathon")
+      (pathname === "/myjoinedhackathon" ||
+        pathname === "/myhostedhackathon" ||
+        pathname === "/myjudgedhackathon")
     ) {
       return `relative text-base font-medium transition-colors duration-150 text-xl 
       text-blue-300 flex items-center
@@ -255,7 +254,7 @@ const Navbar = () => {
           ))}
         </div>
 
-        <div className="flex gap-8 items-center">
+        <div className="flex gap-6 items-center">
           <div className="relative w-64 hidden md:block">
             <span className="absolute inset-y-0 left-3 flex items-center  text-gray-400">
               <FontAwesomeIcon icon={faMagnifyingGlass} />
@@ -417,6 +416,12 @@ const Navbar = () => {
                 )}
               </div>
             )}
+          </div>
+          <div className="cursor-pointer">
+            <Link to="/message">
+              {" "}
+              <IoChatbubbleEllipsesOutline className="text-gray-500 text-3xl" />
+            </Link>
           </div>
 
           {/* Right Side: Auth / Profile */}

@@ -1,0 +1,157 @@
+import React, { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faMagnifyingGlass,
+  faUser,
+  faPhone,
+  faVideo,
+  faPaperPlane,
+  faPaperclip,
+} from "@fortawesome/free-solid-svg-icons";
+
+export default function Message() {
+  const [friends, setFriends] = useState([]);
+  const [search, setSearch] = useState("");
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    const fetchFriends = async () => {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_BASE_URL}/home/friends`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
+        );
+        const data = await response.json();
+        setFriends(data.friends);
+      } catch (error) {
+        console.log("Error while fetching friends", error);
+      }
+    };
+    fetchFriends();
+  }, []);
+
+  // Filter friends by search
+  const filteredFriends = friends.filter(
+    (friend) =>
+      friend.label && friend.label.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const handleSendMessage = () => {
+    if (message.trim() === "") return;
+    console.log("Send message:", message);
+    setMessage("");
+  };
+
+  return (
+    <div className="mt-[80px] px-[100px] bg-gray-100">
+      <div className="pt-4 pb-10 flex">
+        <div className="w-[400px] bg-white py-8 h-[84vh] overflow-y-auto">
+          <div className="px-8">
+            <h1 className="font-bold text-4xl mb-4">Messages</h1>
+
+            {/* Search Bar */}
+            <div className="bg-gray-200 w-full px-5 py-2 rounded-full flex items-center gap-4 focus-within:ring-1 focus-within:ring-blue-400">
+              <FontAwesomeIcon
+                icon={faMagnifyingGlass}
+                className="text-lg text-gray-400"
+              />
+              <input
+                type="text"
+                placeholder="Search ..."
+                className="w-full text-lg outline-none bg-gray-200"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
+          </div>
+          {/* Friends List */}
+          <div className="mt-4 overflow-y-auto ">
+            {filteredFriends.length === 0 ? (
+              <p className="text-gray-500 text-center mt-4">
+                No friends found.
+              </p>
+            ) : (
+              filteredFriends.map((friend) => (
+                <div
+                  key={friend._id}
+                  className="flex items-center gap-5 border-b px-8 border-gray-300 py-6 cursor-pointer hover:bg-gray-100 transition"
+                >
+                  {friend.profilePic ? (
+                    <img
+                      src={friend.profilePic}
+                      alt={friend.label}
+                      className="w-14 h-14 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-14 h-14 rounded-full bg-gray-300 flex items-center justify-center">
+                      <FontAwesomeIcon
+                        icon={faUser}
+                        className="text-gray-500 text-2xl"
+                      />
+                    </div>
+                  )}
+                  <div>
+                    <p className="font-bold text-xl line-clamp-1">
+                      {friend.label}
+                    </p>
+                    <p className="text-gray-500 line-clamp-1">
+                      Start your conversation ...
+                    </p>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+        <div className=" pt-6 flex flex-col justify-between bg-gray-200 w-[1000px]">
+          <div className=" px-8 flex items-center justify-between border-b-1 border-gray-400 pb-4">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center">
+                <FontAwesomeIcon
+                  icon={faUser}
+                  className="text-gray-500 text-xl"
+                />
+              </div>
+              <p className="font-bold text-xl">Sarthak Adhikari</p>
+            </div>
+            <div className="flex gap-8 mr-8">
+              <FontAwesomeIcon
+                icon={faPhone}
+                className="text-lg text-blue-400"
+              />
+              <FontAwesomeIcon
+                icon={faVideo}
+                className="text-lg text-blue-400"
+              />
+            </div>
+          </div>
+          <div className="mt-4 flex items-center bg-gray-50 gap-4 px-4">
+            <button className="p-3 rounded-full transition">
+              <FontAwesomeIcon icon={faPaperclip} className="text-gray-700" />
+            </button>
+            <input
+              type="text"
+              placeholder="Type a message..."
+              className="flex-1 py-3 rounded-full outline-none text-lg"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+            />
+            <button
+              onClick={handleSendMessage}
+              className="p-3"
+            >
+              <FontAwesomeIcon icon={faPaperPlane} />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
