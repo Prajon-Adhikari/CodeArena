@@ -9,6 +9,7 @@ import {
   faPaperclip,
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import { io } from "socket.io-client";
 import chatBgImage from "../assets/chatbgimage.jpg";
 
 export default function Message() {
@@ -19,6 +20,38 @@ export default function Message() {
   const [messages, setMessages] = useState([]);
   const [userId, setUserId] = useState(null); // current user ID
   const messagesEndRef = useRef(null); // for scrolling
+  const socket = useRef(null);
+
+  // connect socket
+  useEffect(() => {
+    socket.current = io(import.meta.env.VITE_API_BASE_URL, {
+      withCredentials: true,
+    });
+
+    return () => {
+      socket.current.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (userId && socket.current) {
+      socket.current.emit("join", userId);
+    }
+  }, [userId]);
+
+  // listen for new messages
+  useEffect(() => {
+    if (!socket.current) return;
+
+    socket.current.on("receiveMessage", (msg) => {
+      if (
+        (msg.sender === selectedFriendId && msg.receiver === userId) ||
+        (msg.sender === userId && msg.receiver === selectedFriendId)
+      ) {
+        setMessages((prev) => [...prev, msg]);
+      }
+    });
+  }, [selectedFriendId, userId]);
 
   useEffect(() => {
     const fetchFriends = async () => {
@@ -76,23 +109,25 @@ export default function Message() {
     }
   }, [messages]);
 
-  const handleSendMessage = async () => {
+ const handleSendMessage = async () => {
     if (!message.trim() || !selectedFriendId) return;
 
+    const newMsg = { sender: userId, receiver: selectedFriendId, content: message };
+
     try {
-      const response = await axios.post(
-        `${
-          import.meta.env.VITE_API_BASE_URL
-        }/home/messages/${selectedFriendId}`,
+      await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/home/messages/${selectedFriendId}`,
         { content: message },
-        { withCredentials: true } // sends cookies/session
+        { withCredentials: true }
       );
-      setMessage(""); // clear input
-    } catch (error) {
-      console.error(
-        "Error sending message:",
-        error.response?.data?.message || error.message
-      );
+
+      // emit via websocket
+      socket.current.emit("sendMessage", newMsg);
+
+      setMessages((prev) => [...prev, newMsg]); // instantly update own chat
+      setMessage("");
+    } catch (err) {
+      console.error("Send message error:", err);
     }
   };
 
