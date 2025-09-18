@@ -5,6 +5,7 @@ import {
   createBrowserRouter,
   RouterProvider,
   Route,
+  Navigate,
   createRoutesFromElements,
 } from "react-router-dom";
 
@@ -35,6 +36,12 @@ import SpecificPortfolioProject from "./Pages/SpecificPortfolioProject.jsx";
 import SearchProfile from "./Pages/SearchProfile.jsx";
 import SpecificProject from "./Pages/SpecificProject.jsx";
 import Message from "./Pages/Message.jsx";
+import Admin from "./Pages/Admin.jsx";
+import Dashboard from "./Admin/Dashboard.jsx";
+import Users from "./Admin/Users.jsx";
+import Hackathons from "./Admin/Hackathons.jsx";
+import Reports from "./Admin/Reports.jsx";
+import Setting from "./Admin/Setting.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -49,6 +56,14 @@ const router = createBrowserRouter(
           element={<ResetPassword />}
         />
       </Route>
+      <Route path="/menu" element={<Admin />}>
+        <Route index element={<Navigate to="menu/dashboard" />} />
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="users" element={<Users/>}/>
+        <Route path="hackathons" element={<Hackathons/>}/>
+        <Route path="reports" element={<Reports/>}/>
+        <Route path="setting" element={<Setting/>}/>
+      </Route>
 
       {/* App routes with navbar/footer */}
       <Route path="/" element={<App />}>
@@ -57,7 +72,7 @@ const router = createBrowserRouter(
         <Route path="hackathon" element={<HostHackathon />} />
         <Route path="myjoinedhackathon" element={<MyJoinedHackathon />} />
         <Route path="myhostedhackathon" element={<MyHostedHackathon />} />
-        <Route path="myjudgedhackathon" element={<MyJudgedHackathon/>} />
+        <Route path="myjudgedhackathon" element={<MyJudgedHackathon />} />
         <Route path=":id/overview" element={<Overview />} />
         <Route path=":id/myproject" element={<Project />} />
         <Route path="project/:id" element={<SpecificProject />} />
@@ -73,7 +88,7 @@ const router = createBrowserRouter(
         <Route path="blog" element={<BlogPage />} />
         <Route path="blog/:id" element={<SpecificBlog />} />
         <Route path="about" element={<About />} />
-        <Route path="message" element={<Message/>}/>
+        <Route path="message" element={<Message />} />
         <Route path="contact" element={<Contact />} />
       </Route>
     </>

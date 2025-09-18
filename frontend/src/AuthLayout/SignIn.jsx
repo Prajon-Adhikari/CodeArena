@@ -32,7 +32,11 @@ export default function Signin() {
           withCredentials: true,
         }
       );
-      navigate("/");
+      if (data.role === "admin") {
+        navigate("/menu/dashboard"); // redirect admin users
+      } else {
+        navigate("/"); // redirect normal users
+      }
     } catch (error) {
       toast.dismiss();
       const errorMsg =

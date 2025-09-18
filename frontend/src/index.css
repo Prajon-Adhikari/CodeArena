@@ -3,14 +3,35 @@
     font-family: Nunito Sans;
 }
 
-/* @keyframes marquee {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
+.menu-elements {
+  @apply relative; /* Ensure the element is positioned relative */
 }
-.marquee {
-  animation: marquee 10s linear infinite;
-  white-space: nowrap;
-  position: absolute;
-} */
+
+.menu-elements::after {
+  content: "";
+  @apply absolute left-0 w-1 h-full bg-pink-400 opacity-0 transition-opacity; /* Small box is hidden initially */
+  top: 50%;
+  transform: translateY(-50%); /* Adjust for perfect vertical alignment */
+}
+
+.menu-elements:hover::after {
+  @apply opacity-100;
+}
+
+.menu-elements:hover {
+  @apply text-pink-400;
+}
+
+.active-element {
+  @apply text-pink-400 relative; /* Same text color as hover */
+}
+
+.active-element::after {
+  content: "";
+  @apply absolute left-0 w-1 h-full bg-pink-400 opacity-100; /* Small box visible permanently */
+  top: 50%;
+  transform: translateY(-50%); /* Align vertically */
+}
+
 
 
