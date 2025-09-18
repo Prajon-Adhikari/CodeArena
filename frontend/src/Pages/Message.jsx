@@ -109,14 +109,20 @@ export default function Message() {
     }
   }, [messages]);
 
- const handleSendMessage = async () => {
+  const handleSendMessage = async () => {
     if (!message.trim() || !selectedFriendId) return;
 
-    const newMsg = { sender: userId, receiver: selectedFriendId, content: message };
+    const newMsg = {
+      sender: userId,
+      receiver: selectedFriendId,
+      content: message,
+    };
 
     try {
       await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/home/messages/${selectedFriendId}`,
+        `${
+          import.meta.env.VITE_API_BASE_URL
+        }/home/messages/${selectedFriendId}`,
         { content: message },
         { withCredentials: true }
       );
