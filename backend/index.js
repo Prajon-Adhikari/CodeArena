@@ -15,7 +15,13 @@ const app = express();
 const server = createServer(app); // create http server
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173", // your React app URL
+    origin: (origin, callback) => {
+      if (!origin || origin.startsWith("http://localhost:")) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   },
 });
