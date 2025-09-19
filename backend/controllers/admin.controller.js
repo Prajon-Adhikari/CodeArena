@@ -3,6 +3,7 @@ import User from "../models/user.model.js";
 import SubmittedProject from "../models/submitedProject.model.js";
 import Judge from "../models/judge.model.js";
 import JoinedHackathon from "../models/joinedHackathon.model.js";
+import Friend from "../models/friend.model.js";
 
 export const fechHackathonsForPanel = async (req, res) => {
   try {
@@ -20,13 +21,13 @@ export const fechHackathonsForPanel = async (req, res) => {
       (h) => new Date(h.submissionEndDate) < today
     ).length;
 
-     const hackathonsPerMonth = Array(12).fill(0); // Jan → Dec
+    const hackathonsPerMonth = Array(12).fill(0); // Jan → Dec
     hackathons.forEach((h) => {
       const month = new Date(h.createdAt).getMonth(); // 0 = Jan
       hackathonsPerMonth[month]++;
     });
 
-     const themeCounts = {};
+    const themeCounts = {};
     hackathons.forEach((h) => {
       if (Array.isArray(h.themes)) {
         h.themes.forEach((theme) => {
@@ -57,5 +58,39 @@ export const fechHackathonsForPanel = async (req, res) => {
     return res
       .status(500)
       .json({ message: "Internal error while fetching data for admin panel" });
+  }
+};
+
+export const fetchUserForAdmin = async (req, res) => {
+  try {
+    const users = await User.find();
+
+    const usersWithFriends = await Promise.all(
+      users.map(async (user) => {
+        const friendsCount = await Friend.countDocuments({
+          $or: [{ sender: user._id }, { receiver: user._id }],
+        });
+
+        return {
+          _id: user._id,
+          fullName: user.fullName,
+          email: user.email,
+          profilePic: user.profilePic,
+          location: user.location || "-", // if field doesn't exist, show "-"
+          work: user.work || "-",
+          accountCreated: user.createdAt,
+          friendsCount,
+        };
+      })
+    );
+
+    return res
+      .status(200)
+      .json({ message: "Fetching user data for admin", usersWithFriends });
+  } catch (error) {
+    console.log("Internal error while fetching user data for admin", error);
+    return res
+      .status(500)
+      .json({ message: "Internal error while fetching user data for admin" });
   }
 };
