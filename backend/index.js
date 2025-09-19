@@ -9,6 +9,7 @@ import { Server } from "socket.io";
 import authRoute from "./routes/user.route.js";
 import hackathonRoute from "./routes/hackathon.route.js";
 import searchRoutes from "./routes/search.route.js";
+import adminRoutes from "./routes/admin.route.js";
 
 dotenv.config();
 const app = express();
@@ -48,6 +49,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", authRoute);
 app.use("/api/search", searchRoutes);
 app.use("/home", hackathonRoute);
+app.use("/menu", adminRoutes);
 
 io.on("connection", (socket) => {
   console.log("⚡ New client connected:", socket.id);
