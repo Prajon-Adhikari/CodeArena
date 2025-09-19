@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default function Panel(props) {
   return (
     <div
-      className={`bg-gradient-to-br ${props.begColor} ${props.midColor}  ${props.endColor} w-[290px] text-white rounded-2xl p-4 shadow-lg shadow-slate-400`}
+      className={`bg-gradient-to-br ${props.begColor} ${props.midColor}  ${props.endColor} w-[300px] text-white rounded-2xl p-4 shadow-lg shadow-slate-400`}
     >
       <div className="text-lg pl-2">{props.title}</div>
       <div className="flex justify-between pt-4">

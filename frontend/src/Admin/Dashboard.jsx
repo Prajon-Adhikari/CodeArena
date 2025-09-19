@@ -6,36 +6,39 @@ import Chart from "react-apexcharts";
 export default function Dashboard() {
   const [hackathonLength, setHackathonLength] = useState(0);
   const [usersLength, setUsersLength] = useState(0);
-   const [projectsLength, setProjectsLength] = useState(0);
+  const [projectsLength, setProjectsLength] = useState(0);
   const [completedHackathons, setCompletedHackathons] = useState(0);
+  const [hackathonsPerMonth, setHackathonsPerMonth] = useState([]);
 
-  useEffect(() =>{
-    const fetchDataForDashboard = async () =>{
+  useEffect(() => {
+    const fetchDataForDashboard = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/menu/dashboard`,
+          `${import.meta.env.VITE_API_BASE_URL}/menu/dashboard`
         );
         const data = await response.json();
         setHackathonLength(data.hackathonLength);
         setUsersLength(data.usersLength);
         setProjectsLength(data.projectsLength);
         setCompletedHackathons(data.completedHackathons);
+        setHackathonsPerMonth(data.hackathonsPerMonth || []);
       } catch (error) {
         console.log("Error while fetching data for dashboard");
       }
-    }
+    };
     fetchDataForDashboard();
-  },[])
+  }, []);
+
   const options = {
     chart: {
-      id: "basic-line",
+      id: "hackathons-line",
       zoom: { enabled: false },
     },
     stroke: {
       curve: "straight",
     },
     title: {
-      text: "Product Trends by Month",
+      text: "Hackathons Created per Month",
       align: "left",
     },
     grid: {
@@ -55,17 +58,19 @@ export default function Dashboard() {
         "Jul",
         "Aug",
         "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
       ],
     },
   };
 
   const series = [
     {
-      name: "Desktops",
-      data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
+      name: "Hackathons",
+      data: hackathonsPerMonth, // ✅ dynamic data from backend
     },
   ];
-
   return (
     <div>
       <div className="bg-white flex rounded-bl-xl justify-between items-center px-10 w-full h-[70px]">
@@ -74,7 +79,7 @@ export default function Dashboard() {
 
       {/* ✅ Panels Section */}
       <div className="mt-8">
-        <div className="grid grid-cols-2 w-[630px] gap-4">
+        <div className="grid grid-cols-2 w-[650px] gap-4">
           <Panel
             title="Total Users"
             figure={faChartSimple}

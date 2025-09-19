@@ -18,12 +18,19 @@ export const fechHackathonsForPanel = async (req, res) => {
       (h) => new Date(h.submissionEndDate) < today
     ).length;
 
+     const hackathonsPerMonth = Array(12).fill(0); // Jan → Dec
+    hackathons.forEach((h) => {
+      const month = new Date(h.createdAt).getMonth(); // 0 = Jan
+      hackathonsPerMonth[month]++;
+    });
+
     return res.status(200).json({
       message: "Fetching data for admin panel",
       hackathonLength,
       usersLength,
       projectsLength,
       completedHackathons,
+      hackathonsPerMonth,
     });
   } catch (error) {
     console.log("Internal error while fetching data for admin panel", error);
