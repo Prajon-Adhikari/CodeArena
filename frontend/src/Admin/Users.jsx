@@ -111,7 +111,7 @@ export default function Users() {
               <input
                 type="text"
                 placeholder="Search a person ..."
-                className=" w-[240px]   outline-none"
+                className=" w-[240px] outline-none"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />

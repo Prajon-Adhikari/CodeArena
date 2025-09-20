@@ -180,7 +180,7 @@ export default function Dashboard() {
           </div>
         </div>
         <div>
-          <div className="bg-white mt-8 p-4 rounded-xl shadow w-[560px]">
+          <div className="bg-white mt-8 p-4 rounded-xl shadow w-[600px]">
             <Chart
               options={barOptions}
               series={barSeries}
@@ -188,7 +188,7 @@ export default function Dashboard() {
               height={400}
             />
           </div>
-          <div className="bg-white mt-8 p-4 flex justify-center items-center rounded-xl shadow w-[560px]">
+          <div className="bg-white mt-8 p-4 flex justify-center items-center rounded-xl shadow w-[600px]">
             <Chart
               options={pieOptions}
               series={pieSeries}

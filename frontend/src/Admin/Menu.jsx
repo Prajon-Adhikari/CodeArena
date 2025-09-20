@@ -1,5 +1,11 @@
 import React from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
+import { MdDashboard } from "react-icons/md";
+import { LuMessageSquareMore } from "react-icons/lu";
+import { HiOutlineSpeakerphone } from "react-icons/hi";
+import { PiUsersThreeFill } from "react-icons/pi";
+import { MdLogout } from "react-icons/md";
+import { IoSettingsSharp } from "react-icons/io5";
 
 export default function Menu() {
   const location = useLocation();
@@ -10,18 +16,20 @@ export default function Menu() {
 
   return (
     <div className="flex gap-6 bg-gray-100">
-      <div className="h-screen rounded-tl-2xl bg-white w-[270px] fixed">
-        <h2 className="text-3xl font-bold text-center py-4 bg-gradient-to-r from-pink-400 to-purple-500 text-white">
+      <div className="h-screen rounded-tl-2xl bg-white w-[220px] fixed">
+        <h2 className="text-2xl font-bold text-center py-4 bg-gradient-to-r from-pink-400 to-purple-500 text-white">
           CODEARENA
         </h2>
-        <div className="text-slate-600 text-2xl flex flex-col items-center mt-[60px] gap-8">
+        <div className="text-slate-600 text-lg flex flex-col items-center mt-[60px] gap-8">
           <Link
             to="/menu/dashboard"
             className={`w-full pl-10 py-1 menu-elements ${
               isActive("/menu/dashboard") ? "active-element" : ""
             }`}
           >
-            Dashboard
+            <div className="flex items-center gap-3">
+              <MdDashboard /> Dashboard
+            </div>
           </Link>
           <Link
             to={`/menu/users`}
@@ -29,7 +37,9 @@ export default function Menu() {
               isActive("/menu/users") ? "active-element" : ""
             }`}
           >
-            Users
+            <div className="flex items-center gap-3">
+              <PiUsersThreeFill /> Users
+            </div>
           </Link>
           <Link
             to="/menu/hackathons"
@@ -37,7 +47,9 @@ export default function Menu() {
               isActive("/menu/hackathons") ? "active-element" : ""
             }`}
           >
-            Hackathons
+            <div className="flex items-center gap-3">
+              <HiOutlineSpeakerphone /> Hackathons
+            </div>
           </Link>
           <Link
             to={`/menu/reports`}
@@ -45,7 +57,9 @@ export default function Menu() {
               isActive("/menu/reports") ? "active-element" : ""
             }`}
           >
-            Reports
+            <div className="flex items-center gap-3">
+              <HiOutlineSpeakerphone /> Reports
+            </div>
           </Link>
           <Link
             to="/menu/setting"
@@ -53,14 +67,21 @@ export default function Menu() {
               isActive("/menu/setting") ? "active-element" : ""
             }`}
           >
-            Setting
+            <div className="flex items-center gap-3">
+              <IoSettingsSharp /> Setting
+            </div>
           </Link>
-          <Link to="/api/auth/signin" className={`w-full pl-10 py-1 menu-elements`}>
-            Log Out
+          <Link
+            to="/api/auth/signin"
+            className={`w-full pl-10 py-1 menu-elements`}
+          >
+            <div className="flex items-center gap-3">
+              <MdLogout /> Logout
+            </div>
           </Link>
         </div>
       </div>
-      <div className="ml-[300px] flex-1 h-screen overflow-y-auto">
+      <div className="ml-[260px] flex-1 h-screen overflow-y-auto">
         <Outlet />
       </div>
     </div>

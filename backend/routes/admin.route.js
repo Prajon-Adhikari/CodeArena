@@ -1,5 +1,5 @@
 import express from "express";
-import { fechHackathonsForPanel, fetchHosterForAdmin, fetchJudgesForAdmin, fetchParticipantsForAdmin, fetchUserForAdmin } from "../controllers/admin.controller.js";
+import { fechHackathonsForPanel,fetchOperatingHackathons ,fetchHosterForAdmin, fetchJudgesForAdmin, fetchParticipantsForAdmin, fetchUserForAdmin, fetchCompletedHackathons } from "../controllers/admin.controller.js";
 
 const router = express.Router();
 
@@ -12,5 +12,9 @@ router.get("/judges", fetchJudgesForAdmin);
 router.get("/hosters", fetchHosterForAdmin);
 
 router.get("/participants", fetchParticipantsForAdmin);
+
+router.get("/hackathons/operating", fetchOperatingHackathons);
+
+router.get("/hackathons/completed", fetchCompletedHackathons);
 
 export default router;

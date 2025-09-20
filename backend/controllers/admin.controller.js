@@ -18,7 +18,7 @@ export const fechHackathonsForPanel = async (req, res) => {
 
     const today = new Date();
     const completedHackathons = hackathons.filter(
-      (h) => new Date(h.submissionEndDate) < today
+      (h) => new Date(h.endDate) < today
     ).length;
 
     const hackathonsPerMonth = Array(12).fill(0); // Jan → Dec
@@ -112,8 +112,6 @@ export const fetchJudgesForAdmin = async (req, res) => {
       })
     );
 
-   
-
     return res.status(200).json({message: "Fetching judge data for admin", judgeWithHackathons});
   } catch (error) {
     console.log("Internal error while fetching judge data for admin", error);
@@ -159,5 +157,49 @@ export const fetchParticipantsForAdmin = async(req,res) =>{
     return res
       .status(500)
       .json({ message: "Internal error while fetching participants data for admin" });
+  }
+}
+
+export const fetchOperatingHackathons = async(req, res) =>{
+  try {
+    const today = new Date();
+
+    const operatingHackathons = await Hackathon.find({
+      endDate: { $gte: today },
+    });
+
+     return res.status(200).json({
+      success: true,
+      message: "Operating hackathons fetched successfully",
+      hackathons: operatingHackathons,
+    });
+ 
+  } catch (error) {
+     console.log("Internal error while fetching operating hackathons data for admin", error);
+    return res
+      .status(500)
+      .json({ message: "Internal error while fetching operating hackathons data for admin" });
+  }
+}
+
+export const fetchCompletedHackathons = async(req, res) =>{
+  try {
+    const today = new Date();
+
+    const completedHackathons = await Hackathon.find({
+      endDate: { $lte: today },
+    });
+
+     return res.status(200).json({
+      success: true,
+      message: "Operating hackathons fetched successfully",
+      hackathons: completedHackathons,
+    });
+ 
+  } catch (error) {
+     console.log("Internal error while fetching operating hackathons data for admin", error);
+    return res
+      .status(500)
+      .json({ message: "Internal error while fetching operating hackathons data for admin" });
   }
 }
