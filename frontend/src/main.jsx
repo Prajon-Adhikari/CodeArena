@@ -42,6 +42,11 @@ import Users from "./Admin/Users.jsx";
 import Hackathons from "./Admin/Hackathons.jsx";
 import Reports from "./Admin/Reports.jsx";
 import Setting from "./Admin/Setting.jsx";
+import AdminOverview from "./Admin/AdminOverview.jsx";
+import AdminProject from "./Admin/AdminProject.jsx";
+import AdminRules from "./Admin/AdminRules.jsx";
+import AdminPrizes from "./Admin/AdminPrizes.jsx";
+import AdminJudges from "./Admin/AdminJudges.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -59,10 +64,15 @@ const router = createBrowserRouter(
       <Route path="/menu" element={<Admin />}>
         <Route index element={<Navigate to="menu/dashboard" />} />
         <Route path="dashboard" element={<Dashboard />} />
-        <Route path="users" element={<Users/>}/>
-        <Route path="hackathons" element={<Hackathons/>}/>
-        <Route path="reports" element={<Reports/>}/>
-        <Route path="setting" element={<Setting/>}/>
+        <Route path="users" element={<Users />} />
+        <Route path="hackathons" element={<Hackathons />} />
+        <Route path="reports" element={<Reports />} />
+        <Route path="setting" element={<Setting />} />
+        <Route path=":id/admin/overview" element={<AdminOverview />} />
+        <Route path=":id/admin/myproject" element={<AdminProject />} />
+        <Route path=":id/admin/rules" element={<AdminRules />} />
+        <Route path=":id/admin/prizes" element={<AdminPrizes />} />
+        <Route path=":id/admin/judges" element={<AdminJudges />} />
       </Route>
 
       {/* App routes with navbar/footer */}

@@ -85,7 +85,7 @@ export default function Hackathons() {
         <div className="my-16 grid grid-cols-2 gap-2">
           {filteredHackathons.length > 0 ? (
             filteredHackathons.map((hackathon, index) => (
-              <Link to={`/${hackathon._id}/overview`}>
+              <Link to={`/menu/${hackathon._id}/admin/overview`}>
                 <div
                   key={hackathon._id}
                   className="group relative bg-transparent pr-[50px] py-[2px] w-[600px] h-[230px] mb-6 overflow-hidden"

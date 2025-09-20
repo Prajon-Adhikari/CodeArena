@@ -112,7 +112,9 @@ export const fetchJudgesForAdmin = async (req, res) => {
       })
     );
 
-    return res.status(200).json({message: "Fetching judge data for admin", judgeWithHackathons});
+    return res
+      .status(200)
+      .json({ message: "Fetching judge data for admin", judgeWithHackathons });
   } catch (error) {
     console.log("Internal error while fetching judge data for admin", error);
     return res
@@ -121,12 +123,13 @@ export const fetchJudgesForAdmin = async (req, res) => {
   }
 };
 
-
 export const fetchHosterForAdmin = async (req, res) => {
   try {
-    const hackathons = await Hackathon.find()
-      .populate("organizerId", "fullName email profilePic"); 
-      // only pick needed fields from User model
+    const hackathons = await Hackathon.find().populate(
+      "organizerId",
+      "fullName email profilePic"
+    );
+    // only pick needed fields from User model
 
     return res.status(200).json({
       success: true,
@@ -140,7 +143,7 @@ export const fetchHosterForAdmin = async (req, res) => {
   }
 };
 
-export const fetchParticipantsForAdmin = async(req,res) =>{
+export const fetchParticipantsForAdmin = async (req, res) => {
   try {
     const participants = await JoinedHackathon.find()
       .populate("userId", "fullName email profilePic location work") // only needed user fields
@@ -153,14 +156,19 @@ export const fetchParticipantsForAdmin = async(req,res) =>{
       participants,
     });
   } catch (error) {
-     console.log("Internal error while fetching particiapants data for admin", error);
+    console.log(
+      "Internal error while fetching particiapants data for admin",
+      error
+    );
     return res
       .status(500)
-      .json({ message: "Internal error while fetching participants data for admin" });
+      .json({
+        message: "Internal error while fetching participants data for admin",
+      });
   }
-}
+};
 
-export const fetchOperatingHackathons = async(req, res) =>{
+export const fetchOperatingHackathons = async (req, res) => {
   try {
     const today = new Date();
 
@@ -168,21 +176,26 @@ export const fetchOperatingHackathons = async(req, res) =>{
       endDate: { $gte: today },
     });
 
-     return res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "Operating hackathons fetched successfully",
       hackathons: operatingHackathons,
     });
- 
   } catch (error) {
-     console.log("Internal error while fetching operating hackathons data for admin", error);
+    console.log(
+      "Internal error while fetching operating hackathons data for admin",
+      error
+    );
     return res
       .status(500)
-      .json({ message: "Internal error while fetching operating hackathons data for admin" });
+      .json({
+        message:
+          "Internal error while fetching operating hackathons data for admin",
+      });
   }
-}
+};
 
-export const fetchCompletedHackathons = async(req, res) =>{
+export const fetchCompletedHackathons = async (req, res) => {
   try {
     const today = new Date();
 
@@ -190,16 +203,48 @@ export const fetchCompletedHackathons = async(req, res) =>{
       endDate: { $lte: today },
     });
 
-     return res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "Operating hackathons fetched successfully",
       hackathons: completedHackathons,
     });
- 
   } catch (error) {
-     console.log("Internal error while fetching operating hackathons data for admin", error);
+    console.log(
+      "Internal error while fetching operating hackathons data for admin",
+      error
+    );
     return res
       .status(500)
-      .json({ message: "Internal error while fetching operating hackathons data for admin" });
+      .json({
+        message:
+          "Internal error while fetching operating hackathons data for admin",
+      });
   }
-}
+};
+
+export const getOverviewDetailsForAdmin = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const hackathon = await Hackathon.findById(id);
+
+    if (!hackathon) {
+      return res.status(404).json({ message: "Hackathon not found" });
+    }
+    return res.status(200).json({
+      message: "Hackthon details fetched successfully",
+      hackathon,
+    });
+  } catch (error) {
+    console.log(
+      "Internal error while fetching operating hackathons data for admin",
+      error
+    );
+    return res
+      .status(500)
+      .json({
+        message:
+          "Internal error while fetching operating hackathons data for admin",
+      });
+  }
+};
