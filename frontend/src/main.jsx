@@ -47,6 +47,7 @@ import AdminProject from "./Admin/AdminProject.jsx";
 import AdminRules from "./Admin/AdminRules.jsx";
 import AdminPrizes from "./Admin/AdminPrizes.jsx";
 import AdminJudges from "./Admin/AdminJudges.jsx";
+import AdminSpecificProject from "./Admin/AdminSpecificProject.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -70,6 +71,7 @@ const router = createBrowserRouter(
         <Route path="setting" element={<Setting />} />
         <Route path=":id/admin/overview" element={<AdminOverview />} />
         <Route path=":id/admin/myproject" element={<AdminProject />} />
+        <Route path="project/:id" element={<AdminSpecificProject/>}/>
         <Route path=":id/admin/rules" element={<AdminRules />} />
         <Route path=":id/admin/prizes" element={<AdminPrizes />} />
         <Route path=":id/admin/judges" element={<AdminJudges />} />

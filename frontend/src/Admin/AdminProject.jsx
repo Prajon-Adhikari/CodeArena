@@ -78,7 +78,7 @@ export default function AdminProject() {
                   {fetchSubmittedProjects.map((project, index) => (
                     <>
                       <Link
-                        to={`/project/${project._id}`}
+                        to={`/menu/project/${project._id}`}
                         state={{ from: location.pathname }}
                       >
                         <div
