@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -8,14 +7,6 @@ import {
   faFlag,
   faTags,
 } from "@fortawesome/free-solid-svg-icons";
-import { ToastContainer, toast } from "react-toastify";
-import { Calendar, momentLocalizer } from "react-big-calendar";
-import moment from "moment";
-import Select from "react-select";
-import "react-big-calendar/lib/css/react-big-calendar.css";
-import ReactApexChart from "react-apexcharts";
-
-const localizer = momentLocalizer(moment);
 
 export default function AdminRules() {
   const { id } = useParams();
