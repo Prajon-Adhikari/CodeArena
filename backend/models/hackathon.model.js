@@ -5,7 +5,7 @@ const HackathonSchema = new mongoose.Schema(
     title: { type: String, required: true },
     description: { type: String, required: true },
     organizerName: { type: String, required: true },
-    organizerId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    organizerId: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
     contactEmail: { type: String, required: true },
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },

@@ -68,7 +68,7 @@ export const fetchUserForAdmin = async (req, res) => {
     const usersWithFriends = await Promise.all(
       users.map(async (user) => {
         const friendsCount = await Friend.countDocuments({
-          $or: [{ sender: user._id }, { receiver: user._id }],
+          $or: [{ user1: user._id }, { user2: user._id }],
         });
 
         return {
@@ -92,5 +92,52 @@ export const fetchUserForAdmin = async (req, res) => {
     return res
       .status(500)
       .json({ message: "Internal error while fetching user data for admin" });
+  }
+};
+
+export const fetchJudgesForAdmin = async (req, res) => {
+  try {
+    const judges = await Judge.find();
+
+    const judgeWithHackathons = await Promise.all(
+      judges.map(async (judge) => {
+        const hackathons = await Hackathon.find({ judges: judge._id })
+          .select("title description startDate endDate") // select only needed fields
+          .lean();
+
+        return {
+          ...judge.toObject(),
+          hackathons,
+        };
+      })
+    );
+
+   
+
+    return res.status(200).json({message: "Fetching judge data for admin", judgeWithHackathons});
+  } catch (error) {
+    console.log("Internal error while fetching judge data for admin", error);
+    return res
+      .status(500)
+      .json({ message: "Internal error while fetching judge data for admin" });
+  }
+};
+
+
+export const fetchHosterForAdmin = async (req, res) => {
+  try {
+    const hackathons = await Hackathon.find()
+      .populate("organizerId", "fullName email profilePic"); 
+      // only pick needed fields from User model
+
+    return res.status(200).json({
+      success: true,
+      hosters: hackathons,
+    });
+  } catch (error) {
+    console.log("Internal error while fetching hoster data for admin", error);
+    return res
+      .status(500)
+      .json({ message: "Internal error while fetching hoster data for admin" });
   }
 };
