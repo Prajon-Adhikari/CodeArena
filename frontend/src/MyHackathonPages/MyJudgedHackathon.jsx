@@ -3,6 +3,7 @@ import { useLocation, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 import dragon from "../assets/dragon.jpg";
+import demo from "../assets/demo-logo.jpg";
 
 export default function MyJoinedHackathon() {
   const location = useLocation();
@@ -10,7 +11,7 @@ export default function MyJoinedHackathon() {
   const isJoinedActive = location.pathname.includes("joined");
   const isHostedActive = location.pathname.includes("hosted");
   const isJudgedActive = location.pathname.includes("judged");
-  
+
   const [judgedHackathon, setJudgedHackathon] = useState([]);
 
   useEffect(() => {
@@ -86,7 +87,7 @@ export default function MyJoinedHackathon() {
                   className="relative z-10 mb-4  bg-cover bg-center flex w-[760px] h-full border border-l-8 cursor-pointer border-blue-300"
                 >
                   <div className="flex gap-8 p-6 w-full">
-                    <div className="bg-[url('./src/assets/demo-logo.jpg')] h-24 w-24 bg-cover bg-center"></div>
+                    <img src={demo} alt="" className="h-20 w-20 object-cover" />{" "}
                     <div className="w-[500px]">
                       <h2 className="text-[22px] font-semibold h-[100px]">
                         {hackathon.title}

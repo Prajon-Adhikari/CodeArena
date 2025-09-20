@@ -570,11 +570,40 @@ export default function Overview() {
                       })
                     }
                     options={[
-                      { value: "AI", label: "AI" },
-                      { value: "Blockchain", label: "Blockchain" },
-                      { value: "Healthcare", label: "Healthcare" },
-                      { value: "Education", label: "Education" },
-                      { value: "Environment", label: "Environment" },
+                      { value: "ai-ml", label: "AI/ML" },
+                      { value: "blockchain", label: "Blockchain" },
+                      { value: "iot", label: "IoT" },
+                      {
+                        value: "beginner-friendly",
+                        label: "Beginner Friendly",
+                      },
+                      { value: "fintech", label: "FinTech" },
+                      { value: "web development", label: "Web Development" },
+                      {
+                        value: "mobile development",
+                        label: "Mobile App Development",
+                      },
+                      { value: "game development", label: "Game Development" },
+                      { value: "cybersecurity", label: "Cybersecurity" },
+                      { value: "AR/VR", label: "AR/VR" },
+                      { value: "data science", label: "Data Science" },
+                      { value: "healthTech", label: "HealthTech" },
+                      { value: "edTech", label: "EdTech" },
+                      { value: "climate tech", label: "Climate Tech" },
+                      { value: "robotics", label: "Robotics" },
+                      { value: "ecommerce", label: "E-commerce" },
+                      { value: "social good", label: "Social Good" },
+                      { value: "sustainability", label: "Sustainability" },
+                      { value: "open innovation", label: "Open Innovation" },
+                      { value: "cloud computing", label: "Cloud Computing" },
+                      { value: "devops", label: "DevOps" },
+                      { value: "agriTech", label: "AgriTech" },
+                      { value: "smart cities", label: "Smart Cities" },
+                      { value: "space tech", label: "Space Tech" },
+                      {
+                        value: "quantum computing",
+                        label: "Quantum Computing",
+                      },
                     ]}
                     className="basic-multi-select mb-4 capitalize"
                     classNamePrefix="select"

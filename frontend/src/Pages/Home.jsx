@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGlobe,
@@ -26,6 +26,7 @@ import meeting from "../assets/meeting.webp";
 import hackathon from "../assets/hackathon.jpg";
 import hackathon2 from "../assets/hackathon2.jpg";
 import chatting from "../assets/chatting.jpg";
+import demo from "../assets/demo-logo.jpg";
 
 export default function home() {
   const [hackathons, setHackathons] = useState([]);
@@ -33,7 +34,10 @@ export default function home() {
   const [imageIndex, setImageIndex] = useState(0);
   const [tagline1, setTagline1] = useState("");
   const [tagline2, setTagline2] = useState("");
+  const [themeCounts, setThemeCounts] = useState({});
   const hasTyped = useRef(false); // Prevents double typing
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -76,54 +80,6 @@ export default function home() {
     typeText1();
   }, []);
 
-  const hackthonData = [
-    {
-      theme: "Beginner Friendly",
-      hackathonNumber: 53,
-      totalPrizes: 1749000,
-    },
-    {
-      theme: "Machine Learning",
-      hackathonNumber: 45,
-      totalPrizes: 1561000,
-    },
-    {
-      theme: "Social Goods ",
-      hackathonNumber: 35,
-      totalPrizes: 749000,
-    },
-    {
-      theme: "Web ",
-      hackathonNumber: 30,
-      totalPrizes: 649000,
-    },
-    {
-      theme: "Education",
-      hackathonNumber: 28,
-      totalPrizes: 499000,
-    },
-    {
-      theme: "Open Ended",
-      hackathonNumber: 25,
-      totalPrizes: 461000,
-    },
-    {
-      theme: "Low/No Code",
-      hackathonNumber: 22,
-      totalPrizes: 349000,
-    },
-    {
-      theme: "IoT ",
-      hackathonNumber: 20,
-      totalPrizes: 259000,
-    },
-    {
-      theme: "Blockchain",
-      hackathonNumber: 17,
-      totalPrizes: 209000,
-    },
-  ];
-
   useEffect(() => {
     const fetchHackathons = async () => {
       try {
@@ -139,6 +95,7 @@ export default function home() {
         );
         const data = await response.json();
         setHackathons(data.hackathons || []);
+        setThemeCounts(data.themeCounts || {});
       } catch (error) {
         console.log("Error while fetching hackathon tournaments", error);
       }
@@ -245,7 +202,7 @@ export default function home() {
           Search Hackathon
         </button>
       </div>
-      <div className="flex ml-[100px] mt-10 gap-16">
+      <div className="flex ml-[100px] mt-10 gap-30">
         <div>
           <h1 className="text-4xl pb-10 font-semibold pl-4">
             Hackathons for you{" "}
@@ -266,7 +223,11 @@ export default function home() {
                     className="relative z-10 mb-4  bg-cover bg-center flex w-[660px] h-full border border-l-8 cursor-pointer border-blue-300"
                   >
                     <div className="flex gap-8 p-6 w-full">
-                      <div className="bg-[url('./src/assets/demo-logo.jpg')] h-24 w-24 bg-cover bg-center"></div>
+                      <img
+                        src={demo}
+                        alt=""
+                        className="h-20 w-20 object-cover"
+                      />
                       <div className="w-[500px]">
                         <h2 className="text-[22px] font-semibold h-[100px]">
                           {hackathon.title}
@@ -328,25 +289,28 @@ export default function home() {
               <tr className=" text-gray-600 ">
                 <th className="w-[280px] py-4 px-6">Theme</th>
                 <th className="w-[160px]">Hackathons</th>
-                <th className="w-[120px]">Prizes</th>
                 <th className="w-[40px]"></th>
               </tr>
             </thead>
             <tbody>
-              {hackthonData.map((data, index) => {
-                return (
-                  <tr key={index} className="hover:bg-blue-50 cursor-pointer">
-                    <td className="p-4 ">
-                      <span className="bg-orange-200 rounded-2xl py-2 px-6">
-                        {data.theme}
+              {Object.entries(themeCounts)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 11)
+                .map(([theme, hackathonNumber], index) => (
+                  <tr
+                    key={index}
+                    className="hover:bg-blue-50 cursor-pointer"
+                    onClick={() => navigate(`/join/hackathon?theme=${theme}`)}
+                  >
+                    <td className="p-4">
+                      <span className="bg-orange-200 rounded-2xl py-2 px-6 capitalize">
+                        {theme}
                       </span>
                     </td>
-                    <td className="text-lg">{data.hackathonNumber}</td>
-                    <td className="text-lg">{data.totalPrizes}</td>
-                    <td className="text-lg font-semibold ">&rarr;</td>
+                    <td className="text-lg">{hackathonNumber}</td>
+                    <td className="text-lg font-semibold">&rarr;</td>
                   </tr>
-                );
-              })}
+                ))}
             </tbody>
           </table>
         </div>

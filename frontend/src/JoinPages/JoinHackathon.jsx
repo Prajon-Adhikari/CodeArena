@@ -9,27 +9,19 @@ import {
   faFlag,
   faCalendar,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import demo from "../assets/demo-logo.jpg";
 
 const JoinHackathon = () => {
+    const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const preSelectedTheme = queryParams.get("theme");
   const [hackathons, setHackathons] = useState([]);
   const [filters, setFilters] = useState({
     mode: [],
     theme: [],
   });
   const [sortBy, setSortBy] = useState("recent");
-
-  const hackthonData = [
-    { theme: "IoT", hackathonNumber: 53, totalPrizes: 1749000 },
-    { theme: "Machine Learning", hackathonNumber: 45, totalPrizes: 1561000 },
-    { theme: "Social Goods ", hackathonNumber: 35, totalPrizes: 749000 },
-    { theme: "Web ", hackathonNumber: 30, totalPrizes: 649000 },
-    { theme: "Education", hackathonNumber: 28, totalPrizes: 499000 },
-    { theme: "Open Ended", hackathonNumber: 25, totalPrizes: 461000 },
-    { theme: "Low/No Code", hackathonNumber: 22, totalPrizes: 349000 },
-    { theme: "IoT ", hackathonNumber: 20, totalPrizes: 259000 },
-    { theme: "Blockchain", hackathonNumber: 17, totalPrizes: 209000 },
-  ];
 
   useEffect(() => {
     const fetchHackathons = async () => {
@@ -46,12 +38,19 @@ const JoinHackathon = () => {
         );
         const data = await response.json();
         setHackathons(data.hackathons);
+
+        if (preSelectedTheme) {
+        setFilters((prev) => ({
+          ...prev,
+          theme: [preSelectedTheme],
+        }));
+      }
       } catch (error) {
         console.log("Error while fetching hackathons on join page", error);
       }
     };
     fetchHackathons();
-  }, []);
+  }, [preSelectedTheme]);
 
   const handleCheckboxChange = (category, value) => {
     setFilters((prevFilters) => {
@@ -100,9 +99,6 @@ const JoinHackathon = () => {
       return (
         new Date(a.registrationDeadline) - new Date(b.registrationDeadline)
       );
-    }
-    if (sortBy === "prize") {
-      return (a.totalPrizes || 0) - (b.totalPrizes || 0);
     }
   });
 
@@ -180,7 +176,10 @@ const JoinHackathon = () => {
                   checked={filters.theme.includes(theme)}
                   onChange={() => handleCheckboxChange("theme", theme)}
                 />{" "}
-                <label className="pl-2 capitalize cursor-pointer" htmlFor={theme}>
+                <label
+                  className="pl-2 capitalize cursor-pointer"
+                  htmlFor={theme}
+                >
                   {theme}
                 </label>
               </div>
@@ -212,14 +211,6 @@ const JoinHackathon = () => {
                 >
                   Submission Date
                 </li>
-                <li
-                  className={`cursor-pointer ${
-                    sortBy === "prize" ? "text-blue-300" : ""
-                  }`}
-                  onClick={() => setSortBy("prize")}
-                >
-                  Prize amount
-                </li>
               </div>
             </div>
           </div>
@@ -235,7 +226,11 @@ const JoinHackathon = () => {
                       className="relative z-10 mb-4  bg-cover bg-center flex w-[990px] h-full border border-l-8 cursor-pointer border-blue-300"
                     >
                       <div className="flex gap-8 p-6 w-full">
-                        <div className="bg-[url('./src/assets/demo-logo.jpg')] h-24 w-24 bg-cover bg-center"></div>
+                        <img
+                          src={demo}
+                          alt=""
+                          className="h-20 w-20 object-cover"
+                        />{" "}
                         <div className="w-[500px]">
                           <h2 className="text-[22px] font-semibold h-[100px]">
                             {hackathon.title}
@@ -293,8 +288,10 @@ const JoinHackathon = () => {
                             className="text-slate-700 text-xl"
                           />
                           <span>
-                            {new Date(hackathon.registrationStart).toLocaleDateString()} -{" "}
-                            {new Date(hackathon.endDate).toLocaleDateString()}
+                            {new Date(
+                              hackathon.registrationStart
+                            ).toLocaleDateString()}{" "}
+                            - {new Date(hackathon.endDate).toLocaleDateString()}
                           </span>
                         </div>
                         <div className="flex justify-start gap-5 text-sm">

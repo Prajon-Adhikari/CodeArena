@@ -79,10 +79,23 @@ export const getHackathonTournament = async (req, res) => {
 export const getTopHackathon = async (req, res) => {
   try {
     const hackathons = await Hackathon.find().limit(3);
+
+    const allHackathons = await Hackathon.find();
+
+    const themeCounts = {};
+    allHackathons.forEach((h) => {
+      if (Array.isArray(h.themes)) {
+        h.themes.forEach((theme) => {
+          themeCounts[theme] = (themeCounts[theme] || 0) + 1;
+        });
+      }
+    });
+
     res.status(200).json({
       message: "Successfully fetched hackathon tournaments",
       hackathons,
       user: req.user,
+      themeCounts,
     });
   } catch (error) {
     console.log("Error on fetching hackathon tournaments", error);
