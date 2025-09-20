@@ -141,3 +141,23 @@ export const fetchHosterForAdmin = async (req, res) => {
       .json({ message: "Internal error while fetching hoster data for admin" });
   }
 };
+
+export const fetchParticipantsForAdmin = async(req,res) =>{
+  try {
+    const participants = await JoinedHackathon.find()
+      .populate("userId", "fullName email profilePic location work") // only needed user fields
+      .populate("hackathonId", "title description organizerName themes") // only needed hackathon fields
+      .lean();
+
+    return res.status(200).json({
+      success: true,
+      message: "Fetching participants data for admin",
+      participants,
+    });
+  } catch (error) {
+     console.log("Internal error while fetching particiapants data for admin", error);
+    return res
+      .status(500)
+      .json({ message: "Internal error while fetching participants data for admin" });
+  }
+}

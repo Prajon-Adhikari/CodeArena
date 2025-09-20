@@ -28,6 +28,11 @@ export default function Users() {
             `${import.meta.env.VITE_API_BASE_URL}/menu/hosters`
           );
           setData(data.hosters); // backend sends hackathons with organizer populated
+        } else if (type === "participants") {
+          const { data } = await axios.get(
+            `${import.meta.env.VITE_API_BASE_URL}/menu/participants`
+          );
+          setData(data.participants); // backend returns populated participants
         }
       } catch (error) {
         console.error(`Error fetching ${type}:`, error);
@@ -56,6 +61,15 @@ export default function Users() {
           .includes(searchTerm.toLowerCase()) ||
         item.title?.toLowerCase().includes(searchTerm.toLowerCase())
       );
+    } else if (type === "participants") {
+      return (
+        item.userId?.fullName
+          ?.toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        item.hackathonId?.title
+          ?.toLowerCase()
+          .includes(searchTerm.toLowerCase())
+      );
     }
     return false;
   });
@@ -69,19 +83,30 @@ export default function Users() {
         <div className="flex justify-between mr-20 items-center">
           <div>
             <div className="font-bold text-2xl">
-              {type === "users" ? "Users Details" : "Judges Details"}
+              {type === "users"
+                ? "Users Details"
+                : type === "judges"
+                ? "Judges Details"
+                : type === "hoster"
+                ? "Hosters Details"
+                : "Participants Details"}
             </div>
+
             <div className="text-sm text-gray-600">
               {type === "users"
                 ? "All users who have accounts"
-                : "All judges who are part of hackathons"}
+                : type === "judges"
+                ? "All judges who are part of hackathons"
+                : type === "hoster"
+                ? "All hosters who organized hackathons"
+                : "All participants registered for hackathons"}
             </div>
           </div>
           <div className=" flex items-center gap-8">
-            <div className="border-blue-200 border-2 bg-white px-5 py-2 rounded-md flex items-center gap-4 focus-within:ring-1 focus-within:ring-blue-200">
+            <div className="border-gray-300 border-2 bg-white px-5 py-2 rounded-md flex items-center gap-4 focus-within:ring-1 focus-within:ring-blue-200">
               <FontAwesomeIcon
                 icon={faMagnifyingGlass}
-                className="text-sm text-blue-400"
+                className="text-sm text-gray-400"
               />
               <input
                 type="text"
@@ -95,7 +120,7 @@ export default function Users() {
               <select
                 value={type}
                 onChange={(e) => setType(e.target.value)}
-                className="border-2 border-gray-400 rounded-md px-4 py-2 bg-white text-gray-700 text-sm font-medium transition duration-150"
+                className="border-2 border-gray-300 rounded-md px-4 py-2 bg-white text-gray-700 text-sm font-medium transition duration-150"
               >
                 <option value="users">Users</option>
                 <option value="judges">Judges</option>
@@ -140,14 +165,23 @@ export default function Users() {
                     <th className="px-4 py-3 text-left">Role</th>
                     <th className="px-4 py-3 text-left">Bio</th>
                   </>
-                ) : (
-                  // hosters
+                ) : type === "hoster" ? (
                   <>
                     <th className="px-4 py-3 text-left">Hoster Name</th>
                     <th className="px-4 py-3 text-left">Contact Email</th>
                     <th className="px-4 py-3 text-left">Hackathon Title</th>
                     <th className="px-4 py-3 text-left">Organization Name</th>
                     <th className="px-4 py-3 text-left">Work</th>
+                  </>
+                ) : (
+                  // participants
+                  <>
+                    <th className="px-4 py-3 text-left">Participant Name</th>
+                    <th className="px-4 py-3 text-left">Email</th>
+                    <th className="px-4 py-3 text-left">Team Name</th>
+                    <th className="px-4 py-3 text-left">Hackathon Title</th>
+                    <th className="px-4 py-3 text-left">Joined At</th>
+                    <th className="px-4 py-3 text-left">Referer</th>
                   </>
                 )}
               </tr>
@@ -222,8 +256,7 @@ export default function Users() {
                       <td className="px-4 py-3">{item.role}</td>
                       <td className="px-4 py-3">{item.bio}</td>
                     </>
-                  ) : (
-                    // hosters rendering
+                  ) : type === "hoster" ? (
                     <>
                       <td className="px-4 py-3 flex items-center gap-4">
                         {item.organizerId?.profilePic ? (
@@ -244,7 +277,40 @@ export default function Users() {
                       <td className="px-4 py-3">{item.contactEmail}</td>
                       <td className="px-4 py-3">{item.title}</td>
                       <td className="px-4 py-3">{item.organizerName}</td>
-                      <td className="px-4 py-3">{item.organizerId?.work ? `${item.organizerId.work}` :"-"}</td>
+                      <td className="px-4 py-3">
+                        {item.organizerId?.work ? item.organizerId.work : "-"}
+                      </td>
+                    </>
+                  ) : (
+                    // participants rendering
+                    <>
+                      <td className="px-4 py-3 flex items-center gap-4">
+                        {item.userId?.profilePic ? (
+                          <img
+                            src={item.userId.profilePic}
+                            alt={item.userId.fullName}
+                            className="w-8 h-8 rounded-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-8 h-8 rounded-full bg-pink-400 text-white flex items-center justify-center font-semibold">
+                            {item.userId?.fullName
+                              ? item.userId.fullName[0].toUpperCase()
+                              : "?"}
+                          </div>
+                        )}
+                        <span>{item.userId?.fullName || "Unknown"}</span>
+                      </td>
+                      <td className="px-4 py-3">{item.userId?.email || "-"}</td>
+                      <td className="px-4 py-3">{item.teamName || "-"}</td>
+                      <td className="px-4 py-3">
+                        {item.hackathonId?.title || "-"}
+                      </td>
+                      <td className="px-4 py-3">
+                        {item.createdAt
+                          ? new Date(item.createdAt).toLocaleDateString()
+                          : "-"}
+                      </td>
+                      <td className="px-4 py-3">{item.referer || "-"}</td>
                     </>
                   )}
                 </tr>

@@ -60,7 +60,7 @@ export default function Menu() {
           </Link>
         </div>
       </div>
-      <div className="ml-[320px] flex-1 h-screen overflow-y-auto">
+      <div className="ml-[300px] flex-1 h-screen overflow-y-auto">
         <Outlet />
       </div>
     </div>
