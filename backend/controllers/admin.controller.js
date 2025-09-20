@@ -231,9 +231,39 @@ export const getOverviewDetailsForAdmin = async (req, res) => {
     if (!hackathon) {
       return res.status(404).json({ message: "Hackathon not found" });
     }
+
+    const participants = await JoinedHackathon.find({ hackathonId: id });
+
+     const submittedProjects = await SubmittedProject.find({ hackathonId: id })
+            .populate("tags", "fullName email") // tags = team members
+            .lean();
+    
+          // Get all joined records for this hackathon in one query
+          const joinedRecords = await JoinedHackathon.find({
+            hackathonId: id,
+          }).lean();
+    
+          // Create a map: userId -> teamName
+          const teamMap = {};
+          joinedRecords.forEach((record) => {
+            teamMap[record.userId.toString()] = record.teamName;
+          });
+    
+          // Attach teamName to each project
+          submittedProjects.forEach((project) => {
+            const teamMemberIds =
+              project.tags?.map((tag) => tag._id.toString()) || [];
+            const teamNames = teamMemberIds
+              .map((uid) => teamMap[uid])
+              .filter(Boolean);
+            project.teamName = teamNames.length > 0 ? teamNames[0] : "N/A";
+          });
+
     return res.status(200).json({
       message: "Hackthon details fetched successfully",
       hackathon,
+      participants,
+      submittedProjects
     });
   } catch (error) {
     console.log(
