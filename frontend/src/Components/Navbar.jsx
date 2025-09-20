@@ -4,6 +4,7 @@ import { Menu, X } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faBell } from "@fortawesome/free-solid-svg-icons";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
+import logo from "../assets/logo2.png";
 
 const Navbar = () => {
   const { pathname } = useLocation();
@@ -241,7 +242,7 @@ const Navbar = () => {
         {/* Left Side: Logo + Links */}
         <div className="flex items-center gap-14">
           <Link to="/" className="text-2xl font-bold logo">
-            CodeArena
+            <img src={logo} alt="" className="w-[200px] h-[40px] object-cover"/>
           </Link>
         </div>
 
