@@ -13,7 +13,7 @@ import { Link, useLocation } from "react-router-dom";
 import demo from "../assets/demo-logo.jpg";
 
 const JoinHackathon = () => {
-    const location = useLocation();
+  const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const preSelectedTheme = queryParams.get("theme");
   const [hackathons, setHackathons] = useState([]);
@@ -22,6 +22,7 @@ const JoinHackathon = () => {
     theme: [],
   });
   const [sortBy, setSortBy] = useState("recent");
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchHackathons = async () => {
@@ -40,11 +41,11 @@ const JoinHackathon = () => {
         setHackathons(data.hackathons);
 
         if (preSelectedTheme) {
-        setFilters((prev) => ({
-          ...prev,
-          theme: [preSelectedTheme],
-        }));
-      }
+          setFilters((prev) => ({
+            ...prev,
+            theme: [preSelectedTheme],
+          }));
+        }
       } catch (error) {
         console.log("Error while fetching hackathons on join page", error);
       }
@@ -91,6 +92,15 @@ const JoinHackathon = () => {
     ) {
       return false;
     }
+
+    if (
+      searchTerm &&
+      !hackathon.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      !hackathon.organizerName?.toLowerCase().includes(searchTerm.toLowerCase())
+    ) {
+      return false;
+    }
+
     return true;
   });
 
@@ -100,6 +110,10 @@ const JoinHackathon = () => {
         new Date(a.registrationDeadline) - new Date(b.registrationDeadline)
       );
     }
+    if (sortBy === "recent") {
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    }
+    return 0;
   });
 
   return (
@@ -120,6 +134,8 @@ const JoinHackathon = () => {
           <input
             type="text"
             placeholder="Serach for your dream hackathon"
+            value={searchTerm} // bind state
+            onChange={(e) => setSearchTerm(e.target.value)}
             className=" w-[640px] text-xl outline-none"
           />
         </div>
