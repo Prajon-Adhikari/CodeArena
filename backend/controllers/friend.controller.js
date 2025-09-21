@@ -19,13 +19,14 @@ export const fetchFriends = async (req, res) => {
 
     // Fetch full user info
     const friendUsers = await User.find({ _id: { $in: friendIds } }).select(
-      "fullName email"
+      "fullName email profilePic"
     );
 
     // Format for react-select
     const formatted = friendUsers.map((friend) => ({
       value: friend._id,
       label: friend.fullName,
+      profilePic: friend.profilePic,
     }));
 
     return res

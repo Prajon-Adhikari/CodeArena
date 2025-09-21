@@ -34,31 +34,30 @@ const SearchProfile = () => {
   const portfolioModal = location.pathname === "/profile/portfolio";
 
   const fetchPortfolioProjects = async () => {
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/home/${id}/profile`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-          }
-        );
-        const data = await response.json();
-        setPortfolioProjects(data.portfolioProjects);
-        setProfileData(data.user);
-        setFriendRequest(data.friendRequest);
-        setFriends(data.friends);
-        setIsFriend(data.isFriend);
-        setLoading(false);
-      } catch (error) {
-        console.log("Error while fetching portfolio projects", error);
-      }
-    };
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/home/${id}/profile`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
+      const data = await response.json();
+      setPortfolioProjects(data.portfolioProjects);
+      setProfileData(data.user);
+      setFriendRequest(data.friendRequest);
+      setFriends(data.friends);
+      setIsFriend(data.isFriend);
+      setLoading(false);
+    } catch (error) {
+      console.log("Error while fetching portfolio projects", error);
+    }
+  };
 
   useEffect(() => {
-    
     fetchPortfolioProjects();
   }, [id]);
 
@@ -94,7 +93,6 @@ const SearchProfile = () => {
     return <div className="text-center mt-10 text-gray-500">Loading...</div>;
   }
 
-  const dummySkills = ["React", "JavaScript", "Node.js", "MongoDB", "Express"];
   const dummyVerifications = ["Email", "Phone", "Identity"];
 
   return (
@@ -106,7 +104,7 @@ const SearchProfile = () => {
               <img
                 src={profileData?.profilePic}
                 alt="avatar"
-                className="w-40 h-40 rounded-full border-4 border-white"
+                className="w-40 h-40 rounded-full object-cover border-4 border-white"
               />
             ) : (
               <div className="w-40 h-40 rounded-full border-4 flex items-center justify-center bg-indigo-900 text-white text-6xl">
@@ -120,11 +118,11 @@ const SearchProfile = () => {
               </h2>
               <p className="text-gray-500 pb-2 text-sm">
                 <FontAwesomeIcon icon={faBriefcase} className="pr-3" />
-                Manager at Google
+                {profileData?.work || "--"}
               </p>
               <p className="text-gray-500 text-sm">
                 <FontAwesomeIcon icon={faLocationDot} className="pr-3" />
-                London, United Kingdom
+                {profileData?.country || "--"}, {profileData?.city || "--"}
               </p>
               <div className="text-gray-500 pl-[1px] font-semibold mt-4">
                 <span className="pr-2">{friends.length}</span>
@@ -186,14 +184,18 @@ const SearchProfile = () => {
         <div className="col-span-1 bg-white py-6 px-8 rounded-2xl">
           <h3 className="text-lg font-semibold mb-4">Skills</h3>
           <div className="flex flex-wrap gap-2">
-            {dummySkills.map((skill, i) => (
-              <span
-                key={i}
-                className="bg-gray-200 px-3 py-1 rounded-full text-sm"
-              >
-                {skill}
-              </span>
-            ))}
+            {profileData?.skills && profileData.skills.length > 0 ? (
+              profileData.skills.map((skill, i) => (
+                <span
+                  key={i}
+                  className="bg-gray-200 px-3 py-1 rounded-full text-sm capitalize"
+                >
+                  {skill}
+                </span>
+              ))
+            ) : (
+              <span className="text-gray-500">--</span>
+            )}
           </div>
 
           {/* Links */}
@@ -272,29 +274,21 @@ const SearchProfile = () => {
             <div className="grid grid-cols-2 gap-y-10 pl-2">
               <div>
                 <p className="font-bold text-lg">Country:</p>
-                <p className="">United Kingdom</p>
+                <p className="">{profileData?.country || "--"}</p>
               </div>
               <div>
                 <p className="font-bold text-lg">City:</p>
-                <p className="">London</p>
+                <p className="">{profileData?.city || "--"}</p>
               </div>
               <div>
                 <p className="font-bold text-lg">Street:</p>
-                <p className="">5th Street</p>
+                <p className="">{profileData?.street || "--"}</p>
               </div>
             </div>
           </div>
           <div className="py-6">
             <h3 className="text-2xl font-semibold mb-3 pl-1">About</h3>
-            <p className="pr-10 pl-1">
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deserunt
-              excepturi velit sint nemo harum a accusamus tempore nisi? Laborum
-              culpa asperiores adipisci maiores ut quas alias neque, corrupti
-              accusamus non? Lorem ipsum dolor sit, amet consectetur adipisicing
-              elit. Deserunt excepturi velit sint nemo harum a accusamus tempore
-              nisi? Laborum culpa asperiores adipisci maiores ut quas alias
-              neque, corrupti accusamus non?
-            </p>
+            <p className="pr-10 pl-1">{profileData?.about || "--"}</p>
           </div>
         </div>
       </div>

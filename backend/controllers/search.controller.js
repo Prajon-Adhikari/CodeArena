@@ -11,7 +11,7 @@ export const getSearchData = async (req, res) =>{
     // search users by fullName
     const users = await User.find(
       { fullName: { $regex: query, $options: "i" } }, 
-      "_id fullName username" // only send needed fields
+      "_id fullName username profilePic" // only send needed fields
     ).limit(5);
 
     // search hackathons by title

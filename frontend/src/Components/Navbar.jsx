@@ -4,7 +4,7 @@ import { Menu, X } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faBell } from "@fortawesome/free-solid-svg-icons";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
-import logo from "../assets/logo2.png";
+import logo from "../assets/logo5.png";
 
 const Navbar = () => {
   const { pathname } = useLocation();
@@ -238,11 +238,15 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white shadow text-gray-800 fixed left-0 right-0 top-0 z-50">
-      <div className=" mx-[60px] px-4 md:px-8 py-2 flex items-center justify-between">
+      <div className=" mx-[30px] mr-[50px] py-5 px-4 md:px-8 flex items-center justify-between">
         {/* Left Side: Logo + Links */}
         <div className="flex items-center gap-14">
           <Link to="/" className="text-2xl font-bold logo">
-            <img src={logo} alt="" className="w-[200px] h-[60px] object-cover"/>
+            <img
+              src={logo}
+              alt=""
+              className="w-[200px] h-[40px] object-cover"
+            />
           </Link>
         </div>
 
@@ -433,7 +437,15 @@ const Navbar = () => {
                   onClick={() => setShowProfileMenu(!showProfileMenu)}
                   className="w-[40px] h-[40px] rounded-full bg-indigo-900 text-white flex items-center justify-center font-bold cursor-pointer"
                 >
-                  {user.fullName.charAt(0).toUpperCase()}
+                  {user?.profilePic ? (
+                    <img
+                      src={user.profilePic}
+                      alt="Profile"
+                      className="w-full h-full object-cover rounded-full"
+                    />
+                  ) : (
+                    user.fullName.charAt(0).toUpperCase()
+                  )}
                 </div>
 
                 {showProfileMenu && (

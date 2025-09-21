@@ -170,7 +170,7 @@ const Profile = () => {
       if (formData.city) form.append("city", formData.city);
       if (formData.street) form.append("street", formData.street);
       if (formData.skills) form.append("skills", formData.skills.join(","));
-      if (formData.profilePic) form.append("profilePic", formData.profilePic);
+      if (formData.profilePic) form.append("image", formData.profilePic);
 
       const res = await axios.put(
         `${import.meta.env.VITE_API_BASE_URL}/home/users`,
@@ -204,7 +204,7 @@ const Profile = () => {
               <img
                 src={profileData?.profilePic}
                 alt="avatar"
-                className="w-40 h-40 rounded-full border-4 border-white"
+                className="w-40 h-40 rounded-full object-cover border-4 border-white"
               />
             ) : (
               <div className="w-40 h-40 rounded-full border-4 flex items-center justify-center bg-indigo-900 text-white text-6xl">

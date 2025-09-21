@@ -103,11 +103,9 @@ export const forgotpassword = async (req, res) => {
       return res.status(400).json({ message: "User not found" });
     }
 
-    const token = jwt.sign(
-      { email: checkUser.email },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
-    );
+    const token = jwt.sign({ email: checkUser.email }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -137,7 +135,6 @@ export const forgotpassword = async (req, res) => {
   }
 };
 
-
 ///// Reset Password
 export const resetPassword = async (req, res) => {
   try {
@@ -148,7 +145,9 @@ export const resetPassword = async (req, res) => {
       return res.status(400).send({ message: "Password is required" });
 
     if (password.length < 6)
-      return res.status(400).send({ message: "Password must be at least 6 characters long" });
+      return res
+        .status(400)
+        .send({ message: "Password must be at least 6 characters long" });
 
     let decoded;
     try {
@@ -165,7 +164,9 @@ export const resetPassword = async (req, res) => {
 
     const isSame = await bcrypt.compare(password, user.password);
     if (isSame) {
-      return res.status(400).send({ message: "New password must be different from the old one" });
+      return res
+        .status(400)
+        .send({ message: "New password must be different from the old one" });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -178,7 +179,6 @@ export const resetPassword = async (req, res) => {
     return res.status(500).send({ message: "Something went wrong" });
   }
 };
-
 
 export const getAllUsers = async (req, res) => {
   try {
@@ -202,8 +202,7 @@ export const logout = (req, res) => {
 // Update User
 export const updateUser = async (req, res) => {
   try {
-    const userId  = req.user._id;
-    console.log(req.body);
+    const userId = req.user._id;
     const {
       fullName,
       email,
@@ -216,14 +215,11 @@ export const updateUser = async (req, res) => {
       profilePic,
     } = req.body;
 
-    console.log("hello");
-
     // Find user by ID
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ message: "User not found" });
 
     if (fullName) user.fullName = fullName;
-
 
     // Check if updating email
     if (email && email !== user.email) {
@@ -235,14 +231,18 @@ export const updateUser = async (req, res) => {
     }
 
     // Update other fields if provided
-      if (work) user.work = work;
+    if (work) user.work = work;
     if (country) user.country = country;
     if (city) user.city = city;
     if (street) user.street = street;
     if (about) user.about = about;
-    if (skills) user.skills = Array.isArray(skills) ? skills : skills.split(","); // Accept comma-separated string
-    if (profilePic) user.profilePic = profilePic;
-
+    if (skills)
+      user.skills = Array.isArray(skills) ? skills : skills.split(","); // Accept comma-separated string
+    if (req.file && req.file.path) {
+      user.profilePic = req.file.path;
+    } else if (profilePic) {
+      user.profilePic = profilePic; // in case you’re sending URL directly
+    }
     await user.save();
 
     return res.status(200).json({
