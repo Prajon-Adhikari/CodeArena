@@ -12,16 +12,18 @@ import { ToastContainer, toast } from "react-toastify";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import Select from "react-select";
+import "react-calendar/dist/Calendar.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import ReactApexChart from "react-apexcharts";
 
 const localizer = momentLocalizer(moment);
 
 export default function Overview() {
+  const [date, setDate] = useState(new Date());
   const { id } = useParams();
   const location = useLocation();
   const [hackathon, setHackathon] = useState({});
-  const [teamStatus, setTeamStatus] = useState("");
+  const [teamStatus, setTeamStatus] = useState("team");
   const [referer, setReferer] = useState("");
   const [teamName, setTeamName] = useState("");
   const [isRegistered, setIsRegistered] = useState(false);
@@ -224,19 +226,6 @@ export default function Overview() {
                 )}
               </div>
               <p className="text-[21px] pt-8">{hackathon.description}</p>
-              <div>
-                <h2 className="mt-10 font-semibold text-2xl mb-2">Themes</h2>
-                <span>
-                  {(hackathon.themes || []).map((theme, index) => (
-                    <div
-                      key={index}
-                      className="bg-orange-200 text-lg capitalize mb-1 mr-2 rounded-lg inline-block px-4 py-1"
-                    >
-                      {theme}
-                    </div>
-                  ))}
-                </span>
-              </div>
             </div>
             <div>
               <div className="bg-[#F8F8F8] border-1 border-gray-400 p-6  w-[400px] rounded-lg">
@@ -332,110 +321,137 @@ export default function Overview() {
             Time Schedule
           </div>
 
-          {events.length > 0 && (
-            <div style={{ height: "700px" }} className="px-[140px]">
-              <Calendar
-                localizer={localizer}
-                events={events}
-                startAccessor="start"
-                endAccessor="end"
-                views={["month"]}
-                defaultView="month"
-                date={currentDate || new Date()}
-                onNavigate={(date) => setCurrentDate(date)}
-                style={{
-                  borderRadius: "12px",
-                  boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-                }}
-                eventPropGetter={(event) => {
-                  let backgroundColor = "";
-                  let textColor = "black";
+          <div className="px-[140px] flex gap-20">
+            <div>
+              {events.length > 0 && (
+                <div style={{ height: "500px", width: "750px" }}>
+                  <Calendar
+                    localizer={localizer}
+                    events={events}
+                    startAccessor="start"
+                    endAccessor="end"
+                    views={["month"]}
+                    defaultView="month"
+                    date={currentDate || new Date()}
+                    onNavigate={(date) => setCurrentDate(date)}
+                    style={{
+                      borderRadius: "16px",
+                      boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+                    }}
+                    eventPropGetter={(event) => {
+                      let backgroundColor = "";
+                      let textColor = "grey";
 
-                  if (event.title === "Registration Period") {
-                    backgroundColor = "#BBDCE5";
-                  } else if (event.title === "Submission Period") {
-                    backgroundColor = "#DFCCFB";
-                  } else {
-                    backgroundColor = "#F59E0B";
-                  }
+                      if (event.title === "Registration Period") {
+                        backgroundColor = "#BBDCE5";
+                      } else if (event.title === "Submission Period") {
+                        backgroundColor = "#DFCCFB";
+                      } else {
+                        backgroundColor = "#F59E0B";
+                      }
 
-                  return {
-                    style: {
-                      backgroundColor,
-                      color: textColor,
-                      padding: "25px",
-                      textAlign: "center",
-                      fontWeight: "bold",
-                      borderRadius: "6px",
-                    },
-                  };
-                }}
-              />
+                      return {
+                        style: {
+                          backgroundColor,
+                          color: textColor,
+                          padding: "4px",
+                          textAlign: "center",
+                          fontWeight: "bold",
+                          borderRadius: "6px",
+                        },
+                      };
+                    }}
+                  />
+                </div>
+              )}
             </div>
-          )}
+            <div>
+              <h2 className="mt-5 font-semibold text-2xl mb-2">Themes</h2>
+              <span>
+                {(hackathon.themes || []).map((theme, index) => (
+                  <div
+                    key={index}
+                    className="bg-orange-200 text-lg capitalize mb-1 mr-2 rounded-lg inline-block px-4 py-1"
+                  >
+                    {theme}
+                  </div>
+                ))}
+              </span>
+              <div>
+                <h2 className="mt-10 font-semibold text-2xl mb-2">
+                  Contact Email
+                </h2>
+                <p className="hover:underline cursor-pointer">
+                  {hackathon.contactEmail}
+                </p>
+              </div>
+            </div>
+          </div>
 
           <div className="px-[140px] mt-16 flex justify-between">
             {submittedProjects.length > 0 && (
-            <div className="shadow-[0px_0px_5px_gray] rounded-lg py-6 px-2">
-              <h2 className="text-xl font-bold mb-4 px-6">
-                Project Members Count
-              </h2>
-              <ReactApexChart
-                options={{
-                  chart: {
-                    type: "bar",
-                    height: 350,
-                  },
-                  plotOptions: {
-                    bar: {
-                      horizontal: true,
-                      borderRadius: 6,
+              <div className="shadow-[0px_0px_5px_gray] rounded-lg py-6 px-2">
+                <h2 className="text-xl font-bold mb-4 px-6">
+                  Project Members Count
+                </h2>
+                <ReactApexChart
+                  options={{
+                    chart: {
+                      type: "bar",
+                      height: 350,
                     },
-                  },
-                  dataLabels: {
-                    enabled: true,
-                    formatter: (val) => `${val} members`,
-                  },
-                  xaxis: {
-                    categories: projectLabels,
-                  },
-                }}
-                series={[
-                  {
-                    name: "Members",
-                    data: projectMembersCount,
-                  },
-                ]}
-                type="bar"
-                height={200}
-                width={840}
-              />
-            </div>
-            )}
-            {participants.length > 0 && (
-            <div className="shadow-[0px_0px_5px_gray] py-6 px-2 rounded-lg">
-              <h1 className="text-xl font-bold mb-4 px-6">Source of Visits</h1>
-              <ReactApexChart
-                options={{
-                  chart: { type: "pie" },
-                  labels: chartLabels.map(
-                    (label) => label.charAt(0).toUpperCase() + label.slice(1)
-                  ), // Capitalize
-                  responsive: [
-                    {
-                      breakpoint: 480,
-                      options: {
-                        chart: { width: 200 },
-                        legend: { position: "bottom" },
+                    plotOptions: {
+                      bar: {
+                        horizontal: true,
+                        borderRadius: 6,
                       },
                     },
-                  ],
-                }}
-                series={chartSeries}
-                type="pie"
-                width={340}
-              />
-            </div>
+                    dataLabels: {
+                      enabled: true,
+                      formatter: (val) => `${val} members`,
+                    },
+                    xaxis: {
+                      categories: projectLabels,
+                    },
+                  }}
+                  series={[
+                    {
+                      name: "Members",
+                      data: projectMembersCount,
+                    },
+                  ]}
+                  type="bar"
+                  height={200}
+                  width={840}
+                />
+              </div>
+            )}
+            {participants.length > 0 && (
+              <div className="shadow-[0px_0px_5px_gray] py-6 px-2 rounded-lg">
+                <h1 className="text-xl font-bold mb-4 px-6">
+                  Source of Visits
+                </h1>
+                <ReactApexChart
+                  options={{
+                    chart: { type: "pie" },
+                    labels: chartLabels.map(
+                      (label) => label.charAt(0).toUpperCase() + label.slice(1)
+                    ), // Capitalize
+                    responsive: [
+                      {
+                        breakpoint: 480,
+                        options: {
+                          chart: { width: 200 },
+                          legend: { position: "bottom" },
+                        },
+                      },
+                    ],
+                  }}
+                  series={chartSeries}
+                  type="pie"
+                  width={340}
+                />
+              </div>
             )}
           </div>
           <div className="px-[140px] mt-16">
@@ -788,19 +804,6 @@ export default function Overview() {
                   )}
                 </>
               )}
-              <div>
-                <h2 className="mt-5 font-semibold text-2xl mb-2">Themes</h2>
-                <span>
-                  {(hackathon.themes || []).map((theme, index) => (
-                    <div
-                      key={index}
-                      className="bg-orange-200 text-lg capitalize mb-1 mr-2 rounded-lg inline-block px-4 py-1"
-                    >
-                      {theme}
-                    </div>
-                  ))}
-                </span>
-              </div>
             </div>
             <div>
               <div className="bg-[#F8F8F8] border-1 border-gray-400 p-6  w-[400px] rounded-lg">
@@ -896,48 +899,72 @@ export default function Overview() {
             Time Schedule
           </div>
 
-          {events.length > 0 && (
-            <div style={{ height: "700px" }} className="px-[140px]">
-              <Calendar
-                localizer={localizer}
-                events={events}
-                startAccessor="start"
-                endAccessor="end"
-                views={["month"]}
-                defaultView="month"
-                date={currentDate || new Date()}
-                onNavigate={(date) => setCurrentDate(date)}
-                style={{
-                  borderRadius: "12px",
-                  boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-                }}
-                eventPropGetter={(event) => {
-                  let backgroundColor = "";
-                  let textColor = "black";
+          <div className="px-[140px] flex gap-30">
+            <div>
+              {events.length > 0 && (
+                <div style={{ height: "500px", width: "750px" }}>
+                  <Calendar
+                    localizer={localizer}
+                    events={events}
+                    startAccessor="start"
+                    endAccessor="end"
+                    views={["month"]}
+                    defaultView="month"
+                    date={currentDate || new Date()}
+                    onNavigate={(date) => setCurrentDate(date)}
+                    style={{
+                      borderRadius: "16px",
+                      boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+                    }}
+                    eventPropGetter={(event) => {
+                      let backgroundColor = "";
+                      let textColor = "grey";
 
-                  if (event.title === "Registration Period") {
-                    backgroundColor = "#BBDCE5";
-                  } else if (event.title === "Submission Period") {
-                    backgroundColor = "#DFCCFB";
-                  } else {
-                    backgroundColor = "#F59E0B";
-                  }
+                      if (event.title === "Registration Period") {
+                        backgroundColor = "#BBDCE5";
+                      } else if (event.title === "Submission Period") {
+                        backgroundColor = "#DFCCFB";
+                      } else {
+                        backgroundColor = "#F59E0B";
+                      }
 
-                  return {
-                    style: {
-                      backgroundColor,
-                      color: textColor,
-                      padding: "25px",
-                      textAlign: "center",
-                      fontWeight: "bold",
-                      borderRadius: "6px",
-                    },
-                  };
-                }}
-              />
+                      return {
+                        style: {
+                          backgroundColor,
+                          color: textColor,
+                          padding: "4px",
+                          textAlign: "center",
+                          fontWeight: "bold",
+                          borderRadius: "6px",
+                        },
+                      };
+                    }}
+                  />
+                </div>
+              )}
             </div>
-          )}
-
+            <div>
+              <h2 className="mt-5 font-semibold text-2xl mb-2">Themes</h2>
+              <span>
+                {(hackathon.themes || []).map((theme, index) => (
+                  <div
+                    key={index}
+                    className="bg-orange-200 text-lg capitalize mb-1 mr-2 rounded-lg inline-block px-4 py-1"
+                  >
+                    {theme}
+                  </div>
+                ))}
+              </span>
+              <div>
+                <h2 className="mt-10 font-semibold text-2xl mb-2">
+                  Contact Email
+                </h2>
+                <p className="hover:underline cursor-pointer">
+                  {hackathon.contactEmail}
+                </p>
+              </div>
+            </div>
+          </div>
           <div id="registration"></div>
           {isJudgedHackathon ? (
             ""
@@ -965,38 +992,6 @@ export default function Overview() {
                         value={teamName}
                         onChange={(e) => setTeamName(e.target.value)}
                       />
-                    </div>
-                    <p className="pt-6 font-semibold text-xl pb-2">
-                      <span className="text-red-600">*</span> Indicate your
-                      participation type
-                    </p>
-                    <div className="flex items-center text-lg">
-                      <input
-                        type="radio"
-                        name="teamStatus"
-                        value="individual"
-                        checked={teamStatus === "individual"}
-                        onChange={(e) => setTeamStatus(e.target.value)}
-                        id="solo"
-                        required
-                      />
-                      <label
-                        className="pl-2 pr-18 cursor-pointer"
-                        htmlFor="solo"
-                      >
-                        Indivdual
-                      </label>
-                      <input
-                        type="radio"
-                        name="teamStatus"
-                        value="team"
-                        id="team"
-                        checked={teamStatus === "team"}
-                        onChange={(e) => setTeamStatus(e.target.value)}
-                      />
-                      <label className="pl-2 cursor-pointer" htmlFor="team">
-                        Already have team
-                      </label>
                     </div>
                     <p className="pt-8 pb-3 text-xl font-semibold">
                       <span className="text-red-600">*</span> Who told you about{" "}

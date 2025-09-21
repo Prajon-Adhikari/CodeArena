@@ -28,6 +28,7 @@ const SearchProfile = () => {
   const [friendRequest, setFriendRequest] = useState({});
   const [friends, setFriends] = useState([]);
   const [isFriend, setIsFriend] = useState(false);
+  const [loggedInUserId, setLoggedInUserId] = useState(null);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -52,6 +53,9 @@ const SearchProfile = () => {
       setFriends(data.friends);
       setIsFriend(data.isFriend);
       setLoading(false);
+      if (data.userId) {
+        setLoggedInUserId(data.userId);
+      }
     } catch (error) {
       console.log("Error while fetching portfolio projects", error);
     }
@@ -131,28 +135,29 @@ const SearchProfile = () => {
             </div>
           </div>
           <div className="pt-4">
-            {isFriend ? (
-              <button
-                onClick={handleUnfriend}
-                className="bg-red-400 text-white cursor-pointer hover:bg-red-300 px-8 py-2 rounded-2xl"
-              >
-                Unfriend
-              </button>
-            ) : !friendRequest ? (
-              <button
-                onClick={sentFriendRequest}
-                className="bg-blue-400 text-white cursor-pointer hover:bg-blue-300 px-8 py-2 rounded-2xl"
-              >
-                Add Friend
-              </button>
-            ) : (
-              <button
-                disabled
-                className="bg-gray-400 text-white cursor-pointer hover:bg-gray-300 px-8 py-2 rounded-2xl"
-              >
-                Request Sent
-              </button>
-            )}
+            {loggedInUserId !== id && // ✅ hide buttons if viewing own profile
+              (isFriend ? (
+                <button
+                  onClick={handleUnfriend}
+                  className="bg-red-400 text-white cursor-pointer hover:bg-red-300 px-8 py-2 rounded-2xl"
+                >
+                  Unfriend
+                </button>
+              ) : !friendRequest ? (
+                <button
+                  onClick={sentFriendRequest}
+                  className="bg-blue-400 text-white cursor-pointer hover:bg-blue-300 px-8 py-2 rounded-2xl"
+                >
+                  Add Friend
+                </button>
+              ) : (
+                <button
+                  disabled
+                  className="bg-gray-400 text-white cursor-pointer hover:bg-gray-300 px-8 py-2 rounded-2xl"
+                >
+                  Request Sent
+                </button>
+              ))}
           </div>
         </div>
         <div className="border-l-2 border-gray-400 text-lg px-20">
