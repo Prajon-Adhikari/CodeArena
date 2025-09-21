@@ -122,17 +122,17 @@ export default function BlogPage() {
         className="bg-gray-100 bg-cover bg-center pb-10 relative h-[580px] pt-14 px-[120px] mt-[80px] flex flex-col justify-center"
         style={{ backgroundImage: `url(${blogHeroImage})` }}
       >
-        <div className="absolute inset-0  bg-black opacity-20">{""}</div>
-        <h1 className="relative text-6xl w-[740px] text-white mb-8">
+        <div className="absolute inset-0  bg-black opacity-20 ">{""}</div>
+        <h1 className="relative text-6xl w-[740px] text-white mb-8 left-slide-animation">
           Your Arena for Coding Stories & Insights.
         </h1>
-        <p className="relative text-white w-[650px] mb-14">
+        <p className="relative text-white w-[650px] mb-14 left-slide-animation">
           Welcome to CodeArena Blogs — a hub where developers, students, and
           innovators share coding knowledge, hackathon journeys, and the latest
           in tech. Whether you’re here to learn, compete, or get inspired, we’ve
           got you covered.
         </p>
-        <div className="relative w-84 hidden md:block">
+        <div className="relative w-84 hidden md:block left-slide-animation">
           <span className="absolute inset-y-0 left-5 flex items-center  text-gray-400">
             <FontAwesomeIcon icon={faMagnifyingGlass} />
           </span>
@@ -145,7 +145,7 @@ export default function BlogPage() {
             Search &rarr;
           </button>
         </div>
-        <div className="relative mt-16 bg-white w-full h-[85px] flex items-center justify-evenly">
+        <div className="relative mt-16 bg-white w-full h-[85px] flex items-center right-slide-animation justify-evenly">
           <img src={microsoft} alt="" className="w-[130px] h-[85px]" />
           <img src={google} alt="" className="w-[150px] h-[85px]" />
           <img src={aws} alt="" className="w-[130px] h-[85px]" />
@@ -155,7 +155,7 @@ export default function BlogPage() {
         </div>
       </div>
 
-      <div className="bg-white px-[140px] rounded-lg mt-22 mb-16">
+      <div className="bg-white px-[140px] rounded-lg mt-22 mb-16 animation">
         <h2 className="font-semibold text-4xl mb-10 pl-4 ml-1 border-blue-400 border-l-4">
           What's New Today ?
         </h2>

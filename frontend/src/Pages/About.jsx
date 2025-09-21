@@ -42,18 +42,18 @@ const About = () => {
             }}
           >
             <div className="w-[500px]">
-              <p className="text-4xl underline font-bold pb-5 text-orange-300">
+              <p className="text-4xl underline font-bold pb-5 text-orange-300 left-slide-animation">
                 About Us
               </p>
-              <p className="text-6xl pb-4">
+              <p className="text-6xl pb-4 left-slide-animation">
                 Unleashing Potential, Building the Future of Tech
               </p>
-              <p className="text-gray-400 pb-5">
+              <p className="text-gray-400 pb-5 right-slide-animation">
                 We believe that coding is more than just writing lines of
                 code—it's about creating, learning, and growing together. Join
                 us in shaping a better tomorrow through technology.
               </p>
-              <p>
+              <p className="right-slide-animation">
                 <Link to="/" className="pr-2 ">
                   Home
                 </Link>{" "}
@@ -65,7 +65,7 @@ const About = () => {
             </div>
           </div>
         </div>
-        <div className="px-[140px] flex gap-20 items-center py-24 h-[700px]">
+        <div className="px-[140px] flex gap-20 items-center py-24 h-[700px] animation">
           <div className="w-[600px]">
             <div>
               <div className="text-5xl text-orange-400 font-bold">
@@ -107,7 +107,7 @@ const About = () => {
             </div>
           </div>
         </div>
-        <div className="px-[140px] pb-20 flex justify-between">
+        <div className="px-[140px] pb-20 flex justify-between animation">
           {/* Card 1 */}
           <div className="relative w-[400px] overflow-hidden bg-white shadow-[0px_0px_5px_#7F8CAA] py-4 px-8 rounded-lg group cursor-pointer">
             {/* Sliding background */}
@@ -186,7 +186,7 @@ const About = () => {
 
             {/* Content (stays above overlay) */}
             <div className="relative flex justify-center items-center h-full text-center">
-              <div className="w-[620px]">
+              <div className="w-[620px] animation">
                 <p className="text-6xl pb-8 font-bold">
                   Explore Insights From Our Team
                 </p>
@@ -206,7 +206,7 @@ const About = () => {
             </div>
           </div>
         </div>
-        <div className="flex items-center px-[150px] gap-30 py-22 ">
+        <div className="flex items-center px-[150px] gap-30 py-22 animation">
           <div className="flex gap-7 text-white">
             <div>
               {/* Image 1 → Red Gradient Overlay */}
@@ -324,7 +324,7 @@ const About = () => {
             </button>
           </div>
         </div>
-        <div className="px-[150px] py-10">
+        <div className="px-[150px] py-10 animation">
           <h1 className="text-center text-5xl font-bold">
             Powerful Features to Enhance
           </h1>
@@ -400,7 +400,7 @@ const About = () => {
             </div>
           </div>
         </div>
-        <div className="px-[240px] py-18">
+        <div className="px-[240px] py-18 animation">
           <h1 className="text-5xl text-center pb-3 font-bold">Our Team Behind It</h1>
           <p className="text-center pb-12 text-gray-600">
             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum,

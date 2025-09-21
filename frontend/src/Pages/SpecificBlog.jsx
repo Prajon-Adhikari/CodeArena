@@ -32,7 +32,7 @@ export default function SpecificBlog() {
 
   return (
     <div className="mt-[80px]">
-      <div className="px-[140px] py-10">
+      <div className="px-[140px] py-10 ">
         <p className="font-semibold text-xl">
           <Link to="/blog" className="pr-2 ">
             Blog
@@ -42,8 +42,8 @@ export default function SpecificBlog() {
             {blog.title}
           </Link>
         </p>
-        <div className="pt-10 flex gap-20">
-          <div className="pb-2 pt-1 w-[600px]">
+        <div className="pt-10 flex gap-20 ">
+          <div className="pb-2 pt-1 w-[600px] left-slide-animation">
             <div>
               <span
                 className={`text-lg px-6 py-2 text-gray-700 ${
@@ -68,7 +68,7 @@ export default function SpecificBlog() {
               Created at: {formatDate(blog.createdAt)}
             </div>
           </div>
-          <div>
+          <div className="right-slide-animation">
             {blog?.images?.map((img, index) => (
               <img
                 key={index}
@@ -80,7 +80,7 @@ export default function SpecificBlog() {
           </div>
         </div>
       </div>
-      <div className="px-[140px]">
+      <div className="px-[140px] ">
         {relatedBlog.length > 0 && (
           <>
             <h2 className="text-center font-semibold text-5xl py-10">Related Posts</h2>

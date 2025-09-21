@@ -106,7 +106,7 @@ export default function home() {
   return (
     <div className="min-h-screen pt-[50px]">
       <div className="flex px-[100px] pt-[100px] pb-[80px] gap-20 items-center">
-        <div className="w-[650px]">
+        <div className="w-[650px] left-slide-animation">
           <h1
             className="text-6xl pb-10 text-[#43aced]"
             style={{ WebkitTextStroke: "3px" }}
@@ -137,7 +137,7 @@ export default function home() {
             </Link>
           </div>
         </div>
-        <div className="h-[500px] w-[570px] relative ">
+        <div className="h-[500px] w-[570px] relative right-slide-animation">
           <img
             src={images[imageIndex]}
             alt=""
@@ -183,10 +183,10 @@ export default function home() {
           <FontAwesomeIcon icon={faStarOfLife} />
         </div>
       </div>
-      <h1 className=" text-center text-4xl font-bold pb-16">
+      <h1 className=" text-center text-4xl font-bold pb-16 animation">
         Search For Your Dream <span className="text-orange-400">Hackathon</span>
       </h1>
-      <div className="flex justify-center gap-4 pb-14 ">
+      <div className="flex justify-center gap-4 pb-14 animation">
         <div className="border-blue-400 border-2 px-5 py-3 rounded-sm flex items-center gap-4 focus-within:ring-1 focus-within:ring-blue-400">
           <FontAwesomeIcon
             icon={faMagnifyingGlass}
@@ -202,7 +202,7 @@ export default function home() {
           Search Hackathon
         </button>
       </div>
-      <div className="flex ml-[100px] mt-10 gap-30">
+      <div className="flex ml-[100px] mt-10 gap-30 animation">
         <div>
           <h1 className="text-4xl pb-10 font-semibold pl-4">
             Hackathons for you{" "}
@@ -317,7 +317,7 @@ export default function home() {
       </div>
 
       <div className="  h-[690px] my-30 px-[100px] py-[70px]  flex gap-30 bg-[#4d97bf] text-white">
-        <div className="w-[600px] relative">
+        <div className="w-[600px] relative animation">
           <img
             src={coding1}
             alt=""
@@ -344,7 +344,7 @@ export default function home() {
             className="h-[210px] w-[290px] object-cover absolute bottom-0 right-5 z-20  rounded-4xl shadow-[0px_0px_8px_gray]"
           />
         </div>
-        <div className="w-[600px] flex flex-col justify-center text-center gap-10">
+        <div className="w-[600px] flex flex-col justify-center text-center gap-10 animation">
           <h1 className="text-[3.9rem] font-extrabold">
             Explore more about{" "}
             <span className="text-orange-400">CODEARENA</span>
@@ -366,7 +366,7 @@ export default function home() {
           </Link>
         </div>
       </div>
-      <div className="px-[140px]">
+      <div className="px-[140px] animation">
         <h1 className="text-[3.4rem] font-bold text-center mb-20 text-[#F79327]">
           Level up with <span className="text-black">CodeArena</span>
         </h1>
@@ -444,7 +444,7 @@ export default function home() {
           </div>
         </div>
       </div>
-      <div className="mx-[100px] flex bg-[#4f8bb3] mt-30 rounded-2xl">
+      <div className="mx-[100px] flex bg-[#4f8bb3] mt-30 rounded-2xl animation">
         <h1 className="text-[36px] bg-[#5EABD6] py-[36px] w-[290px] px-12 rounded-l-2xl text-white text-left font-bold">
           <span className="text-xl font-semibold text-[#feaf4f]">
             SOME NUMBERS
@@ -473,7 +473,7 @@ export default function home() {
           </div>
         </div>
       </div>
-      <div className="px-[100px] py-[100px]">
+      <div className="px-[100px] py-[100px] animation">
         <h1 className="text-[#4f8bb3] text-[50px] flex flex-col text-center font-bold mb-20">
           Services That Fits <span className="text-[#feaf4f]">Your Needs</span>
         </h1>

@@ -44,10 +44,10 @@ export default function HostHackathon() {
     <div className="pt-[80px] pb-10">
       <div className="py-20">
         <div className="flex flex-col items-center">
-          <h1 className="font-bold text-5xl w-[800px] text-center">
+          <h1 className="font-bold text-5xl w-[800px] text-center left-slide-animation">
             Grow Your Developer Ecosystem with CodeArena
           </h1>
-          <p className="text-gray-600 pt-4 text-lg w-[700px] text-center">
+          <p className="text-gray-600 pt-4 text-lg w-[700px] text-center right-slide-animation">
             Inspire developers to build with your tools through hackathons
             managed by CodeArena
           </p>
@@ -57,8 +57,8 @@ export default function HostHackathon() {
             </button>
           </a>
         </div>
-        <div className="relative h-[470px]">
-          <div className=" w-[280px] max-h-[340px] pb-7 -rotate-10 bg-white shadow-[0px_0px_5px_gray] p-2 rounded-2xl absolute bottom-70 left-24">
+        <div className="relative h-[470px] ">
+          <div className=" w-[280px] max-h-[340px] left-slide-animation pb-7 -rotate-10 bg-white shadow-[0px_0px_5px_gray] p-2 rounded-2xl absolute bottom-70 left-24">
             <img
               src={image4}
               alt=""
@@ -69,7 +69,7 @@ export default function HostHackathon() {
               Lorem ipsum dolor sit amet consectetur.
             </p>
           </div>
-          <div className=" w-[280px] max-h-[340px] pb-7 rotate-7 bg-white  shadow-[0px_0px_5px_gray] p-2 rounded-2xl absolute bottom-25 left-80">
+          <div className=" w-[280px] max-h-[340px] right-slide-animation pb-7 rotate-7 bg-white  shadow-[0px_0px_5px_gray] p-2 rounded-2xl absolute bottom-25 left-80">
             <img
               src={collaboration}
               alt=""
@@ -80,7 +80,7 @@ export default function HostHackathon() {
               Lorem ipsum dolor sit amet consectetur.
             </p>
           </div>
-          <div className=" w-[280px] max-h-[340px] pb-7 bg-white shadow-[0px_0px_5px_gray] p-2 rounded-2xl absolute bottom-15 left-156">
+          <div className=" w-[280px] max-h-[340px] left-slide-animation pb-7 bg-white shadow-[0px_0px_5px_gray] p-2 rounded-2xl absolute bottom-15 left-156">
             <img
               src={image5}
               alt=""
@@ -91,7 +91,7 @@ export default function HostHackathon() {
               Lorem ipsum dolor sit amet consectetur.
             </p>
           </div>
-          <div className=" w-[280px] max-h-[340px] z-10 pb-7 -rotate-7 bg-white shadow-[0px_0px_5px_gray] p-2 rounded-2xl absolute bottom-25 right-78">
+          <div className=" w-[280px] max-h-[340px] right-slide-animation z-10 pb-7 -rotate-7 bg-white shadow-[0px_0px_5px_gray] p-2 rounded-2xl absolute bottom-25 right-78">
             <img
               src={image3}
               alt=""
@@ -102,7 +102,7 @@ export default function HostHackathon() {
               Lorem ipsum dolor sit amet consectetur.
             </p>
           </div>
-          <div className=" w-[280px] max-h-[340px] pb-7 rotate-10 bg-white shadow-[0px_0px_5px_gray] p-2 rounded-2xl absolute bottom-65 right-24">
+          <div className=" w-[280px] max-h-[340px] left-slide-animation pb-7 rotate-10 bg-white shadow-[0px_0px_5px_gray] p-2 rounded-2xl absolute bottom-65 right-24">
             <img
               src={image2}
               alt=""
@@ -115,7 +115,7 @@ export default function HostHackathon() {
           </div>
         </div>
       </div>
-      <div className="pl-[200px] pr-[160px] pb-30 flex justify-between">
+      <div className="pl-[200px] pr-[160px] pb-30 flex justify-between animation">
         <div className="w-[500px]">
           <h2 className="text-2xl text-blue-500 pb-2 font-semibold">
             Developer Community
@@ -160,7 +160,7 @@ export default function HostHackathon() {
       {/* Host Section */}
       <div
         id="host-hackathon"
-        className="bg-white p-6 flex flex-col items-center"
+        className="bg-white p-6 flex flex-col items-center animation"
       >
         <p className="text-sm text-gray-500 mb-2 uppercase font-medium tracking-wide">
           Start your hackathon today

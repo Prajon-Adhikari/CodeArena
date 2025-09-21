@@ -240,7 +240,7 @@ const Navbar = () => {
     <nav className="bg-white shadow text-gray-800 fixed left-0 right-0 top-0 z-50">
       <div className=" mx-[30px] mr-[50px] py-5 px-4 md:px-8 flex items-center justify-between">
         {/* Left Side: Logo + Links */}
-        <div className="flex items-center gap-14">
+        <div className="flex items-center gap-14 left-slide-animation">
           <Link to="/" className="text-2xl font-bold logo">
             <img
               src={logo}
@@ -251,7 +251,7 @@ const Navbar = () => {
         </div>
 
         {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-14">
+        <div className="hidden md:flex items-center gap-14 left-slide-animation">
           {navLinks.map(({ to, label }) => (
             <Link key={to} to={to} className={navLinkClass(to)}>
               {label}
@@ -259,7 +259,7 @@ const Navbar = () => {
           ))}
         </div>
 
-        <div className="flex gap-6 items-center">
+        <div className="flex gap-6 items-center right-slide-animation">
           <div className="relative w-64 hidden md:block">
             <span className="absolute inset-y-0 left-3 flex items-center  text-gray-400">
               <FontAwesomeIcon icon={faMagnifyingGlass} />
@@ -430,7 +430,7 @@ const Navbar = () => {
           </div>
 
           {/* Right Side: Auth / Profile */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 ">
             {user?.fullName ? (
               <div className="relative">
                 <div
