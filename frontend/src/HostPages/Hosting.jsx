@@ -45,7 +45,7 @@ export default function Hosting() {
   const [endDate, setEndDate] = useState("");
   const [registrationStart, setRegistrationStart] = useState("");
   const [registrationDeadline, setRegistrationDeadline] = useState("");
-  const [mode, setMode] = useState("");
+  const [mode, setMode] = useState("online");
   const [organizerName, setOrganizerName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
   const [selectedThemes, setSelectedThemes] = useState([]);
@@ -250,7 +250,7 @@ export default function Hosting() {
         {/* Dark Overlay */}
         <div className="absolute inset-0 bg-black/60"></div>
 
-        <div className="bg-white p-8 rounded-lg w-[1100px] max-h-[90vh] overflow-y-auto shadow-[0px_0px_5px_gray] relative">
+        <div className="bg-white p-8 rounded-lg w-[900px] max-h-[90vh] overflow-y-auto shadow-[0px_0px_5px_gray] relative">
           <Link to={previousPath}>
             <button
               onClick={() => setIsModalOpen(false)}
@@ -260,17 +260,17 @@ export default function Hosting() {
             </button>
           </Link>
           <div className="flex justify-center pb-10">
-            <form className="space-y-7 w-[900px]" onSubmit={handleSubmit}>
+            <form className="space-y-7 w-[750px]" onSubmit={handleSubmit}>
               {/* STEP 1: BASIC INFO */}
               {step === 1 && (
                 <div className="space-y-6">
                   <h2 className="text-3xl font-bold mb-8">Basic Information</h2>
 
                   <div>
-                    <h1 className="text-xl font-semibold pl-2 pb-1">
+                    <h1 className="block font-semibold mb-2">
                       Hackathon Name
                     </h1>
-                    <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
+                    <div className="flex items-center border-2 rounded-lg px-4 py-2">
                       <input
                         type="text"
                         placeholder="Enter hackathon name"
@@ -283,25 +283,25 @@ export default function Hosting() {
                   </div>
 
                   <div>
-                    <h1 className="text-xl font-semibold pl-2 pb-1">
+                    <h1 className="block font-semibold mb-2">
                       Description
                     </h1>
-                    <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
+                    <div className="flex items-center border-2 rounded-lg px-4 py-2">
                       <textarea
                         placeholder="Briefly explain about hackathon program ..."
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
-                        className="bg-transparent focus:outline-none w-full min-h-30"
+                        className="bg-transparent focus:outline-none w-full min-h-24"
                         required
                       />
                     </div>
                   </div>
 
                   <div>
-                    <h1 className="text-xl font-semibold pl-2 pb-1">
+                    <h1 className="block font-semibold mb-2">
                       Organizer Name
                     </h1>
-                    <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
+                    <div className="flex items-center border-2 rounded-lg px-4 py-2">
                       <input
                         type="text"
                         placeholder="Enter organizer name"
@@ -314,10 +314,10 @@ export default function Hosting() {
                   </div>
 
                   <div>
-                    <h1 className="text-xl font-semibold pl-2 pb-1">
+                    <h1 className="block font-semibold mb-2">
                       Contact Email
                     </h1>
-                    <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
+                    <div className="flex items-center border-2 rounded-lg px-4 py-2">
                       <input
                         type="email"
                         placeholder="Enter your contact email"
@@ -332,7 +332,7 @@ export default function Hosting() {
                   <div className="flex flex-col ">
                     <label
                       htmlFor="themes"
-                      className="font-semibold text-xl pl-2 pb-1"
+                      className="block font-semibold mb-2"
                     >
                       Themes
                     </label>
@@ -343,7 +343,7 @@ export default function Hosting() {
                       value={selectedThemes}
                       onChange={setSelectedThemes}
                       placeholder="Select or create themes..."
-                      className="text-[18px]"
+                      className="text-[14px]"
                       required
                       styles={{
                         control: (base) => ({
@@ -382,21 +382,6 @@ export default function Hosting() {
                       }}
                     />
                   </div>
-
-                  <div>
-                    <h1 className="text-xl font-semibold pl-2 pb-1">Mode</h1>
-                    <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
-                      <input
-                        type="text"
-                        placeholder="Enter mode"
-                        value={mode}
-                        onChange={(e) => setMode(e.target.value)}
-                        className="bg-transparent focus:outline-none w-full"
-                        required
-                      />
-                    </div>
-                  </div>
-
                   {/* <div>
               <h1 className="text-xl font-semibold pl-2 pb-1">Banner Image</h1>
               <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
@@ -437,10 +422,10 @@ export default function Hosting() {
                   <h2 className="text-2xl font-bold mb-4">Timelines</h2>
 
                   <div>
-                    <h1 className="text-xl font-semibold pl-2 pb-1">
+                    <h1 className="block font-semibold mb-2">
                       Registration Start Date
                     </h1>
-                    <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
+                    <div className="flex items-center border-2 rounded-lg px-4 py-2">
                       <input
                         type="date"
                         value={registrationStart}
@@ -452,10 +437,10 @@ export default function Hosting() {
                   </div>
 
                   <div>
-                    <h1 className="text-xl font-semibold pl-2 pb-1">
+                    <h1 className="block font-semibold mb-2">
                       Registration Deadline
                     </h1>
-                    <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
+                    <div className="flex items-center border-2 rounded-lg px-4 py-2">
                       <input
                         type="date"
                         value={registrationDeadline}
@@ -469,10 +454,10 @@ export default function Hosting() {
                   </div>
 
                   <div>
-                    <h1 className="text-xl font-semibold pl-2 pb-1">
+                    <h1 className="block font-semibold mb-2">
                       Submission Start Date
                     </h1>
-                    <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
+                    <div className="flex items-center border-2 rounded-lg px-4 py-2">
                       <input
                         type="date"
                         value={startDate}
@@ -484,10 +469,10 @@ export default function Hosting() {
                   </div>
 
                   <div>
-                    <h1 className="text-xl font-semibold pl-2 pb-1">
+                    <h1 className="block font-semibold mb-2">
                       Submission Deadline
                     </h1>
-                    <div className="flex items-center border-2 rounded-lg px-4 py-3 text-lg">
+                    <div className="flex items-center border-2 rounded-lg px-4 py-2">
                       <input
                         type="date"
                         value={endDate}
@@ -524,7 +509,7 @@ export default function Hosting() {
 
                   {/* Eligibility */}
                   <div>
-                    <h1 className="text-lg font-semibold pl-2 pb-1">
+                    <h1 className="block font-semibold mb-2">
                       Eligibility
                     </h1>
                     <textarea
@@ -533,14 +518,14 @@ export default function Hosting() {
                       onChange={(e) =>
                         setRules({ ...rules, eligibility: e.target.value })
                       }
-                      className="bg-transparent border-2 rounded-lg px-4 py-3 text-lg focus:outline-none w-full"
+                      className="bg-transparent border-2 rounded-lg px-4 py-2 focus:outline-none w-full"
                       required
                     />
                   </div>
 
                   {/* Team Formation */}
                   <div>
-                    <h1 className="text-lg font-semibold pl-2 pb-1">
+                    <h1 className="block font-semibold mb-2">
                       Team Formation
                     </h1>
                     <textarea
@@ -549,14 +534,14 @@ export default function Hosting() {
                       onChange={(e) =>
                         setRules({ ...rules, teamFormation: e.target.value })
                       }
-                      className="bg-transparent border-2 rounded-lg px-4 py-3 text-lg focus:outline-none w-full"
+                      className="bg-transparent border-2 rounded-lg px-4 py-2 focus:outline-none w-full"
                       required
                     />
                   </div>
 
                   {/* Submission Requirements */}
                   <div>
-                    <h1 className="text-lg font-semibold pl-2 pb-1">
+                    <h1 className="block font-semibold mb-2">
                       Submission Requirements
                     </h1>
                     <textarea
@@ -568,14 +553,14 @@ export default function Hosting() {
                           submissionRequirements: e.target.value,
                         })
                       }
-                      className="bg-transparent border-2 rounded-lg px-4 py-3 text-lg focus:outline-none w-full"
+                      className="bg-transparent border-2 rounded-lg px-4 py-2 focus:outline-none w-full"
                       required
                     />
                   </div>
 
                   {/* Code of Conduct */}
                   <div>
-                    <h1 className="text-lg font-semibold pl-2 pb-1">
+                    <h1 className="block font-semibold mb-2">
                       Code of Conduct
                     </h1>
                     <textarea
@@ -584,14 +569,14 @@ export default function Hosting() {
                       onChange={(e) =>
                         setRules({ ...rules, codeOfConduct: e.target.value })
                       }
-                      className="bg-transparent border-2 rounded-lg px-4 py-3 text-lg focus:outline-none w-full"
+                      className="bg-transparent border-2 rounded-lg px-4 py-2 focus:outline-none w-full"
                       required
                     />
                   </div>
 
                   {/* Prohibited Activities */}
                   <div>
-                    <h1 className="text-lg font-semibold pl-2 pb-1">
+                    <h1 className="block font-semibold mb-2">
                       Prohibited Activities
                     </h1>
                     <textarea
@@ -600,14 +585,14 @@ export default function Hosting() {
                       onChange={(e) =>
                         setRules({ ...rules, prohibited: e.target.value })
                       }
-                      className="bg-transparent border-2 rounded-lg px-4 py-3 text-lg focus:outline-none w-full"
+                      className="bg-transparent border-2 rounded-lg px-4 py-2 focus:outline-none w-full"
                       required
                     />
                   </div>
 
                   {/* Disqualification */}
                   <div>
-                    <h1 className="text-lg font-semibold pl-2 pb-1">
+                    <h1 className="block font-semibold mb-2">
                       Disqualification
                     </h1>
                     <textarea
@@ -616,7 +601,7 @@ export default function Hosting() {
                       onChange={(e) =>
                         setRules({ ...rules, disqualification: e.target.value })
                       }
-                      className="bg-transparent border-2 rounded-lg px-4 py-3 text-lg focus:outline-none w-full"
+                      className="bg-transparent border-2 rounded-lg px-4 py-2 focus:outline-none w-full"
                       required
                     />
                   </div>

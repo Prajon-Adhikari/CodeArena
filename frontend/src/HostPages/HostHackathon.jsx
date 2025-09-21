@@ -8,7 +8,11 @@ import image4 from "../assets/design.jpg";
 import image5 from "../assets/homeimg4.jpg";
 import community from "../assets/community.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faListCheck, faFlag, faUsers } from "@fortawesome/free-solid-svg-icons";
+import {
+  faListCheck,
+  faFlag,
+  faUsers,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function HostHackathon() {
   const [hackathons, setHackathons] = useState([]);
@@ -35,8 +39,6 @@ export default function HostHackathon() {
     };
     fetchHackathons();
   }, []);
-
-
 
   return (
     <div className="pt-[80px] pb-10">
@@ -115,37 +117,45 @@ export default function HostHackathon() {
       </div>
       <div className="pl-[200px] pr-[160px] pb-30 flex justify-between">
         <div className="w-[500px]">
-          <h2 className="text-2xl text-blue-500 pb-2 font-semibold">Developer Community</h2>
-          <p className="w-[380px] text-4xl">Reach an experienced, global community</p>
+          <h2 className="text-2xl text-blue-500 pb-2 font-semibold">
+            Developer Community
+          </h2>
+          <p className="w-[380px] text-4xl">
+            Reach an experienced, global community
+          </p>
           <p className="pt-6 text-lg text-gray-600">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto ad
             saepe mollitia, expedita odio incidunt eos!
           </p>
           <div className="text-lg text-gray-600 pt-10 flex flex-col gap-6">
-              <p className="flex gap-4 items-center text-lg">
-                <span className="text-red-400 font-bold mx-2 text-xl">
-                  <FontAwesomeIcon icon={faUsers} />
-                </span>{" "}
-                4 million+ users
-              </p>
-              <p className="flex gap-5 items-center text-lg">
-                <span className="text-purple-300 font-bold mx-2 text-xl">
-                  <FontAwesomeIcon icon={faFlag} />
-                </span>{" "}
-                80 countries represented
-              </p>
+            <p className="flex gap-4 items-center text-lg">
+              <span className="text-red-400 font-bold mx-2 text-xl">
+                <FontAwesomeIcon icon={faUsers} />
+              </span>{" "}
+              4 million+ users
+            </p>
+            <p className="flex gap-5 items-center text-lg">
+              <span className="text-purple-300 font-bold mx-2 text-xl">
+                <FontAwesomeIcon icon={faFlag} />
+              </span>{" "}
+              80 countries represented
+            </p>
 
-              <p className="flex gap-5 items-center text-lg">
-                 <span className="text-green-300 font-bold mx-2 text-xl">
-                  <FontAwesomeIcon icon={faListCheck} />
-                </span>{" "}
-                220,000+ projects submission
-              </p>
-            </div>        
+            <p className="flex gap-5 items-center text-lg">
+              <span className="text-green-300 font-bold mx-2 text-xl">
+                <FontAwesomeIcon icon={faListCheck} />
+              </span>{" "}
+              220,000+ projects submission
+            </p>
+          </div>
         </div>
         <div>
-              <img src={community} alt="" className="w-[620px] h-[400px] object-cover"/>
-            </div>
+          <img
+            src={community}
+            alt=""
+            className="w-[620px] h-[400px] object-cover"
+          />
+        </div>
       </div>
       {/* Host Section */}
       <div
@@ -190,29 +200,27 @@ export default function HostHackathon() {
               <p className="text-gray-600 mb-4">
                 Manage your registrations and project submissions with Devpost.
               </p>
-              <button className="bg-gradient-to-r from-[#60B5FF] to-[#8DD8FF] text-white py-2 px-4 rounded">
-                Host in-person
-              </button>
             </div>
           </div>
 
           {/* Student Card */}
-          <div className="border border-green-300 w-[400px] rounded-md p-6 hover:shadow-md transition-shadow">
-            <p className="text-xs text-gray-500 font-semibold uppercase mb-4">
-              For Students
-            </p>
-            <div className="text-3xl mb-4">🎓🧠</div>
-            <h2 className="text-xl font-semibold mb-2">Student hackathons</h2>
-            <p className="text-gray-600 mb-6">
-              Students can run all their hackathons for free on Devpost.
-            </p>
+          <div className="border border-green-300 w-[400px] flex flex-col justify-between rounded-md p-6 hover:shadow-md transition-shadow">
+            <div>
+              <p className="text-xs text-gray-500 font-semibold uppercase mb-4">
+                For Students
+              </p>
+              <div className="text-3xl mb-4">🎓🧠</div>
+              <h2 className="text-xl font-semibold mb-2">Student hackathons</h2>
+              <p className="text-gray-600 mb-6">
+                Students can run all their hackathons for free on Devpost.
+              </p>
+            </div>
             <div className="flex flex-col gap-2">
-              <button className="bg-gradient-to-r from-[#60B5FF] to-[#8DD8FF] text-white py-2 px-4 rounded">
-                Host online
-              </button>
-              <button className="bg-gradient-to-r from-[#60B5FF] to-[#8DD8FF] text-white py-2 px-4 rounded">
-                Host in-person
-              </button>
+              <Link to="/host/hackathon" state={{ from: location.pathname }}>
+                <button className="bg-gradient-to-r cursor-pointer from-[#60B5FF] to-[#8DD8FF] w-full text-white py-2 px-4 rounded">
+                  Host online
+                </button>
+              </Link>
             </div>
           </div>
         </div>

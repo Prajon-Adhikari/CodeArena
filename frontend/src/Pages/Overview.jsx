@@ -375,6 +375,7 @@ export default function Overview() {
           )}
 
           <div className="px-[140px] mt-16 flex justify-between">
+            {submittedProjects.length > 0 && (
             <div className="shadow-[0px_0px_5px_gray] rounded-lg py-6 px-2">
               <h2 className="text-xl font-bold mb-4 px-6">
                 Project Members Count
@@ -410,6 +411,8 @@ export default function Overview() {
                 width={840}
               />
             </div>
+            )}
+            {participants.length > 0 && (
             <div className="shadow-[0px_0px_5px_gray] py-6 px-2 rounded-lg">
               <h1 className="text-xl font-bold mb-4 px-6">Source of Visits</h1>
               <ReactApexChart
@@ -433,6 +436,7 @@ export default function Overview() {
                 width={340}
               />
             </div>
+            )}
           </div>
           <div className="px-[140px] mt-16">
             <h2 className="text-3xl font-bold mb-4">Participants</h2>
