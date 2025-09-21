@@ -32,7 +32,7 @@ import { getSearchedProfile } from "../controllers/searchProfile.controller.js";
 import { sentFriendRequest } from "../controllers/friendRequest.controller.js";
 import { getNotifications } from "../controllers/notifications.controller.js";
 import { acceptFriendRequest, rejectFriendRequest } from "../controllers/friendRequest.controller.js";
-import { getAllUsers } from "../controllers/user.controllers.js";
+import { getAllUsers, updateUser } from "../controllers/user.controllers.js";
 import { fetchFriends } from "../controllers/friend.controller.js";
 import { acceptProjectRequest, rejectProjectRequest } from "../controllers/projectRequest.controller.js";
 import { unfriendUser } from "../controllers/unfriend.controller.js";
@@ -48,6 +48,8 @@ router.get("/join/hackathon", protectRoute, getHackathonTournament);
 router.get("/", protectRoute, getTopHackathon);
 
 router.get("/users",getAllUsers);
+
+router.put("/users", protectRoute, uploadImage, updateUser);
 
 router.get("/friends", protectRoute, fetchFriends);
 

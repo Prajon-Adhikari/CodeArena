@@ -238,11 +238,11 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white shadow text-gray-800 fixed left-0 right-0 top-0 z-50">
-      <div className=" mx-[60px] px-4 md:px-8 py-5 flex items-center justify-between">
+      <div className=" mx-[60px] px-4 md:px-8 py-2 flex items-center justify-between">
         {/* Left Side: Logo + Links */}
         <div className="flex items-center gap-14">
           <Link to="/" className="text-2xl font-bold logo">
-            <img src={logo} alt="" className="w-[200px] h-[40px] object-cover"/>
+            <img src={logo} alt="" className="w-[200px] h-[60px] object-cover"/>
           </Link>
         </div>
 

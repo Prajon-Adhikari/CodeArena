@@ -199,3 +199,70 @@ export const logout = (req, res) => {
   return res.status(200).json({ message: "Logged out successfully" });
 };
 
+// Update User
+export const updateUser = async (req, res) => {
+  try {
+    const userId  = req.user._id;
+    console.log(req.body);
+    const {
+      fullName,
+      email,
+      work,
+      country,
+      city,
+      street,
+      about,
+      skills,
+      profilePic,
+    } = req.body;
+
+    console.log("hello");
+
+    // Find user by ID
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    if (fullName) user.fullName = fullName;
+
+
+    // Check if updating email
+    if (email && email !== user.email) {
+      const emailExists = await User.findOne({ email });
+      if (emailExists) {
+        return res.status(400).json({ message: "Email already in use" });
+      }
+      user.email = email;
+    }
+
+    // Update other fields if provided
+      if (work) user.work = work;
+    if (country) user.country = country;
+    if (city) user.city = city;
+    if (street) user.street = street;
+    if (about) user.about = about;
+    if (skills) user.skills = Array.isArray(skills) ? skills : skills.split(","); // Accept comma-separated string
+    if (profilePic) user.profilePic = profilePic;
+
+    await user.save();
+
+    return res.status(200).json({
+      message: "User updated successfully",
+      user: {
+        _id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+        work: user.work,
+        country: user.country,
+        city: user.city,
+        street: user.street,
+        about: user.about,
+        skills: user.skills,
+        profilePic: user.profilePic,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    console.error("Update user error:", error);
+    return res.status(500).json({ message: "Failed to update user" });
+  }
+};

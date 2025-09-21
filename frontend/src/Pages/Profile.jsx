@@ -42,11 +42,40 @@ const Profile = () => {
   const [projectDescription, setProjectDescription] = useState("");
   const [projectLink, setProjectLink] = useState("");
   const [portfolioProjects, setPortfolioProjects] = useState([]);
-   const [friends, setFriends] = useState([]);
+  const [friends, setFriends] = useState([]);
+  const [previewPic, setPreviewPic] = useState(null);
+
+  const [editModal, setEditModal] = useState(false);
+
+  const [formData, setFormData] = useState({
+    fullName: "",
+    about: "",
+    work: "",
+    country: "",
+    city: "",
+    street: "",
+    skills: [],
+    profilePic: null,
+  });
 
   const navigate = useNavigate();
   const location = useLocation();
   const portfolioModal = location.pathname === "/profile/portfolio";
+
+  useEffect(() => {
+    if (editModal) {
+      setPreviewPic(profileData?.profilePic || null);
+      setFormData({
+        fullName: profileData?.fullName || "",
+        about: profileData?.about || "",
+        work: profileData?.work || "",
+        country: profileData?.country || "",
+        city: profileData?.city || "",
+        street: profileData?.street || "",
+        skills: profileData?.skills || [],
+      });
+    }
+  }, [editModal, profileData]);
 
   useEffect(() => {
     const fetchPortfolioProjects = async () => {
@@ -66,7 +95,6 @@ const Profile = () => {
         setProfileData(data.user);
         setFriends(data.friends);
         setLoading(false);
-        console.log(data.user);
       } catch (error) {
         console.log("Error while fetching portfolio projects", error);
       }
@@ -124,8 +152,48 @@ const Profile = () => {
     return <div className="text-center mt-10 text-gray-500">Loading...</div>;
   }
 
-  const dummySkills = ["React", "JavaScript", "Node.js", "MongoDB", "Express"];
   const dummyVerifications = ["Email", "Phone", "Identity"];
+
+  // Inside your Profile component
+
+  const handleProfileUpdate = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+
+    try {
+      const form = new FormData();
+
+      if (formData.fullName) form.append("fullName", formData.fullName);
+      if (formData.work) form.append("work", formData.work);
+      if (formData.about) form.append("about", formData.about);
+      if (formData.country) form.append("country", formData.country);
+      if (formData.city) form.append("city", formData.city);
+      if (formData.street) form.append("street", formData.street);
+      if (formData.skills) form.append("skills", formData.skills.join(","));
+      if (formData.profilePic) form.append("profilePic", formData.profilePic);
+
+      const res = await axios.put(
+        `${import.meta.env.VITE_API_BASE_URL}/home/users`,
+        form,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          withCredentials: true,
+        }
+      );
+
+      setProfileData(res.data.user);
+      toast.success("Profile updated successfully!");
+      setEditModal(false);
+    } catch (error) {
+      console.error("Failed to update profile:", error);
+      toast.error("Failed to update profile");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div className="bg-gray-100 pt-[80px] text-[#2B2C34] pb-10">
@@ -139,20 +207,22 @@ const Profile = () => {
                 className="w-40 h-40 rounded-full border-4 border-white"
               />
             ) : (
-              <div className="w-40 h-40 rounded-full border-4 flex items-center justify-center bg-indigo-900 text-white text-6xl">{profileData.fullName.charAt(0).toUpperCase()}</div>
+              <div className="w-40 h-40 rounded-full border-4 flex items-center justify-center bg-indigo-900 text-white text-6xl">
+                {profileData.fullName.charAt(0).toUpperCase()}
+              </div>
             )}
 
             <div className="pt-4 w-[400px]">
               <h2 className="text-3xl font-bold pb-2">
-                {profileData?.fullName}
+                {profileData?.fullName || "-"}
               </h2>
               <p className="text-gray-500 pb-2 text-sm">
                 <FontAwesomeIcon icon={faBriefcase} className="pr-3" />
-                Manager at Google
+                {profileData?.work || "--"}
               </p>
               <p className="text-gray-500 text-sm">
                 <FontAwesomeIcon icon={faLocationDot} className="pr-3" />
-                London, United Kingdom
+                {profileData?.city || "--"}, {profileData?.country || "--"}
               </p>
               <div className="text-gray-500 pl-[1px] font-semibold mt-4">
                 <span className="pr-2">{friends.length}</span>
@@ -161,7 +231,10 @@ const Profile = () => {
             </div>
           </div>
           <div className="pt-4">
-            <button className="bg-blue-400 text-white rounded-2xl px-8 py-2">
+            <button
+              onClick={() => setEditModal(true)}
+              className="bg-blue-400 text-white rounded-2xl cursor-pointer px-8 py-2"
+            >
               Edit Profile
             </button>
           </div>
@@ -195,14 +268,22 @@ const Profile = () => {
         <div className="col-span-1 bg-white py-6 px-8 rounded-2xl">
           <h3 className="text-lg font-semibold mb-4">Skills</h3>
           <div className="flex flex-wrap gap-2">
-            {dummySkills.map((skill, i) => (
-              <span
-                key={i}
-                className="bg-gray-200 px-3 py-1 rounded-full text-sm"
-              >
-                {skill}
-              </span>
-            ))}
+            <div className="flex flex-wrap gap-2">
+              {profileData.skills && profileData.skills.length > 0 ? (
+                profileData.skills.map((skill, i) => (
+                  <span
+                    key={i}
+                    className="bg-gray-200 px-3 py-1 capitalize rounded-full text-sm"
+                  >
+                    {skill}
+                  </span>
+                ))
+              ) : (
+                <span className="text-gray-400 text-sm">
+                  No skills added yet
+                </span>
+              )}
+            </div>
           </div>
 
           {/* Links */}
@@ -245,7 +326,10 @@ const Profile = () => {
               <div className="grid grid-cols-3 gap-10 ">
                 {portfolioProjects.map((project, index) => {
                   return (
-                    <Link to={`/profile/${project._id}`} state={{ from: location.pathname }}>
+                    <Link
+                      to={`/profile/${project._id}`}
+                      state={{ from: location.pathname }}
+                    >
                       <div className=" h-[280px] shadow-lg p-2 rounded-lg hover:shadow-[0px_0px_5px_gray] cursor-pointer">
                         {project?.images?.map((img, index) => (
                           <img
@@ -283,29 +367,21 @@ const Profile = () => {
             <div className="grid grid-cols-2 gap-y-10 pl-2">
               <div>
                 <p className="font-bold text-lg">Country:</p>
-                <p className="">United Kingdom</p>
+                <p>{profileData?.country || "-"}</p>
               </div>
               <div>
                 <p className="font-bold text-lg">City:</p>
-                <p className="">London</p>
+                <p>{profileData?.city || "-"}</p>
               </div>
               <div>
                 <p className="font-bold text-lg">Street:</p>
-                <p className="">5th Street</p>
+                <p>{profileData?.country || "-"}</p>{" "}
               </div>
             </div>
           </div>
           <div className="py-6">
             <h3 className="text-2xl font-semibold mb-3 pl-1">About</h3>
-            <p className="pr-10 pl-1">
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deserunt
-              excepturi velit sint nemo harum a accusamus tempore nisi? Laborum
-              culpa asperiores adipisci maiores ut quas alias neque, corrupti
-              accusamus non? Lorem ipsum dolor sit, amet consectetur adipisicing
-              elit. Deserunt excepturi velit sint nemo harum a accusamus tempore
-              nisi? Laborum culpa asperiores adipisci maiores ut quas alias
-              neque, corrupti accusamus non?
-            </p>
+            <p className="pr-10 pl-1">{profileData?.about || "-"}</p>
           </div>
         </div>
       </div>
@@ -519,6 +595,204 @@ const Profile = () => {
               autoClose={2000}
               hideProgressBar
             />
+          </div>
+        </div>
+      )}
+      {editModal && (
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50">
+          <div className="bg-white p-8 rounded-xl w-[600px] max-h-[90vh] overflow-y-auto  shadow-lg relative">
+            {/* Close button */}
+            <button
+              onClick={() => setEditModal(false)}
+              className="absolute top-8 cursor-pointer right-3 text-gray-500 hover:text-black"
+            >
+              ✖
+            </button>
+
+            <h2 className="text-2xl font-bold mb-4">Edit Profile</h2>
+
+            <form
+              className="flex flex-col gap-4"
+              onSubmit={handleProfileUpdate}
+            >
+              {/* Profile Pic Upload */}
+              <div className="flex flex-col items-center mb-4">
+                <div className="relative">
+                  {previewPic ? (
+                    // Show uploaded or existing picture
+                    <img
+                      src={previewPic}
+                      alt="Profile Preview"
+                      className="w-24 h-24 rounded-full object-cover mb-2 border"
+                    />
+                  ) : (
+                    // Show first letter of name
+                    <div className="w-24 h-24 rounded-full bg-indigo-900 text-white flex items-center justify-center text-4xl font-bold mb-2 border">
+                      {profileData?.fullName?.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files[0];
+                      if (file) {
+                        setFormData({ ...formData, profilePic: file });
+                        setPreviewPic(URL.createObjectURL(file)); // live preview
+                      }
+                    }}
+                    className="hidden"
+                    id="profilePicInput"
+                  />
+                  <label
+                    htmlFor="profilePicInput"
+                    className="absolute bottom-0 right-0 bg-blue-500 text-white text-xs px-2 py-1 rounded cursor-pointer"
+                  >
+                    Change
+                  </label>
+                </div>
+              </div>
+
+              {/* Work */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-semibold">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.fullName}
+                    onChange={(e) =>
+                      setFormData({ ...formData, fullName: e.target.value })
+                    }
+                    className="border w-full p-2 rounded-md"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold">Work</label>
+                  <input
+                    type="text"
+                    value={formData.work}
+                    onChange={(e) =>
+                      setFormData({ ...formData, work: e.target.value })
+                    }
+                    className="border w-full p-2 rounded-md"
+                  />
+                </div>
+              </div>
+              {/* About */}
+              <div>
+                <label className="block text-sm font-semibold">About</label>
+                <textarea
+                  value={formData.about}
+                  onChange={(e) =>
+                    setFormData({ ...formData, about: e.target.value })
+                  }
+                  className="border w-full p-2 rounded-md h-24"
+                />
+              </div>
+
+              {/* Country + City */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-semibold">Country</label>
+                  <input
+                    type="text"
+                    value={formData.country}
+                    onChange={(e) =>
+                      setFormData({ ...formData, country: e.target.value })
+                    }
+                    className="border w-full p-2 rounded-md"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold">City</label>
+                  <input
+                    type="text"
+                    value={formData.city}
+                    onChange={(e) =>
+                      setFormData({ ...formData, city: e.target.value })
+                    }
+                    className="border w-full p-2 rounded-md"
+                  />
+                </div>
+              </div>
+
+              {/* Street */}
+              <div>
+                <label className="block text-sm font-semibold">Street</label>
+                <input
+                  type="text"
+                  value={formData.street}
+                  onChange={(e) =>
+                    setFormData({ ...formData, street: e.target.value })
+                  }
+                  className="border w-full p-2 rounded-md"
+                />
+              </div>
+
+              {/* Skills */}
+              <div>
+                <label className="block text-sm font-semibold">Skills</label>
+                <Select
+                  isMulti
+                  name="skills"
+                  options={skillsOptions}
+                  value={formData.skills.map((s) => ({ value: s, label: s }))}
+                  onChange={(selected) =>
+                    setFormData({
+                      ...formData,
+                      skills: selected.map((s) => s.value),
+                    })
+                  }
+                  className="text-sm w-[500px]"
+                  styles={{
+                    control: (base) => ({
+                      ...base,
+                      borderWidth: "2px",
+                      borderRadius: "12px",
+                      borderColor: "#B7B7B7",
+                      padding: "1px 6px",
+                      boxShadow: "none",
+                      "&:hover": { borderColor: "#6B7280" },
+                    }),
+                    multiValue: (base) => ({
+                      ...base,
+                      borderWidth: "2px",
+                      borderRadius: "9999px",
+                      borderColor: "#000000",
+                      backgroundColor: "#FFFFFF",
+                      padding: "0px 8px",
+                      "&:hover": { backgroundColor: "#EEEEEE" },
+                    }),
+                    multiValueLabel: (base) => ({
+                      ...base,
+                      color: "#000000", // Tailwind blue-900
+                      fontWeight: "500",
+                    }),
+                    multiValueRemove: (base) => ({
+                      ...base,
+                      borderRadius: "9999px",
+                      color: "black",
+                      "&:hover": {
+                        backgroundColor: "#EEEEEE",
+                        cursor: "pointer",
+                        color: "#000000",
+                      },
+                    }),
+                  }}
+                />
+              </div>
+
+              {/* Save */}
+              <button
+                type="submit"
+                disabled={submitting}
+                className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
+              >
+                {submitting ? "Saving..." : "Save Changes"}
+              </button>
+            </form>
           </div>
         </div>
       )}

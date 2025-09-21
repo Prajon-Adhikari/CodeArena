@@ -23,6 +23,24 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    work:{
+      type: String,
+    },
+    country:{
+      type:String,
+    },
+    city:{
+      type: String,
+    },
+    street: {
+      type: String,
+    },
+    about:{
+      type: String,
+    },
+    skills:{
+      type: [String]
+    }
   },
   { timestamps: true }
 );
