@@ -143,9 +143,20 @@ export const getOverallJudgingScores = async (req, res) => {
       return res.status(404).json({ message: "No judging scores found" });
     }
 
+    const project = await SubmittedProject.findById(projectId);
+
+    const hackathonId = project.hackathonId;
+
+    const hackathon = await Hackathon.findOne({
+      _id: hackathonId
+    });
+
+    const judgeLength = hackathon.judges.length;
+
     res.status(200).json({
       message: "Overall average judging scores",
       overall: result[0],
+      judgeLength
     });
   } catch (error) {
     console.log("Internal error while fetching overall judging scores", error);

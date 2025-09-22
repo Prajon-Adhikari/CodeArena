@@ -41,6 +41,7 @@ export default function SpecificProject() {
   const [manuallyOpened, setManuallyOpened] = useState(false);
   const [isJudgingAlreadyExist, setIsJudgingAlreadyExist] = useState(false);
   const [isJudgedHackathon, setIsJudgedHackathon] = useState(false);
+  const [totalJudge, setTotalJudge] = useState(0);
 
   const [scores, setScores] = useState([
     { label: "Innovation", value: 0 },
@@ -165,6 +166,7 @@ export default function SpecificProject() {
         const data = await response.json();
         if (data.overall) {
           setOverallScores(data.overall);
+          setTotalJudge(data.judgeLength);
         }
       } catch (error) {
         console.log("Error while fetching overall judging score");
@@ -302,7 +304,7 @@ export default function SpecificProject() {
                 Average Total Score: {overallScores.avgTotalScore}/50
               </p>
               <p className="text-sm text-gray-500">
-                Judged by {overallScores.judgesCount}{" "}
+                Judged by {overallScores.judgesCount}{" "} out of {totalJudge}{" "}
                 {overallScores.judgesCount === 1 ? "judge" : "judges"}
               </p>
             </div>

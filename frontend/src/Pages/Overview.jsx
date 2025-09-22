@@ -90,6 +90,8 @@ export default function Overview() {
       const submissionEnd = moment(hackathon.endDate, "YYYY-MM-DD")
         .add(1, "days")
         .toDate();
+      const judgingStart = moment(submissionEnd).toDate();
+      const judgingEnd = moment(judgingStart).add(7, "days").toDate();
 
       setEvents([
         {
@@ -101,6 +103,11 @@ export default function Overview() {
           title: "Submission Period",
           start: submissionStart,
           end: submissionEnd,
+        },
+        {
+          title: "Judging Period",
+          start: judgingStart,
+          end: judgingEnd,
         },
       ]);
       setCurrentDate(registrationStart);

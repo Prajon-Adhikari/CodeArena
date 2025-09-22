@@ -135,7 +135,14 @@ export const getSpecificHackathonDetails = async (req, res) => {
 
     const participants = await JoinedHackathon.find({ hackathonId: id });
 
-    if (isHostedHackathon || isJudgedHackathon) {
+    const now = new Date();
+const endDate = new Date(hackathon.endDate);
+const judgingEndDate = new Date(endDate);
+judgingEndDate.setDate(judgingEndDate.getDate() + 7);
+
+    let submittedProjects = [];
+
+    if (isHostedHackathon || isJudgedHackathon || now >= judgingEndDate) {
       const submittedProjects = await SubmittedProject.find({ hackathonId: id })
         .populate("tags", "fullName email") // tags = team members
         .lean();
@@ -203,6 +210,7 @@ export const getSpecificHackathonDetails = async (req, res) => {
         participants,
         isHostedHackathon: false,
         isJudgedHackathon,
+        submittedProjects
       });
     }
   } catch (error) {

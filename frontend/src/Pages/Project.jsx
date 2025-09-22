@@ -40,6 +40,7 @@ export default function Project() {
   const [isMyHostedHackathon, setIsMyHostedHackathon] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState("");
+  const [isJudgingEnded, setIsJudgingEnded] = useState(false);
 
   const tabs = [
     { path: "overview", label: "Overview" },
@@ -67,10 +68,7 @@ export default function Project() {
         setHackathon(data.hackathon);
         setIsMyHostedHackathon(data.isHostedHackathon || false);
         setIsJudgedHackathon(data.isJudgedHackathon);
-        if (data.isHostedHackathon || data.isJudgedHackathon) {
-          setFetchSubmittedProjects(data.submittedProjects || []);
-        }
-        console.log(data.submittedProjects);
+        setFetchSubmittedProjects(data.submittedProjects || []);
       } catch (error) {
         console.log("Failed to fetch hackathon", error);
       }
@@ -178,6 +176,16 @@ export default function Project() {
     );
   });
 
+  useEffect(() => {
+    if (hackathon.endDate) {
+      const endDate = new Date(hackathon.endDate);
+      const judgingEndDate = new Date(endDate);
+      judgingEndDate.setDate(judgingEndDate.getDate() + 7); // 7 days after endDate
+      const now = new Date();
+      setIsJudgingEnded(now >= judgingEndDate);
+    }
+  }, [hackathon.endDate]);
+
   return (
     <div className="pt-[60px] pb-10 relative">
       {submitting && (
@@ -210,9 +218,16 @@ export default function Project() {
           ))}
         </div>
       </div>
-      {isMyHostedHackathon ? (
+      {isMyHostedHackathon || isJudgedHackathon || isJudgingEnded ? (
         <>
           <div className="px-[100px] py-20 ">
+            {isJudgingEnded && (
+              <>
+                <p className="text-3xl font-bold text-gray-700 mx-[90px] mb-10 bg-orange-300 inline-block px-10 py-2 rounded-xl">
+                  Judging has finished. Check the results below!
+                </p>
+              </>
+            )}
             {fetchSubmittedProjects.length !== 0 ? (
               <>
                 <h2 className="text-4xl font-bold pl-22 mb-8">
@@ -244,24 +259,62 @@ export default function Project() {
                         </thead>
                         <tbody>
                           {fetchSubmittedProjects
-                            .slice() // create a copy to avoid mutating state
+                            .slice()
                             .sort((a, b) => {
-                              const avgA =
-                                a.judging && a.judging.length > 0
-                                  ? a.judging.reduce(
+                              const getAvgTotal = (proj) =>
+                                proj.judging && proj.judging.length > 0
+                                  ? proj.judging.reduce(
                                       (sum, j) => sum + j.totalScore,
                                       0
-                                    ) / a.judging.length
+                                    ) / proj.judging.length
                                   : 0;
-                              const avgB =
-                                b.judging && b.judging.length > 0
-                                  ? b.judging.reduce(
-                                      (sum, j) => sum + j.totalScore,
-                                      0
-                                    ) / b.judging.length
-                                  : 0;
-                              return avgB - avgA; // descending order
+
+                              const avgA = getAvgTotal(a);
+                              const avgB = getAvgTotal(b);
+
+                              if (avgB === avgA) {
+                                // Tie-breaker by criteria priority
+                                const criteriaOrder = [
+                                  "innovation",
+                                  "technical",
+                                  "design",
+                                  "impact",
+                                  "presentation",
+                                ];
+
+                                for (let criterion of criteriaOrder) {
+                                  const scoreA =
+                                    a.judging && a.judging.length > 0
+                                      ? a.judging.reduce(
+                                          (sum, j) =>
+                                            sum +
+                                            ((j.criteria &&
+                                              j.criteria[criterion]) ||
+                                              0),
+                                          0
+                                        ) / a.judging.length
+                                      : 0;
+                                  const scoreB =
+                                    b.judging && b.judging.length > 0
+                                      ? b.judging.reduce(
+                                          (sum, j) =>
+                                            sum +
+                                            ((j.criteria &&
+                                              j.criteria[criterion]) ||
+                                              0),
+                                          0
+                                        ) / b.judging.length
+                                      : 0;
+
+                                  if (scoreB !== scoreA) return scoreB - scoreA; // higher priority wins
+                                }
+
+                                return 0; // all criteria equal
+                              }
+
+                              return avgB - avgA; // primary sort by avg score
                             })
+
                             .map((project, index) => {
                               const avgScore =
                                 project.judging && project.judging.length > 0
@@ -391,361 +444,178 @@ export default function Project() {
             )}
           </div>
         </>
-      ) : isJudgedHackathon ? (
-        <>
-          <div className="px-[100px] py-20 ">
-            {fetchSubmittedProjects.length !== 0 ? (
-              <>
-                <h2 className="text-4xl font-bold pl-22">Submitted Projects</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-20 px-20 mt-15">
-                  {fetchSubmittedProjects.map((project, index) => (
-                    <>
-                      <Link
-                        to={`/project/${project._id}`}
-                        state={{ from: location.pathname }}
-                      >
-                        <div
-                          key={index}
-                          className="rounded-xl h-[520px] shadow-[0px_0px_4px_gray] hover:shadow-[0px_0px_10px_gray] cursor-pointer p-2 pb-4 overflow-hidden bg-white"
-                        >
-                          <div
-                            className={`min-h-48 flex  items-center justify-center mb-4`}
-                          >
-                            {project?.videos?.map((vdo, index) => (
-                              <video
-                                key={index}
-                                src={vdo.url} // Cloudinary URL
-                                alt={`Project Image ${index + 1}`}
-                                className="w-[640px] h-[200px] rounded-lg border-1 border-gray-400"
-                              />
-                            ))}
-                          </div>
-
-                          <div className="mt-2 px-2">
-                            {/* Team Name */}
-                            <div className=" text-gray-800 font-bold text-lg">
-                              Team: {project.teamName || "N/A"}
-                            </div>
-                            <div className=" flex flex-wrap">
-                              {project?.tags?.map((member, index) => (
-                                <span
-                                  key={index}
-                                  className="border-2 mr-4 px-4 py-1 mt-3 rounded-3xl text-sm"
-                                >
-                                  {member.fullName}
-                                </span>
-                              ))}
-                            </div>
-                            <h3 className="mt-4 font-bold text-lg leading-tight pl-1 line-clamp-2">
-                              {project.projectTitle}
-                            </h3>
-                            <div className="pt-2 pl-1 pr-2 text-gray-700 line-clamp-3">
-                              {project.projectDescription}
-                            </div>
-                            <div className="flex justify-between pt-4 pl-1 pr-5 items-center">
-                              <button className="text-orange-500">
-                                Learn More &rarr;
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </Link>
-                    </>
-                  ))}
-                </div>
-              </>
-            ) : (
-              <>
-                <div>
-                  <div className="flex flex-col items-center">
-                    <img src={folder} alt="" className="w-[220px] h-[220px]" />
-                    <p className="font-bold text-2xl">
-                      No projects submitted yet, When project submitted it
-                      appears here
-                    </p>
-                  </div>
-                </div>
-              </>
-            )}
+      ) : !isRegistered ? (
+        <div className="flex flex-col items-center  mt-30 mb-10">
+          <div className="text-5xl pb-10 font-bold text-gray-700">
+            You haven't joined hackathon yet.
           </div>
-        </>
+          <Link to={`/${id}/overview`}>
+            <button className="bg-blue-400 text-white px-8 py-3 text-2xl rounded-md cursor-pointer">
+              Join Hackathon Now
+            </button>
+          </Link>
+        </div>
       ) : (
-        <>
-          {!isRegistered ? (
-            <div className="flex flex-col items-center  mt-30 mb-10">
-              <div className="text-5xl pb-10 font-bold text-gray-700">
-                You haven't joined hackathon yet.
+        <div className="px-[120px] py-20 ">
+          {loadingProject ? (
+            <div className="flex justify-center items-center h-[300px]">
+              <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-500"></div>
+            </div>
+          ) : submittedProject ? (
+            <div className="flex gap-30">
+              <div className="w-[710px]">
+                {submittedProject?.videos?.map((video, index) => (
+                  <video
+                    key={index}
+                    src={video.url}
+                    controls
+                    className="w-[640px] rounded-lg border mb-4"
+                  />
+                ))}
+                <h2 className="font-bold text-4xl pt-4">
+                  {submittedProject.projectTitle}
+                </h2>
+                <div className="text-xl pt-3 text-gray-800">
+                  {submittedProject.projectDescription}
+                </div>
               </div>
-              <Link to={`/${id}/overview`}>
-                <button className="bg-blue-400 text-white px-8 py-3 text-2xl rounded-md cursor-pointer">
-                  Join Hackathon Now
-                </button>
-              </Link>
+              <div className="pt-3 w-[500px]">
+                <h3 className="font-bold text-3xl">Technologies Used</h3>
+                <div className="pt-3 flex flex-wrap">
+                  {submittedProject?.tech?.map((t, index) => {
+                    return (
+                      <span
+                        key={index}
+                        className="border-2 mr-4 px-6 py-1 mt-3 capitalize rounded-3xl text-xl"
+                      >
+                        {t}
+                      </span>
+                    );
+                  })}
+                </div>
+                <h3 className="font-bold text-3xl mt-10">Tags</h3>
+                <div className="pt-3 flex flex-wrap">
+                  {submittedProject?.tags?.map((t, index) => {
+                    return (
+                      <span
+                        key={index}
+                        className="border-2 mr-4 px-6 py-1 mt-3 rounded-3xl text-xl"
+                      >
+                        {t.fullName}
+                      </span>
+                    );
+                  })}
+                </div>
+                <div className="pt-10">
+                  {submittedProject.githubLink && (
+                    <div className="border p-4 rounded-lg shadow-md bg-gray-50">
+                      <h2 className="text-gray-700 font-semibold">
+                        Github Link
+                      </h2>
+                      <a
+                        href={submittedProject.githubLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline break-all"
+                      >
+                        {submittedProject.githubLink}
+                      </a>
+                    </div>
+                  )}
+                </div>
+                <div className="pt-10">
+                  {submittedProject.projectLink && (
+                    <div className="border p-4 rounded-lg shadow-md bg-gray-50">
+                      <h2 className="text-gray-700 font-semibold">
+                        Project Link
+                      </h2>
+                      <a
+                        href={submittedProject.projectLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline break-all"
+                      >
+                        {submittedProject.projectLink}
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           ) : (
-            <div className="px-[120px] py-20 ">
-              {loadingProject ? (
-                <div className="flex justify-center items-center h-[300px]">
-                  <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-500"></div>
-                </div>
-              ) : submittedProject ? (
-                <div className="flex gap-30">
-                  <div className="w-[710px]">
-                    {submittedProject?.videos?.map((video, index) => (
-                      <video
-                        key={index}
-                        src={video.url}
-                        controls
-                        className="w-[640px] rounded-lg border mb-4"
-                      />
-                    ))}
-                    <h2 className="font-bold text-4xl pt-4">
-                      {submittedProject.projectTitle}
-                    </h2>
-                    <div className="text-xl pt-3 text-gray-800">
-                      {submittedProject.projectDescription}
-                    </div>
-                  </div>
-                  <div className="pt-3 w-[500px]">
-                    <h3 className="font-bold text-3xl">Technologies Used</h3>
-                    <div className="pt-3 flex flex-wrap">
-                      {submittedProject?.tech?.map((t, index) => {
-                        return (
-                          <span
-                            key={index}
-                            className="border-2 mr-4 px-6 py-1 mt-3 capitalize rounded-3xl text-xl"
-                          >
-                            {t}
-                          </span>
-                        );
-                      })}
-                    </div>
-                    <h3 className="font-bold text-3xl mt-10">Tags</h3>
-                    <div className="pt-3 flex flex-wrap">
-                      {submittedProject?.tags?.map((t, index) => {
-                        return (
-                          <span
-                            key={index}
-                            className="border-2 mr-4 px-6 py-1 mt-3 rounded-3xl text-xl"
-                          >
-                            {t.fullName}
-                          </span>
-                        );
-                      })}
-                    </div>
-                    <div className="pt-10">
-                      {submittedProject.githubLink && (
-                        <div className="border p-4 rounded-lg shadow-md bg-gray-50">
-                          <h2 className="text-gray-700 font-semibold">
-                            Github Link
-                          </h2>
-                          <a
-                            href={submittedProject.githubLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:underline break-all"
-                          >
-                            {submittedProject.githubLink}
-                          </a>
-                        </div>
-                      )}
-                    </div>
-                    <div className="pt-10">
-                      {submittedProject.projectLink && (
-                        <div className="border p-4 rounded-lg shadow-md bg-gray-50">
-                          <h2 className="text-gray-700 font-semibold">
-                            Project Link
-                          </h2>
-                          <a
-                            href={submittedProject.projectLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:underline break-all"
-                          >
-                            {submittedProject.projectLink}
-                          </a>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <>
-                  <h1 className="text-4xl font-bold pl-22">
-                    Submit Your Project
-                  </h1>
-                  <form
-                    action=""
-                    onSubmit={handleProjectSubmission}
-                    className="mt-16 text-2xl flex flex-col items-center"
+            <>
+              <h1 className="text-4xl font-bold pl-22">Submit Your Project</h1>
+              <form
+                action=""
+                onSubmit={handleProjectSubmission}
+                className="mt-16 text-2xl flex flex-col items-center"
+              >
+                <div className="flex flex-col">
+                  <label
+                    htmlFor="projectTitle"
+                    className="font-semibold px-2 py-1"
                   >
-                    <div className="flex flex-col">
-                      <label
-                        htmlFor="projectTitle"
-                        className="font-semibold px-2 py-1"
-                      >
-                        Project Title
-                      </label>
-                      <input
-                        type="text"
-                        id="projectTitle"
-                        placeholder="Enter your project title"
-                        name="projectTitle"
-                        value={projectTitle}
-                        onChange={(e) => setProjectTitle(e.target.value)}
-                        autoComplete="off"
-                        className="border-2 border-[#B7B7B7] w-[1100px] text-lg px-4 py-3 rounded-xl"
-                      />
-                    </div>
-                    <div className="flex gap-15">
-                      <div>
-                        <div className="flex flex-col pt-12">
-                          <label
-                            htmlFor="projectDescription"
-                            className="font-semibold px-1 py-1"
-                          >
-                            Description
-                          </label>
-                          <textarea
-                            name="projectDescription"
-                            id="projectDescription"
-                            value={projectDescription}
-                            onChange={(e) =>
-                              setProjectDescription(e.target.value)
-                            }
-                            placeholder="Briefy describe your project's goals, your solutions and impact you made here ... "
-                            className="border-2 border-[#B7B7B7] w-[560px] min-h-[260px] text-xl px-4 py-2 rounded-xl"
-                          ></textarea>
-                        </div>
-
-                        <div className="flex flex-col pt-12">
-                          <label
-                            htmlFor="tags"
-                            className="font-semibold px-1 py-1"
-                          >
-                            Tags ( sent invite to your friends )
-                          </label>
-                          <Select
-                            isMulti
-                            name="tags"
-                            options={tagsOptions}
-                            value={selectedTags}
-                            onChange={setSelectedTags}
-                            placeholder="Mention your team members..."
-                            className="text-[18px] w-[560px]"
-                            formatOptionLabel={(option) => (
-                              <div className="flex items-center gap-3">
-                                {option.profilePic ? (
-                                  <img
-                                    src={option.profilePic}
-                                    alt={option.label}
-                                    className="w-8 h-8 rounded-full object-cover"
-                                  />
-                                ) : (
-                                  <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-sm">
-                                    {option.label[0]}{" "}
-                                    {/* fallback: first letter of name */}
-                                  </div>
-                                )}
-                                <span>{option.label}</span>
-                              </div>
-                            )}
-                            styles={{
-                              control: (base) => ({
-                                ...base,
-                                borderWidth: "2px",
-                                borderRadius: "12px",
-                                borderColor: "#B7B7B7",
-                                padding: "7px 6px",
-                                boxShadow: "none",
-                                "&:hover": { borderColor: "#6B7280" },
-                              }),
-                              multiValue: (base) => ({
-                                ...base,
-                                borderWidth: "2px",
-                                borderRadius: "9999px",
-                                borderColor: "#000000",
-                                backgroundColor: "#FFFFFF",
-                                padding: "1px 8px",
-                                "&:hover": { backgroundColor: "#EEEEEE" },
-                              }),
-                              multiValueLabel: (base) => ({
-                                ...base,
-                                color: "#000000", // Tailwind blue-900
-                                fontWeight: "500",
-                              }),
-                              multiValueRemove: (base) => ({
-                                ...base,
-                                borderRadius: "9999px",
-                                color: "black",
-                                "&:hover": {
-                                  backgroundColor: "#EEEEEE",
-                                  cursor: "pointer",
-                                  color: "#000000",
-                                },
-                              }),
-                            }}
-                          />{" "}
-                        </div>
-                      </div>
-                      <div className="border-2 border-dotted border-gray-400 h-[380px] w-[480px] flex justify-center flex-col items-center p-10 mt-22 rounded-3xl relative">
-                        {!selectedVideo ? (
-                          <>
-                            <label
-                              htmlFor="videoUpload"
-                              className="cursor-pointer flex items-center gap-4 border-1 border-dotted px-5 py-5 rounded-full w-fit hover:bg-gray-50 "
-                            >
-                              <FontAwesomeIcon
-                                icon={faVideo}
-                                className="text-2xl"
-                              />
-                            </label>
-                            <p className="text-lg pt-3">Upload a video</p>
-                            <input
-                              type="file"
-                              id="videoUpload"
-                              name="video"
-                              accept="video/*"
-                              className="hidden"
-                              onChange={(e) =>
-                                setSelectedVideo(e.target.files[0])
-                              }
-                            />
-                          </>
-                        ) : (
-                          <div className="relative">
-                            {/* Cross button */}
-                            <button
-                              type="button"
-                              onClick={() => setSelectedVideo(null)}
-                              className="absolute -top-3 -right-3 cursor-pointer  text-black font-semibold bg-gray-200 rounded-full px-2 py-1 flex items-center justify-center text-sm"
-                            >
-                              ✕
-                            </button>
-
-                            <div className="w-[400px] h-[300px] rounded-xl border overflow-hidden">
-                              <video
-                                src={URL.createObjectURL(selectedVideo)}
-                                controls
-                                className="w-full h-full object-cover"
-                              />
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
+                    Project Title
+                  </label>
+                  <input
+                    type="text"
+                    id="projectTitle"
+                    placeholder="Enter your project title"
+                    name="projectTitle"
+                    value={projectTitle}
+                    onChange={(e) => setProjectTitle(e.target.value)}
+                    autoComplete="off"
+                    className="border-2 border-[#B7B7B7] w-[1100px] text-lg px-4 py-3 rounded-xl"
+                  />
+                </div>
+                <div className="flex gap-15">
+                  <div>
                     <div className="flex flex-col pt-12">
-                      <label htmlFor="tech" className="font-semibold px-1 py-1">
-                        Technologies Used
+                      <label
+                        htmlFor="projectDescription"
+                        className="font-semibold px-1 py-1"
+                      >
+                        Description
+                      </label>
+                      <textarea
+                        name="projectDescription"
+                        id="projectDescription"
+                        value={projectDescription}
+                        onChange={(e) => setProjectDescription(e.target.value)}
+                        placeholder="Briefy describe your project's goals, your solutions and impact you made here ... "
+                        className="border-2 border-[#B7B7B7] w-[560px] min-h-[260px] text-xl px-4 py-2 rounded-xl"
+                      ></textarea>
+                    </div>
+
+                    <div className="flex flex-col pt-12">
+                      <label htmlFor="tags" className="font-semibold px-1 py-1">
+                        Tags ( sent invite to your friends )
                       </label>
                       <Select
                         isMulti
-                        name="tech"
-                        options={skillsOptions}
-                        value={selectedSkills}
-                        onChange={setSelectedSkills}
-                        placeholder="Mention techs you used..."
-                        className="text-[18px] w-[1100px]"
+                        name="tags"
+                        options={tagsOptions}
+                        value={selectedTags}
+                        onChange={setSelectedTags}
+                        placeholder="Mention your team members..."
+                        className="text-[18px] w-[560px]"
+                        formatOptionLabel={(option) => (
+                          <div className="flex items-center gap-3">
+                            {option.profilePic ? (
+                              <img
+                                src={option.profilePic}
+                                alt={option.label}
+                                className="w-8 h-8 rounded-full object-cover"
+                              />
+                            ) : (
+                              <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-sm">
+                                {option.label[0]}{" "}
+                                {/* fallback: first letter of name */}
+                              </div>
+                            )}
+                            <span>{option.label}</span>
+                          </div>
+                        )}
                         styles={{
                           control: (base) => ({
                             ...base,
@@ -781,69 +651,160 @@ export default function Project() {
                             },
                           }),
                         }}
-                      />
+                      />{" "}
                     </div>
-                    <div className="flex pt-12 gap-10">
-                      <div className="flex flex-col">
+                  </div>
+                  <div className="border-2 border-dotted border-gray-400 h-[380px] w-[480px] flex justify-center flex-col items-center p-10 mt-22 rounded-3xl relative">
+                    {!selectedVideo ? (
+                      <>
                         <label
-                          htmlFor="githublink"
-                          className="font-semibold px-2 py-1"
+                          htmlFor="videoUpload"
+                          className="cursor-pointer flex items-center gap-4 border-1 border-dotted px-5 py-5 rounded-full w-fit hover:bg-gray-50 "
                         >
-                          Github Link
+                          <FontAwesomeIcon
+                            icon={faVideo}
+                            className="text-2xl"
+                          />
                         </label>
+                        <p className="text-lg pt-3">Upload a video</p>
                         <input
-                          type="text"
-                          id="githublink"
-                          placeholder="Ex- https://www.github.com/example"
-                          name="githubLink"
-                          value={githubLink}
-                          onChange={(e) => setGithubLink(e.target.value)}
-                          autoComplete="off"
-                          className="border-2 border-[#B7B7B7] w-[560px] text-lg px-4 py-3 rounded-xl"
+                          type="file"
+                          id="videoUpload"
+                          name="video"
+                          accept="video/*"
+                          className="hidden"
+                          onChange={(e) => setSelectedVideo(e.target.files[0])}
                         />
-                      </div>
-                      <div className="flex flex-col">
-                        <label
-                          htmlFor="projectLink"
-                          className="font-semibold px-2 py-1"
+                      </>
+                    ) : (
+                      <div className="relative">
+                        {/* Cross button */}
+                        <button
+                          type="button"
+                          onClick={() => setSelectedVideo(null)}
+                          className="absolute -top-3 -right-3 cursor-pointer  text-black font-semibold bg-gray-200 rounded-full px-2 py-1 flex items-center justify-center text-sm"
                         >
-                          Project Link
-                        </label>
-                        <input
-                          type="text"
-                          id="projectLink"
-                          placeholder="Enter your live project link"
-                          name="projectLink"
-                          value={projectLink}
-                          onChange={(e) => setProjectLink(e.target.value)}
-                          autoComplete="off"
-                          className="border-2 border-[#B7B7B7] w-[500px] text-lg px-4 py-3 rounded-xl"
-                        />
+                          ✕
+                        </button>
+
+                        <div className="w-[400px] h-[300px] rounded-xl border overflow-hidden">
+                          <video
+                            src={URL.createObjectURL(selectedVideo)}
+                            controls
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex justify-end px-30 pt-10 w-full">
-                      <input
-                        type="submit"
-                        value={submitting ? "Submitting..." : "Submit Project"}
-                        disabled={submitting}
-                        className={`mt-12 cursor-pointer hover:bg-blue-300 bg-blue-400 text-white py-3 px-10 rounded-sm ${
-                          submitting ? "opacity-50 cursor-not-allowed" : ""
-                        }`}
-                      />
-                    </div>
-                  </form>
-                </>
-              )}
-            </div>
+                    )}
+                  </div>
+                </div>
+                <div className="flex flex-col pt-12">
+                  <label htmlFor="tech" className="font-semibold px-1 py-1">
+                    Technologies Used
+                  </label>
+                  <Select
+                    isMulti
+                    name="tech"
+                    options={skillsOptions}
+                    value={selectedSkills}
+                    onChange={setSelectedSkills}
+                    placeholder="Mention techs you used..."
+                    className="text-[18px] w-[1100px]"
+                    styles={{
+                      control: (base) => ({
+                        ...base,
+                        borderWidth: "2px",
+                        borderRadius: "12px",
+                        borderColor: "#B7B7B7",
+                        padding: "7px 6px",
+                        boxShadow: "none",
+                        "&:hover": { borderColor: "#6B7280" },
+                      }),
+                      multiValue: (base) => ({
+                        ...base,
+                        borderWidth: "2px",
+                        borderRadius: "9999px",
+                        borderColor: "#000000",
+                        backgroundColor: "#FFFFFF",
+                        padding: "1px 8px",
+                        "&:hover": { backgroundColor: "#EEEEEE" },
+                      }),
+                      multiValueLabel: (base) => ({
+                        ...base,
+                        color: "#000000", // Tailwind blue-900
+                        fontWeight: "500",
+                      }),
+                      multiValueRemove: (base) => ({
+                        ...base,
+                        borderRadius: "9999px",
+                        color: "black",
+                        "&:hover": {
+                          backgroundColor: "#EEEEEE",
+                          cursor: "pointer",
+                          color: "#000000",
+                        },
+                      }),
+                    }}
+                  />
+                </div>
+                <div className="flex pt-12 gap-10">
+                  <div className="flex flex-col">
+                    <label
+                      htmlFor="githublink"
+                      className="font-semibold px-2 py-1"
+                    >
+                      Github Link
+                    </label>
+                    <input
+                      type="text"
+                      id="githublink"
+                      placeholder="Ex- https://www.github.com/example"
+                      name="githubLink"
+                      value={githubLink}
+                      onChange={(e) => setGithubLink(e.target.value)}
+                      autoComplete="off"
+                      className="border-2 border-[#B7B7B7] w-[560px] text-lg px-4 py-3 rounded-xl"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <label
+                      htmlFor="projectLink"
+                      className="font-semibold px-2 py-1"
+                    >
+                      Project Link
+                    </label>
+                    <input
+                      type="text"
+                      id="projectLink"
+                      placeholder="Enter your live project link"
+                      name="projectLink"
+                      value={projectLink}
+                      onChange={(e) => setProjectLink(e.target.value)}
+                      autoComplete="off"
+                      className="border-2 border-[#B7B7B7] w-[500px] text-lg px-4 py-3 rounded-xl"
+                    />
+                  </div>
+                </div>
+                <div className="flex justify-end px-30 pt-10 w-full">
+                  <input
+                    type="submit"
+                    value={submitting ? "Submitting..." : "Submit Project"}
+                    disabled={submitting}
+                    className={`mt-12 cursor-pointer hover:bg-blue-300 bg-blue-400 text-white py-3 px-10 rounded-sm ${
+                      submitting ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                  />
+                </div>
+              </form>
+            </>
           )}
-          ;
-          <ToastContainer
-            position="top-center"
-            autoClose={2000}
-            hideProgressBar={true}
-          />
-        </>
+        </div>
       )}
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={true}
+      />
     </div>
   );
 }
