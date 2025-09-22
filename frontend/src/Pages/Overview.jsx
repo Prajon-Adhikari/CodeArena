@@ -182,6 +182,10 @@ export default function Overview() {
     project.tags ? project.tags.length : 0
   );
 
+  const registrationDeadline = new Date(hackathon.registrationDeadline);
+  const today = new Date();
+  const registrationOpen = today <= registrationDeadline;
+
   return (
     <div className="pt-[60px] pb-10">
       <div>
@@ -784,23 +788,34 @@ export default function Overview() {
             <div className="w-[800px] ">
               <h1 className="text-4xl font-bold">{hackathon.title}</h1>
               <p className="text-[22px] pt-8">{hackathon.description}</p>
-              {isJudgedHackathon ? (
-                ""
-              ) : (
+              {!isJudgedHackathon && (
                 <>
-                  {!isRegistered ? (
-                    <a href="#registration">
-                      <button className="bg-blue-400 cursor-pointer text-white py-2.5 px-8 my-14 text-xl rounded-[4px] hover:bg-blue-300">
-                        Join Hackathon
+                  {registrationOpen ? (
+                    // Registration still open
+                    !isRegistered ? (
+                      <a href="#registration">
+                        <button className="bg-blue-400 cursor-pointer text-white py-2.5 px-8 my-14 text-xl rounded-[4px] hover:bg-blue-300">
+                          Join Hackathon
+                        </button>
+                      </a>
+                    ) : (
+                      <button
+                        onClick={handleUnregister}
+                        className="bg-orange-500 text-white cursor-pointer py-2.5 px-8 my-14 text-xl rounded-[4px] hover:bg-orange-400"
+                      >
+                        Unregister
                       </button>
-                    </a>
+                    )
                   ) : (
-                    <button
-                      onClick={() => setShowUnregisterConfirm(true)}
-                      className="bg-orange-500 text-white cursor-pointer py-2.5 px-8 my-14 text-xl rounded-[4px] hover:bg-orange-400"
-                    >
-                      Unregister
-                    </button>
+                    // Registration closed
+                    isRegistered && (
+                      <button
+                        className="bg-gray-400 text-white py-2.5 px-8 my-14 text-xl rounded-[4px]"
+                        disabled
+                      >
+                        Unregister (Disabled)
+                      </button>
+                    )
                   )}
                 </>
               )}
@@ -970,7 +985,7 @@ export default function Overview() {
             ""
           ) : (
             <>
-              {!isRegistered && (
+              {registrationOpen && !isRegistered && (
                 <div className="px-[140px] py-26 flex gap-30 items-center">
                   <form
                     action=""
