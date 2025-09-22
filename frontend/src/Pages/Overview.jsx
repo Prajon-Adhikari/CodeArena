@@ -124,6 +124,7 @@ export default function Overview() {
     }
   };
 
+
   const handleHackathonRegistration = async (e) => {
     e.preventDefault();
     try {
@@ -405,12 +406,13 @@ export default function Overview() {
                   options={{
                     chart: {
                       type: "bar",
-                      height: 350,
+                       height: 100,
                     },
                     plotOptions: {
                       bar: {
                         horizontal: true,
                         borderRadius: 6,
+                        barHeight: "40px",
                       },
                     },
                     dataLabels: {
@@ -428,7 +430,7 @@ export default function Overview() {
                     },
                   ]}
                   type="bar"
-                  height={200}
+                  height={300}
                   width={840}
                 />
               </div>

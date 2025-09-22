@@ -160,8 +160,18 @@ export default function Project() {
     }
   };
 
+  useEffect(() => {
+    document.body.style.overflow = submitting ? "hidden" : "auto";
+  }, [submitting]);
+
   return (
-    <div className="pt-[60px] pb-10">
+    <div className="pt-[60px] pb-10 relative">
+      {submitting && (
+        <div className="overlay">
+          <div className="loader"></div>
+          <p className="loader-text">Submitting...</p>
+        </div>
+      )}
       <div>
         {hackathon && hackathon.bannerUrl ? (
           <img src={hackathon.bannerUrl} />

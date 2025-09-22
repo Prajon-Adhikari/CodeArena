@@ -158,7 +158,7 @@ export default function AdminSpecificProject() {
                 </div>
               )}
             </div>
-            <div className="pt-3">
+            <div className="pt-3 w-[500px]">
               <h3 className="font-bold text-3xl">Technologies Used</h3>
               <div className="pt-3 flex flex-wrap">
                 {submittedProject?.tech?.map((t, index) => {
