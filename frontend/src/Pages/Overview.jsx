@@ -124,7 +124,6 @@ export default function Overview() {
     }
   };
 
-
   const handleHackathonRegistration = async (e) => {
     e.preventDefault();
     try {
@@ -186,7 +185,8 @@ export default function Overview() {
   const registrationStart = new Date(hackathon.registrationStart);
   const registrationDeadline = new Date(hackathon.registrationDeadline);
   const today = new Date();
-  const registrationOpen = today >= registrationStart && today <= registrationDeadline;
+  const registrationOpen =
+    today >= registrationStart && today <= registrationDeadline;
 
   const submissionEnded = new Date() > new Date(hackathon.endDate);
 
@@ -406,7 +406,7 @@ export default function Overview() {
                   options={{
                     chart: {
                       type: "bar",
-                       height: 100,
+                      height: 100,
                     },
                     plotOptions: {
                       bar: {

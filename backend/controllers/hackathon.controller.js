@@ -5,6 +5,7 @@ import Prize from "../models/prize.model.js";
 import Judge from "../models/judge.model.js";
 import Rules from "../models/rules.model.js";
 import SubmittedProject from "../models/submitedProject.model.js";
+import Judging from "../models/judging.model.js";
 
 export const hackathon = async (req, res) => {
   const organizerId = req.user._id;
@@ -150,6 +151,22 @@ export const getSpecificHackathonDetails = async (req, res) => {
         teamMap[record.userId.toString()] = record.teamName;
       });
 
+      const projectIds = submittedProjects.map((p) => p._id);
+      const judgings = await Judging.find({
+        projectId: { $in: projectIds },
+      }).lean();
+
+      const judgingMap = {};
+      judgings.forEach((j) => {
+        const pid = j.projectId.toString();
+        if (!judgingMap[pid]) judgingMap[pid] = [];
+        judgingMap[pid].push({
+          judgeId: j.judgeId,
+          criteria: j.criteria,
+          totalScore: j.totalScore,
+        });
+      });
+
       // Attach teamName to each project
       submittedProjects.forEach((project) => {
         const teamMemberIds =
@@ -158,6 +175,7 @@ export const getSpecificHackathonDetails = async (req, res) => {
           .map((uid) => teamMap[uid])
           .filter(Boolean);
         project.teamName = teamNames.length > 0 ? teamNames[0] : "N/A";
+        project.judging = judgingMap[project._id.toString()] || [];
       });
 
       return res.status(200).json({

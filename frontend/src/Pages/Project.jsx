@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useParams, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faVideo } from "@fortawesome/free-solid-svg-icons";
+import { faVideo, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
@@ -39,6 +39,8 @@ export default function Project() {
   const [fetchSubmittedProjects, setFetchSubmittedProjects] = useState([]);
   const [isMyHostedHackathon, setIsMyHostedHackathon] = useState(false);
 
+  const [searchTerm, setSearchTerm] = useState("");
+
   const tabs = [
     { path: "overview", label: "Overview" },
     { path: "myproject", label: "My Project" },
@@ -68,6 +70,7 @@ export default function Project() {
         if (data.isHostedHackathon || data.isJudgedHackathon) {
           setFetchSubmittedProjects(data.submittedProjects || []);
         }
+        console.log(data.submittedProjects);
       } catch (error) {
         console.log("Failed to fetch hackathon", error);
       }
@@ -164,6 +167,17 @@ export default function Project() {
     document.body.style.overflow = submitting ? "hidden" : "auto";
   }, [submitting]);
 
+  const filteredProjects = fetchSubmittedProjects.filter((project) => {
+    const search = searchTerm.toLowerCase();
+    return (
+      project.teamName?.toLowerCase().includes(search) ||
+      project.projectTitle?.toLowerCase().includes(search) ||
+      project.tags?.some((member) =>
+        member.fullName.toLowerCase().includes(search)
+      )
+    );
+  });
+
   return (
     <div className="pt-[60px] pb-10 relative">
       {submitting && (
@@ -201,9 +215,112 @@ export default function Project() {
           <div className="px-[100px] py-20 ">
             {fetchSubmittedProjects.length !== 0 ? (
               <>
-                <h2 className="text-4xl font-bold pl-22">Submitted Projects</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-20 px-20 mt-15">
-                  {fetchSubmittedProjects.map((project, index) => (
+                <h2 className="text-4xl font-bold pl-22 mb-8">
+                  Submitted Projects
+                </h2>
+                <div className="px-[80px]">
+                  {(fetchSubmittedProjects || []).length > 0 ? (
+                    <div className="overflow-x-auto border rounded-lg">
+                      <table className="min-w-full border-collapse">
+                        <thead className="bg-gray-200">
+                          <tr>
+                            <th className="py-3 px-6 text-left border-b">
+                              Rank
+                            </th>
+                            <th className="py-3 px-6 text-left border-b">
+                              Team Name
+                            </th>
+                            <th className="py-3 px-6 text-left border-b">
+                              Project Title
+                            </th>
+                            <th className="py-3 px-6 text-left border-b">
+                              Members
+                            </th>
+
+                            <th className="py-3 px-6 text-left border-b">
+                              Avg Score
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {fetchSubmittedProjects
+                            .slice() // create a copy to avoid mutating state
+                            .sort((a, b) => {
+                              const avgA =
+                                a.judging && a.judging.length > 0
+                                  ? a.judging.reduce(
+                                      (sum, j) => sum + j.totalScore,
+                                      0
+                                    ) / a.judging.length
+                                  : 0;
+                              const avgB =
+                                b.judging && b.judging.length > 0
+                                  ? b.judging.reduce(
+                                      (sum, j) => sum + j.totalScore,
+                                      0
+                                    ) / b.judging.length
+                                  : 0;
+                              return avgB - avgA; // descending order
+                            })
+                            .map((project, index) => {
+                              const avgScore =
+                                project.judging && project.judging.length > 0
+                                  ? (
+                                      project.judging.reduce(
+                                        (sum, j) => sum + j.totalScore,
+                                        0
+                                      ) / project.judging.length
+                                    ).toFixed(2)
+                                  : "N/A";
+
+                              return (
+                                <tr
+                                  key={project._id || index}
+                                  className="hover:bg-gray-100"
+                                >
+                                  <td className="py-3 px-6 border-b">
+                                    {index + 1}
+                                  </td>
+                                  <td className="py-3 px-6 border-b">
+                                    {project.teamName}
+                                  </td>
+                                  <td className="py-3 px-6 border-b capitalize">
+                                    {project.projectTitle}
+                                  </td>
+                                  <td className="py-3 px-6 border-b">
+                                    {project.tags.length}
+                                  </td>
+                                  <td className="py-3 px-6 border-b">
+                                    {avgScore}
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    <p className="text-gray-600 text-lg">No projects yet.</p>
+                  )}
+                </div>
+                <div className="flex items-center justify-between mr-24 mt-10 ml-20">
+                  <h2 className="text-3xl font-bold ">Projects Gallery</h2>
+                  <div className="border-gray-300 border-2 bg-white px-5 py-2 rounded-md flex items-center gap-4 focus-within:ring-1 focus-within:ring-gray-400">
+                    <FontAwesomeIcon
+                      icon={faMagnifyingGlass}
+                      className="text-sm text-gray-400"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Search a person ..."
+                      className=" w-[240px] outline-none"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-20 px-20 mt-10">
+                  {filteredProjects.map((project, index) => (
                     <>
                       <Link
                         to={`/project/${project._id}`}
