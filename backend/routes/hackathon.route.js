@@ -33,7 +33,7 @@ import { sentFriendRequest } from "../controllers/friendRequest.controller.js";
 import { getNotifications } from "../controllers/notifications.controller.js";
 import { acceptFriendRequest, rejectFriendRequest } from "../controllers/friendRequest.controller.js";
 import { getAllUsers, updateUser } from "../controllers/user.controllers.js";
-import { fetchFriends } from "../controllers/friend.controller.js";
+import { fetchFriends, fetchTagsFriend } from "../controllers/friend.controller.js";
 import { acceptProjectRequest, rejectProjectRequest } from "../controllers/projectRequest.controller.js";
 import { unfriendUser } from "../controllers/unfriend.controller.js";
 import { addJudgingScore, getJudgingScores, getOverallJudgingScores } from "../controllers/judging.controller.js";
@@ -52,6 +52,8 @@ router.get("/users",getAllUsers);
 router.put("/users", protectRoute, uploadImage, updateUser);
 
 router.get("/friends", protectRoute, fetchFriends);
+
+router.get("/tagfriends/:id", protectRoute, fetchTagsFriend);
 
 router.get("/profile", protectRoute, getPortfolioProject);
 

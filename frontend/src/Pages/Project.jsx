@@ -79,7 +79,7 @@ export default function Project() {
     const fetchFriends = async () => {
       try {
         const res = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/home/friends`,
+          `${import.meta.env.VITE_API_BASE_URL}/home/tagfriends/${id}`,
           {
             method: "GET",
             headers: { "Content-Type": "application/json" },
@@ -87,7 +87,7 @@ export default function Project() {
           }
         );
         const data = await res.json();
-        setTagsOptions(data.friends);
+        setTagsOptions(data.tagfriends);
       } catch (err) {
         console.error("Failed to fetch friends", err);
       }
@@ -135,7 +135,6 @@ export default function Project() {
       if (selectedVideo) {
         formData.append("video", selectedVideo);
       }
-
       const response = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/home/${id}/myproject`,
         formData,
@@ -235,7 +234,7 @@ export default function Project() {
                             <h3 className="mt-4 font-bold text-lg leading-tight pl-1 line-clamp-2">
                               {project.projectTitle}
                             </h3>
-                            <div className="pt-2 pl-1 pr-2 text-gray-700 line-clamp-3">
+                            <div className="pt-2 pl-1 pr-2 text-gray-700  line-clamp-3">
                               {project.projectDescription}
                             </div>
                             <div className="flex justify-between pt-4 pl-1 pr-5 items-center">
@@ -380,7 +379,7 @@ export default function Project() {
                       {submittedProject.projectDescription}
                     </div>
                   </div>
-                  <div className="pt-3">
+                  <div className="pt-3 w-[500px]">
                     <h3 className="font-bold text-3xl">Technologies Used</h3>
                     <div className="pt-3 flex flex-wrap">
                       {submittedProject?.tech?.map((t, index) => {
@@ -507,6 +506,23 @@ export default function Project() {
                             onChange={setSelectedTags}
                             placeholder="Mention your team members..."
                             className="text-[18px] w-[560px]"
+                            formatOptionLabel={(option) => (
+                              <div className="flex items-center gap-3">
+                                {option.profilePic ? (
+                                  <img
+                                    src={option.profilePic}
+                                    alt={option.label}
+                                    className="w-8 h-8 rounded-full object-cover"
+                                  />
+                                ) : (
+                                  <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-sm">
+                                    {option.label[0]}{" "}
+                                    {/* fallback: first letter of name */}
+                                  </div>
+                                )}
+                                <span>{option.label}</span>
+                              </div>
+                            )}
                             styles={{
                               control: (base) => ({
                                 ...base,

@@ -182,9 +182,12 @@ export default function Overview() {
     project.tags ? project.tags.length : 0
   );
 
+  const registrationStart = new Date(hackathon.registrationStart);
   const registrationDeadline = new Date(hackathon.registrationDeadline);
   const today = new Date();
-  const registrationOpen = today <= registrationDeadline;
+  const registrationOpen = today >= registrationStart && today <= registrationDeadline;
+
+  const submissionEnded = new Date() > new Date(hackathon.endDate);
 
   return (
     <div className="pt-[60px] pb-10">
@@ -790,33 +793,33 @@ export default function Overview() {
               <p className="text-[22px] pt-8">{hackathon.description}</p>
               {!isJudgedHackathon && (
                 <>
-                  {registrationOpen ? (
-                    // Registration still open
-                    !isRegistered ? (
-                      <a href="#registration">
-                        <button className="bg-blue-400 cursor-pointer text-white py-2.5 px-8 my-14 text-xl rounded-[4px] hover:bg-blue-300">
-                          Join Hackathon
+                  {!submissionEnded ? ( // ✅ if submission not ended
+                    registrationOpen ? (
+                      !isRegistered ? (
+                        <a href="#registration">
+                          <button className="bg-blue-400 cursor-pointer text-white py-2.5 px-8 my-14 text-xl rounded-[4px] hover:bg-blue-300">
+                            Join Hackathon
+                          </button>
+                        </a>
+                      ) : (
+                        <button
+                          onClick={() => setShowUnregisterConfirm(true)}
+                          className="bg-orange-500 text-white cursor-pointer py-2.5 px-8 my-14 text-xl rounded-[4px] hover:bg-orange-400"
+                        >
+                          Unregister
                         </button>
-                      </a>
+                      )
                     ) : (
-                      <button
-                        onClick={handleUnregister}
-                        className="bg-orange-500 text-white cursor-pointer py-2.5 px-8 my-14 text-xl rounded-[4px] hover:bg-orange-400"
-                      >
-                        Unregister
-                      </button>
+                      isRegistered && (
+                        <button
+                          className="bg-gray-400 text-white py-2.5 px-8 my-14 text-xl rounded-[4px]"
+                          disabled
+                        >
+                          Unregister (Disabled)
+                        </button>
+                      )
                     )
-                  ) : (
-                    // Registration closed
-                    isRegistered && (
-                      <button
-                        className="bg-gray-400 text-white py-2.5 px-8 my-14 text-xl rounded-[4px]"
-                        disabled
-                      >
-                        Unregister (Disabled)
-                      </button>
-                    )
-                  )}
+                  ) : null}
                 </>
               )}
             </div>
