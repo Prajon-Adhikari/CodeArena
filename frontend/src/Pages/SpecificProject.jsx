@@ -42,6 +42,9 @@ export default function SpecificProject() {
   const [isJudgingAlreadyExist, setIsJudgingAlreadyExist] = useState(false);
   const [isJudgedHackathon, setIsJudgedHackathon] = useState(false);
   const [totalJudge, setTotalJudge] = useState(0);
+  const [hackathon, setHackathon] = useState({});
+  const [isJudgingOpen, setIsJudgingOpen] = useState(false);
+
 
   const [scores, setScores] = useState([
     { label: "Innovation", value: 0 },
@@ -105,6 +108,8 @@ export default function SpecificProject() {
         );
         const data = await response.json();
         setSubmittedProject(data.submittedProject || {});
+        setHackathon(data.hackathon);
+        console.log(data.hackathon);
       } catch (error) {
         console.log("Error while fetching specific project", error);
       }
@@ -183,6 +188,23 @@ export default function SpecificProject() {
     );
   };
 
+  useEffect(() => {
+  if (hackathon?.endDate) {
+    const end = new Date(hackathon.endDate);
+    const now = new Date();
+    const diffDays = (now - end) / (1000 * 60 * 60 * 24);
+
+    console.log(hackathon.endDate);
+
+    // Allow judging before endDate OR within 7 days after endDate
+    if (now > end && (diffDays > 0 && diffDays <= 7)) {
+      setIsJudgingOpen(true);
+    } else {
+      setIsJudgingOpen(false);
+    }
+  }
+}, [hackathon]);
+
   return (
     <div className="mt-[140px] px-[140px] pb-20">
       <p className="font-semibold text-xl pb-10">
@@ -210,7 +232,7 @@ export default function SpecificProject() {
           <div className="text-xl pt-3 text-gray-800">
             {submittedProject.projectDescription}
           </div>
-          {!showJudging && !manuallyOpened && isJudgedHackathon && (
+          {!showJudging && !manuallyOpened && isJudgedHackathon && isJudgingOpen  && (
             <button
               onClick={() => {
                 setShowJudging(true);
@@ -236,7 +258,7 @@ export default function SpecificProject() {
 
               {error && <p className="text-red-500 mb-3">{error}</p>}
 
-              {isJudgedHackathon && (
+              {isJudgedHackathon && isJudgingOpen &&  (
                 <button
                   onClick={handleSubmit}
                   disabled={loading}

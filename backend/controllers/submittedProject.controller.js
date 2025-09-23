@@ -2,6 +2,7 @@ import SubmittedProject from "../models/submitedProject.model.js";
 import User from "../models/user.model.js";
 import Notification from "../models/notifications.model.js";
 import projectRequest from "../models/projectRequest.model.js";
+import Hackathon from "../models/hackathon.model.js"
 
 export const getSubmittedProject = async (req, res) => {
   try {
@@ -158,6 +159,10 @@ export const getSpecificProject = async (req, res) => {
       select: "fullName email",
     });
 
+    const hackathon = await Hackathon.findOne({
+      _id: submittedProject.hackathonId
+    })
+
     if (!submittedProject) {
       return res
         .status(400)
@@ -166,7 +171,7 @@ export const getSpecificProject = async (req, res) => {
 
     return res
       .status(200)
-      .json({ message: "Fetching specific project details", submittedProject });
+      .json({ message: "Fetching specific project details", submittedProject, hackathon });
   } catch (error) {
     console.log("Internal error while fetching specific project details");
     return res.status(500).json({
