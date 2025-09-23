@@ -52,16 +52,6 @@ export default function Menu() {
             </div>
           </Link>
           <Link
-            to={`/menu/reports`}
-            className={`w-full pl-10 py-1 menu-elements ${
-              isActive("/menu/reports") ? "active-element" : ""
-            }`}
-          >
-            <div className="flex items-center gap-3">
-              <HiOutlineSpeakerphone /> Reports
-            </div>
-          </Link>
-          <Link
             to="/menu/setting"
             className={`w-full pl-10 py-1 menu-elements ${
               isActive("/menu/setting") ? "active-element" : ""

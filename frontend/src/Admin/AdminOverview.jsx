@@ -138,7 +138,7 @@ export default function AdminOverview() {
             ))}
           </div>
         </div>
-        <div className="px-[60px] py-16 flex justify-between">
+        <div className="px-[60px] py-16 flex gap-16">
           <div className="w-[800px] ">
             <div className="flex justify-between items-center mr-20">
               <h2 className="text-4xl font-bold pb-1 ">{hackathon.title}</h2>
@@ -252,109 +252,139 @@ export default function AdminOverview() {
           Time Schedule
         </div>
 
-        {events.length > 0 && (
-          <div style={{ height: "700px" }} className="px-[60px]">
-            <Calendar
-              localizer={localizer}
-              events={events}
-              startAccessor="start"
-              endAccessor="end"
-              views={["month"]}
-              defaultView="month"
-              date={currentDate || new Date()}
-              onNavigate={(date) => setCurrentDate(date)}
-              style={{
-                borderRadius: "12px",
-                boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-              }}
-              eventPropGetter={(event) => {
-                let backgroundColor = "";
-                let textColor = "black";
+        <div className="px-[60px] flex gap-20">
+          <div>
+            {events.length > 0 && (
+              <div style={{ height: "500px", width: "640px" }}>
+                <Calendar
+                  localizer={localizer}
+                  events={events}
+                  startAccessor="start"
+                  endAccessor="end"
+                  views={["month"]}
+                  defaultView="month"
+                  date={currentDate || new Date()}
+                  onNavigate={(date) => setCurrentDate(date)}
+                  style={{
+                    borderRadius: "16px",
+                    boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+                  }}
+                  eventPropGetter={(event) => {
+                    let backgroundColor = "";
+                    let textColor = "grey";
 
-                if (event.title === "Registration Period") {
-                  backgroundColor = "#BBDCE5";
-                } else if (event.title === "Submission Period") {
-                  backgroundColor = "#DFCCFB";
-                } else {
-                  backgroundColor = "#F59E0B";
-                }
+                    if (event.title === "Registration Period") {
+                      backgroundColor = "#BBDCE5";
+                    } else if (event.title === "Submission Period") {
+                      backgroundColor = "#DFCCFB";
+                    } else {
+                      backgroundColor = "#F59E0B";
+                    }
 
-                return {
-                  style: {
-                    backgroundColor,
-                    color: textColor,
-                    padding: "25px",
-                    textAlign: "center",
-                    fontWeight: "bold",
-                    borderRadius: "6px",
-                  },
-                };
-              }}
-            />
+                    return {
+                      style: {
+                        backgroundColor,
+                        color: textColor,
+                        padding: "4px",
+                        textAlign: "center",
+                        fontWeight: "bold",
+                        borderRadius: "6px",
+                      },
+                    };
+                  }}
+                />
+              </div>
+            )}
           </div>
-        )}
-
-        <div className="px-[60px] mt-16 flex justify-between">
-          <div className="shadow-[0px_0px_5px_gray] rounded-lg py-6 px-2">
-            <h2 className="text-xl font-bold mb-4 px-6">
-              Project Members Count
-            </h2>
-            <ReactApexChart
-              options={{
-                chart: {
-                  type: "bar",
-                  height: 350,
-                },
-                plotOptions: {
-                  bar: {
-                    horizontal: true,
-                    borderRadius: 6,
-                  },
-                },
-                dataLabels: {
-                  enabled: true,
-                  formatter: (val) => `${val} members`,
-                },
-                xaxis: {
-                  categories: projectLabels,
-                },
-              }}
-              series={[
-                {
-                  name: "Members",
-                  data: projectMembersCount,
-                },
-              ]}
-              type="bar"
-              height={200}
-              width={700}
-            />
-          </div>
-          <div className="shadow-[0px_0px_5px_gray] py-6 px-2 rounded-lg">
-            <h1 className="text-xl font-bold mb-4 px-6">Source of Visits</h1>
-            <ReactApexChart
-              options={{
-                chart: { type: "pie" },
-                labels: chartLabels.map(
-                  (label) => label.charAt(0).toUpperCase() + label.slice(1)
-                ), // Capitalize
-                responsive: [
-                  {
-                    breakpoint: 480,
-                    options: {
-                      chart: { width: 200 },
-                      legend: { position: "bottom" },
-                    },
-                  },
-                ],
-              }}
-              series={chartSeries}
-              type="pie"
-              width={340}
-            />
+          <div>
+            <h2 className="mt-5 font-semibold text-2xl mb-2">Themes</h2>
+            <span>
+              {(hackathon.themes || []).map((theme, index) => (
+                <div
+                  key={index}
+                  className="bg-orange-200 text-lg capitalize mb-1 mr-2 rounded-lg inline-block px-4 py-1"
+                >
+                  {theme}
+                </div>
+              ))}
+            </span>
+            <div>
+              <h2 className="mt-10 font-semibold text-2xl mb-2">
+                Contact Email
+              </h2>
+              <p className="hover:underline cursor-pointer">
+                {hackathon.contactEmail}
+              </p>
+            </div>
           </div>
         </div>
-        <div className="px-[60px] mt-16">
+
+        <div className="px-[60px] mt-16 flex justify-between">
+          {submittedProjects.length > 0 && (
+            <div className="shadow-[0px_0px_5px_gray] rounded-lg py-6 px-2">
+              <h2 className="text-xl font-bold mb-4 px-6">
+                Project Members Count
+              </h2>
+              <ReactApexChart
+                options={{
+                  chart: {
+                    type: "bar",
+                    height: 100,
+                  },
+                  plotOptions: {
+                    bar: {
+                      horizontal: true,
+                      borderRadius: 6,
+                      barHeight: "40px",
+                    },
+                  },
+                  dataLabels: {
+                    enabled: true,
+                    formatter: (val) => `${val} members`,
+                  },
+                  xaxis: {
+                    categories: projectLabels,
+                  },
+                }}
+                series={[
+                  {
+                    name: "Members",
+                    data: projectMembersCount,
+                  },
+                ]}
+                type="bar"
+                height={300}
+                width={740}
+              />
+            </div>
+          )}
+          {participants.length > 0 && (
+            <div className="shadow-[0px_0px_5px_gray] py-6 px-2 rounded-lg">
+              <h1 className="text-xl font-bold mb-4 px-6">Source of Visits</h1>
+              <ReactApexChart
+                options={{
+                  chart: { type: "pie" },
+                  labels: chartLabels.map(
+                    (label) => label.charAt(0).toUpperCase() + label.slice(1)
+                  ), // Capitalize
+                  responsive: [
+                    {
+                      breakpoint: 480,
+                      options: {
+                        chart: { width: 200 },
+                        legend: { position: "bottom" },
+                      },
+                    },
+                  ],
+                }}
+                series={chartSeries}
+                type="pie"
+                width={300}
+              />
+            </div>
+          )}
+        </div>
+        <div className="px-[60px] mt-10">
           <h2 className="text-3xl font-bold mb-4">Participants</h2>
           {(participants || []).length > 0 ? (
             <div className="overflow-x-auto border rounded-lg">
@@ -365,7 +395,6 @@ export default function AdminOverview() {
                     <th className="py-3 px-6 text-left border-b">Full Name</th>
                     <th className="py-3 px-6 text-left border-b">Team Name</th>
                     <th className="py-3 px-6 text-left border-b">Referer</th>
-                    <th className="py-3 px-6 text-left border-b">Email</th>
                     <th className="py-3 px-6 text-left border-b">
                       Registration Date
                     </th>
@@ -386,9 +415,6 @@ export default function AdminOverview() {
                       </td>
                       <td className="py-3 px-6 border-b capitalize">
                         {participant.referer || "Unknown"}
-                      </td>
-                      <td className="py-3 px-6 border-b ">
-                        {participant.email || "Unknown"}
                       </td>
                       <td className="py-3 px-6 border-b">
                         {new Date(participant.createdAt).toLocaleDateString(

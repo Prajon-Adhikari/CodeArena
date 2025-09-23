@@ -40,7 +40,6 @@ import Admin from "./Pages/Admin.jsx";
 import Dashboard from "./Admin/Dashboard.jsx";
 import Users from "./Admin/Users.jsx";
 import Hackathons from "./Admin/Hackathons.jsx";
-import Reports from "./Admin/Reports.jsx";
 import Setting from "./Admin/Setting.jsx";
 import AdminOverview from "./Admin/AdminOverview.jsx";
 import AdminProject from "./Admin/AdminProject.jsx";
@@ -67,7 +66,6 @@ const router = createBrowserRouter(
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="users" element={<Users />} />
         <Route path="hackathons" element={<Hackathons />} />
-        <Route path="reports" element={<Reports />} />
         <Route path="setting" element={<Setting />} />
         <Route path=":id/admin/overview" element={<AdminOverview />} />
         <Route path=":id/admin/myproject" element={<AdminProject />} />

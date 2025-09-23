@@ -17,9 +17,11 @@ export const fechHackathonsForPanel = async (req, res) => {
     const projectsLength = projects.length;
 
     const today = new Date();
-    const completedHackathons = hackathons.filter(
-      (h) => new Date(h.endDate) < today
-    ).length;
+    const completedHackathons = hackathons.filter((h) => {
+      const endDatePlus7 = new Date(h.endDate);
+      endDatePlus7.setDate(endDatePlus7.getDate() + 7); // add 7 days
+      return endDatePlus7 < today; // compare with today
+    }).length;
 
     const hackathonsPerMonth = Array(12).fill(0); // Jan → Dec
     hackathons.forEach((h) => {
@@ -71,12 +73,19 @@ export const fetchUserForAdmin = async (req, res) => {
           $or: [{ user1: user._id }, { user2: user._id }],
         });
 
+        const location =
+          user.country || user.city
+            ? `${user.country || ""}${user.country && user.city ? ", " : ""}${
+                user.city || ""
+              }`
+            : "-";
+
         return {
           _id: user._id,
           fullName: user.fullName,
           email: user.email,
           profilePic: user.profilePic,
-          location: user.location || "-", // if field doesn't exist, show "-"
+          location: location, // if field doesn't exist, show "-"
           work: user.work || "-",
           accountCreated: user.createdAt,
           friendsCount,
@@ -160,11 +169,9 @@ export const fetchParticipantsForAdmin = async (req, res) => {
       "Internal error while fetching particiapants data for admin",
       error
     );
-    return res
-      .status(500)
-      .json({
-        message: "Internal error while fetching participants data for admin",
-      });
+    return res.status(500).json({
+      message: "Internal error while fetching participants data for admin",
+    });
   }
 };
 
@@ -173,7 +180,12 @@ export const fetchOperatingHackathons = async (req, res) => {
     const today = new Date();
 
     const operatingHackathons = await Hackathon.find({
-      endDate: { $gte: today },
+      $expr: {
+        $gte: [
+          { $add: ["$endDate", 7 * 24 * 60 * 60 * 1000] }, // endDate + 7 days in ms
+          today,
+        ],
+      },
     });
 
     return res.status(200).json({
@@ -186,12 +198,10 @@ export const fetchOperatingHackathons = async (req, res) => {
       "Internal error while fetching operating hackathons data for admin",
       error
     );
-    return res
-      .status(500)
-      .json({
-        message:
-          "Internal error while fetching operating hackathons data for admin",
-      });
+    return res.status(500).json({
+      message:
+        "Internal error while fetching operating hackathons data for admin",
+    });
   }
 };
 
@@ -200,7 +210,12 @@ export const fetchCompletedHackathons = async (req, res) => {
     const today = new Date();
 
     const completedHackathons = await Hackathon.find({
-      endDate: { $lte: today },
+      $expr: {
+        $lte: [
+          { $add: ["$endDate", 7 * 24 * 60 * 60 * 1000] }, // endDate + 7 days in ms
+          today,
+        ],
+      },
     });
 
     return res.status(200).json({
@@ -213,12 +228,10 @@ export const fetchCompletedHackathons = async (req, res) => {
       "Internal error while fetching operating hackathons data for admin",
       error
     );
-    return res
-      .status(500)
-      .json({
-        message:
-          "Internal error while fetching operating hackathons data for admin",
-      });
+    return res.status(500).json({
+      message:
+        "Internal error while fetching operating hackathons data for admin",
+    });
   }
 };
 
@@ -234,47 +247,45 @@ export const getOverviewDetailsForAdmin = async (req, res) => {
 
     const participants = await JoinedHackathon.find({ hackathonId: id });
 
-     const submittedProjects = await SubmittedProject.find({ hackathonId: id })
-            .populate("tags", "fullName email") // tags = team members
-            .lean();
-    
-          // Get all joined records for this hackathon in one query
-          const joinedRecords = await JoinedHackathon.find({
-            hackathonId: id,
-          }).lean();
-    
-          // Create a map: userId -> teamName
-          const teamMap = {};
-          joinedRecords.forEach((record) => {
-            teamMap[record.userId.toString()] = record.teamName;
-          });
-    
-          // Attach teamName to each project
-          submittedProjects.forEach((project) => {
-            const teamMemberIds =
-              project.tags?.map((tag) => tag._id.toString()) || [];
-            const teamNames = teamMemberIds
-              .map((uid) => teamMap[uid])
-              .filter(Boolean);
-            project.teamName = teamNames.length > 0 ? teamNames[0] : "N/A";
-          });
+    const submittedProjects = await SubmittedProject.find({ hackathonId: id })
+      .populate("tags", "fullName email") // tags = team members
+      .lean();
+
+    // Get all joined records for this hackathon in one query
+    const joinedRecords = await JoinedHackathon.find({
+      hackathonId: id,
+    }).lean();
+
+    // Create a map: userId -> teamName
+    const teamMap = {};
+    joinedRecords.forEach((record) => {
+      teamMap[record.userId.toString()] = record.teamName;
+    });
+
+    // Attach teamName to each project
+    submittedProjects.forEach((project) => {
+      const teamMemberIds =
+        project.tags?.map((tag) => tag._id.toString()) || [];
+      const teamNames = teamMemberIds
+        .map((uid) => teamMap[uid])
+        .filter(Boolean);
+      project.teamName = teamNames.length > 0 ? teamNames[0] : "N/A";
+    });
 
     return res.status(200).json({
       message: "Hackthon details fetched successfully",
       hackathon,
       participants,
-      submittedProjects
+      submittedProjects,
     });
   } catch (error) {
     console.log(
       "Internal error while fetching operating hackathons data for admin",
       error
     );
-    return res
-      .status(500)
-      .json({
-        message:
-          "Internal error while fetching operating hackathons data for admin",
-      });
+    return res.status(500).json({
+      message:
+        "Internal error while fetching operating hackathons data for admin",
+    });
   }
 };
