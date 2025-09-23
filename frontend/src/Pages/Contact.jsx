@@ -76,13 +76,7 @@ const Contact = () => {
   };
 
   return (
-    <div className="mt-[80px]">
-      <div
-        className="bg-cover bg-center h-[360px] bg-gray-200 py-24 px-6"
-        style={{
-          backgroundImage: `url(${backgroundImg})`,
-        }}
-      ></div>
+    <div className="mt-[50px]">
       <div className="bg-white text-gray-800 py-8 px-[140px]">
         <div className="container mx-auto px-4 my-20">
           <div className="flex flex-col md:flex-row gap-8 items-center">

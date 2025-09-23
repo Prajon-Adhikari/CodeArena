@@ -115,12 +115,12 @@ export default function home() {
             <span className="text-orange-300">CodeArena</span>
           </h1>
           <p className="text-[1.2rem] ">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia quis,
-            illum veritatis at, explicabo cum eos blanditiis accusamus quaerat
-            enim officiis laborum quidem magni, ipsa dicta minus maxime fugit ad
-            labore similique cumque iusto. Vitae ex laudantium dolore incidunt
-            mollitia doloremque inventore odit! Quasi nihil quam amet illum
-            perspiciatis deserunt.
+            CodeArena is the ultimate platform for coders, developers, and tech
+            enthusiasts to compete, collaborate, and showcase their skills.
+            Participate in hackathons, solve real-world challenges, and build a
+            portfolio that stands out. Whether you’re a beginner or an
+            experienced programmer, CodeArena empowers you to learn, innovate,
+            and shine in the world of technology.
           </p>
           <div className="flex gap-10 text-white pt-14">
             <Link
@@ -344,19 +344,16 @@ export default function home() {
             className="h-[210px] w-[290px] object-cover absolute bottom-0 right-5 z-20  rounded-4xl shadow-[0px_0px_8px_gray]"
           />
         </div>
-        <div className="w-[600px] flex flex-col justify-center text-center gap-10 animation">
+        <div className="w-[600px] flex flex-col justify-center text-center gap-8 animation">
           <h1 className="text-[3.9rem] font-extrabold">
             Explore more about{" "}
             <span className="text-orange-400">CODEARENA</span>
           </h1>
           <p className="text-xl pl-5">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Consequuntur quasi fugiat, culpa hic, laboriosam dolore ipsum
-            possimus voluptas placeat eos asperiores, reprehenderit impedit!
-            Aliquid libero molestias pariatur ducimus ipsa sit quae, quam quos
-            dolor ullam fugit esse ipsum consequuntur ratione facilis!
-            Accusantium similique quia facilis neque ut quae eligendi aperiam
-            blanditiis hic.
+            Explore a world of hackathons, coding challenges, and innovative
+            projects on CodeArena. Connect with fellow developers, sharpen your
+            skills, and discover opportunities to showcase your talent to the
+            global tech community.
           </p>
           <Link
             to="/about"
@@ -380,11 +377,10 @@ export default function home() {
               <div>
                 <h1 className="font-semibold text-xl mb-3">Special Events</h1>
                 <p className="text-gray-500">
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                  Nesciunt non vitae modi, consequuntur recusandae iste maiores
-                  deserunt! Obcaecati, quidem explicabo.Obcaecati, quidem
-                  explicabo.Obcaecati, quidem explicabo.Obcaecati, quidem
-                  explicabo.
+                  Participate in exclusive events organized by CodeArena. From
+                  coding sprints to hackathons, these events give you the chance
+                  to learn new technologies, network with developers, and
+                  challenge yourself with exciting projects.
                 </p>
               </div>
             </div>
@@ -399,9 +395,10 @@ export default function home() {
                     Student Friendly
                   </h1>
                   <p className="text-gray-500">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                    Nesciunt non vitae modi, consequuntur recusandae iste
-                    maiores deserunt! Obcaecati, quidem explicabo.
+                    CodeArena is designed with students in mind. Join
+                    competitions, build your portfolio, and gain hands-on
+                    experience with real-world coding challenges in a supportive
+                    learning environment.
                   </p>
                 </div>
               </div>
@@ -415,9 +412,10 @@ export default function home() {
                     Community Building
                   </h1>
                   <p className="text-gray-500">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                    Nesciunt non vitae modi, consequuntur recusandae iste
-                    maiores deserunt! Obcaecati, quidem explicabo.
+                    Connect with like-minded developers, share ideas, and
+                    collaborate on projects. CodeArena helps you build a strong
+                    professional network while fostering teamwork and
+                    creativity.
                   </p>
                 </div>
               </div>
@@ -430,14 +428,15 @@ export default function home() {
                 alt=""
                 className="rounded-2xl h-[320px] w-full object-cover"
               />
-              <div className="mx-4 mt-6 mb-2">
-                <h1 className="font-semibold text-2xl mb-5">
+              <div className="mx-4 mt-4 mb-2">
+                <h1 className="font-semibold text-2xl mb-3">
                   All-in-One Hakathon Platform
                 </h1>
                 <p className="text-gray-500">
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                  Nesciunt non vitae modi, consequuntur recusandae iste maiores
-                  deserunt! Obcaecati, quidem explicabo.quidem explicabo.
+                  Manage, participate, and track hackathons all in one place.
+                  CodeArena provides tools to join, host, and monitor coding
+                  competitions effortlessly, making the entire experience
+                  seamless.
                 </p>
               </div>
             </div>
@@ -499,9 +498,9 @@ export default function home() {
                 Join Hackathon
               </h1>
               <p className="text-gray-700 mb-3">
-                Lorem ipsum dolor sit amet elit. Illo accusamus est nihil cumque
-                ipsa consequatur assumenda aperiam assumenda aperiam assumenda
-                aperiam
+                Discover and join hackathons that match your skills and
+                interests. Solve challenges, collaborate with others, and gain
+                recognition for your coding expertise on a global platform.
               </p>
               <button className="text-lg text-orange-400 mb-2">
                 Learn More &rarr;
@@ -529,9 +528,9 @@ export default function home() {
                 Host Hackathon
               </h1>
               <p className="text-gray-700 mb-3">
-                Lorem ipsum dolor sit amet elit. Illo accusamus est nihil cumque
-                ipsa consequatur assumenda aperiam assumenda aperiam assumenda
-                aperiam
+                Organize your own hackathons and reach a global developer
+                audience. Easily create challenges, manage registrations, and
+                track progress while fostering innovation and creativity.
               </p>
               <button className="text-lg text-orange-400 mb-2">
                 Learn More &rarr;
@@ -559,9 +558,10 @@ export default function home() {
                 Team Messaging
               </h1>
               <p className="text-gray-700 mb-3">
-                Lorem ipsum dolor sit amet elit. Illo accusamus est nihil cumque
-                ipsa consequatur assumenda aperiam assumenda aperiam assumenda
-                aperiam
+                Collaborate efficiently with your team using CodeArena’s
+                messaging system. Share ideas, coordinate tasks, and stay
+                connected during hackathons to ensure smooth teamwork and
+                success.
               </p>
               <button className="text-lg text-orange-400 mb-2">
                 Learn More &rarr;

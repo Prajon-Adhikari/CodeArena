@@ -72,17 +72,19 @@ const About = () => {
                 Providing full range{" "}
               </div>
               <span className="text-5xl text-blue-300 font-bold">
-                of transportation
+                of Hackathon Solutions
               </span>
             </div>
             <div className="pt-8 text-xl pb-3">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci
-              quod consequatur temporibus provident numquam
+              At CodeArena, we offer a complete platform for hosting and
+              participating in hackathons, from team formation to project
+              submission and judging.
             </div>
             <div className=" text-xl pb-14">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci
-              quod consequatur temporibus provident numquam labore dolorem
-              laborum tempore distinctio autem
+              Our system empowers participants with tools for collaboration,
+              mentorship, and real-time feedback. Whether you're a student,
+              professional, or hobbyist, CodeArena ensures your hackathon
+              journey is seamless and rewarding.
             </div>
             <button className="bg-orange-400 text-white px-8 py-2 cursor-pointer text-lg rounded-md">
               Learn More &rarr;
@@ -401,7 +403,9 @@ const About = () => {
           </div>
         </div>
         <div className="px-[240px] py-18 animation">
-          <h1 className="text-5xl text-center pb-3 font-bold">Our Team Behind It</h1>
+          <h1 className="text-5xl text-center pb-3 font-bold">
+            Our Team Behind It
+          </h1>
           <p className="text-center pb-12 text-gray-600">
             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum,
             nemo.
