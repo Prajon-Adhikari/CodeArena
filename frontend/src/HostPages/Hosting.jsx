@@ -4,7 +4,7 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CreatableSelect from "react-select/creatable";
-import image1 from "../assets/image.png";
+import image1 from "../assets/blogheroimage2.jpg";
 
 const themeOptions = [
   { value: "ai-ml", label: "AI/ML" },
@@ -248,7 +248,7 @@ export default function Hosting() {
         ></div>
 
         {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-black/60"></div>
+        <div className="absolute inset-0 bg-black/30"></div>
 
         <div className="bg-white p-8 rounded-lg w-[900px] max-h-[90vh] overflow-y-auto shadow-[0px_0px_5px_gray] relative">
           <Link to={previousPath}>
@@ -633,7 +633,7 @@ export default function Hosting() {
                     {prizes.map((prize, index) => (
                       <div
                         key={index}
-                        className="border-2 w-[400px] min-h-[340px] flex flex-col justify-between rounded-lg p-6 mb-4"
+                        className="border-2 w-[360px] min-h-[340px] flex flex-col justify-between rounded-lg p-6 mb-4"
                       >
                         <input
                           type="text"
@@ -732,7 +732,7 @@ export default function Hosting() {
                     {judges.map((judge, index) => (
                       <div
                         key={index}
-                        className="border-2 w-[400px] min-h-[340px] rounded-lg p-6 flex flex-col justify-between relative"
+                        className="border-2 w-[360px] min-h-[340px] rounded-lg p-6 flex flex-col justify-between relative"
                       >
                         <h3 className="text-lg font-semibold">
                           Judge {index + 1}

@@ -182,7 +182,10 @@ export const resetPassword = async (req, res) => {
 
 export const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find({}, "_id fullName email");
+    const users = await User.find(
+      { role: { $ne: "admin" } }, // exclude admins
+      "_id fullName email"
+    );
     res.status(200).json(users);
   } catch (error) {
     console.error("Error fetching users:", error);

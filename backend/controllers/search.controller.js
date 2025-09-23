@@ -1,8 +1,8 @@
-import User from "../models/user.model.js";          // your existing user model
+import User from "../models/user.model.js"; // your existing user model
 import Hackathon from "../models/hackathon.model.js";
 
-export const getSearchData = async (req, res) =>{
-     const query = req.query.q;
+export const getSearchData = async (req, res) => {
+  const query = req.query.q;
   if (!query || query.trim() === "") {
     return res.json({ users: [], hackathons: [] });
   }
@@ -10,13 +10,16 @@ export const getSearchData = async (req, res) =>{
   try {
     // search users by fullName
     const users = await User.find(
-      { fullName: { $regex: query, $options: "i" } }, 
+      {
+        fullName: { $regex: query, $options: "i" },
+        role: { $ne: "admin" }, // exclude users with role "admin"
+      },
       "_id fullName username profilePic" // only send needed fields
     ).limit(5);
 
     // search hackathons by title
     const hackathons = await Hackathon.find(
-      { title: { $regex: query, $options: "i" } }, 
+      { title: { $regex: query, $options: "i" } },
       "_id title"
     ).limit(5);
 
@@ -25,4 +28,4 @@ export const getSearchData = async (req, res) =>{
     console.error("Search error:", err);
     res.status(500).json({ error: "Server error" });
   }
-}
+};

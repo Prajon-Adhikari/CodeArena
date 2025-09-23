@@ -47,26 +47,27 @@ export default function BlogPage() {
     setSelectedImage(e.target.files[0]);
   };
 
+  const getBlogs = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/home/blogs`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
+      const data = await response.json();
+      setBlogs(data.blogs);
+      setPopularBlog(data.popularBlog);
+    } catch (error) {
+      console.log("Error while fetching blogs", error);
+    }
+  };
+
   useEffect(() => {
-    const getBlogs = async () => {
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/home/blogs`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-          }
-        );
-        const data = await response.json();
-        setBlogs(data.blogs);
-        setPopularBlog(data.popularBlog);
-      } catch (error) {
-        console.log("Error while fetching blogs", error);
-      }
-    };
     getBlogs();
   }, []);
 
@@ -106,7 +107,8 @@ export default function BlogPage() {
       setDescription("");
       setSelectedImage(null);
 
-      console.log("Blog submitted:", res.data);
+      getBlogs();
+
     } catch (err) {
       console.error("Failed to submit blog:", err);
       toast.error("Failed to submit blog");
@@ -122,6 +124,12 @@ export default function BlogPage() {
         className="bg-gray-100 bg-cover bg-center pb-10 relative h-[580px] pt-14 px-[120px] mt-[80px] flex flex-col justify-center"
         style={{ backgroundImage: `url(${blogHeroImage})` }}
       >
+        {submitting && (
+          <div className="overlay">
+            <div className="loader"></div>
+            <p className="loader-text">Submitting...</p>
+          </div>
+        )}
         <div className="absolute inset-0  bg-black opacity-20 ">{""}</div>
         <h1 className="relative text-6xl w-[740px] text-white mb-8 left-slide-animation">
           Your Arena for Coding Stories & Insights.
@@ -378,7 +386,7 @@ export default function BlogPage() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="bg-blue-600 text-white py-3 rounded hover:bg-blue-700 disabled:bg-gray-400"
+                className="bg-blue-600 text-white py-3 cursor-pointer rounded hover:bg-blue-700 disabled:bg-gray-400"
               >
                 {submitting ? "Submitting..." : "Submit Blog"}
               </button>

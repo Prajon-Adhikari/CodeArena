@@ -196,7 +196,13 @@ const Profile = () => {
   };
 
   return (
-    <div className="bg-gray-100 pt-[80px] text-[#2B2C34] pb-10">
+    <div className="bg-gray-100 pt-[80px] text-[#2B2C34] pb-10 relative">
+      {submitting && (
+        <div className="overlay">
+          <div className="loader"></div>
+          <p className="loader-text">Submitting...</p>
+        </div>
+      )}
       <div className="py-10 bg-white rounded-xl px-[80px] mt-[10px] mx-[50px] flex items-center">
         <div className="flex justify-between w-[800px] pr-10">
           <div className="flex gap-8">
