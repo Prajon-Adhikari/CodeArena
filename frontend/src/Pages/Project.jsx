@@ -41,6 +41,7 @@ export default function Project() {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [isJudgingEnded, setIsJudgingEnded] = useState(false);
+  const [isAllowed, setIsAllowed] = useState(false);
 
   const tabs = [
     { path: "overview", label: "Overview" },
@@ -185,6 +186,19 @@ export default function Project() {
       setIsJudgingEnded(now >= judgingEndDate);
     }
   }, [hackathon.endDate]);
+
+  useEffect(() => {
+    const now = new Date();
+
+    const start = new Date(hackathon.startDate);
+    const end = new Date(hackathon.endDate);
+
+    if (now >= start && now <= end) {
+      setIsAllowed(true);
+    } else {
+      setIsAllowed(false);
+    }
+  }, [hackathon.startDate, hackathon.endDate]);
 
   return (
     <div className="pt-[60px] pb-10 relative">
@@ -544,78 +558,183 @@ export default function Project() {
             </div>
           ) : (
             <>
-              <h1 className="text-4xl font-bold pl-22">Submit Your Project</h1>
-              <form
-                action=""
-                onSubmit={handleProjectSubmission}
-                className="mt-16 text-2xl flex flex-col items-center"
-              >
-                <div className="flex flex-col">
-                  <label
-                    htmlFor="projectTitle"
-                    className="font-semibold px-2 py-1"
+              {isAllowed ? (
+                <>
+                  <h1 className="text-4xl font-bold pl-22">
+                    Submit Your Project
+                  </h1>
+                  <form
+                    action=""
+                    onSubmit={handleProjectSubmission}
+                    className="mt-16 text-2xl flex flex-col items-center"
                   >
-                    Project Title
-                  </label>
-                  <input
-                    type="text"
-                    id="projectTitle"
-                    placeholder="Enter your project title"
-                    name="projectTitle"
-                    value={projectTitle}
-                    onChange={(e) => setProjectTitle(e.target.value)}
-                    autoComplete="off"
-                    className="border-2 border-[#B7B7B7] w-[1100px] text-lg px-4 py-3 rounded-xl"
-                  />
-                </div>
-                <div className="flex gap-15">
-                  <div>
-                    <div className="flex flex-col pt-12">
+                    <div className="flex flex-col">
                       <label
-                        htmlFor="projectDescription"
-                        className="font-semibold px-1 py-1"
+                        htmlFor="projectTitle"
+                        className="font-semibold px-2 py-1"
                       >
-                        Description
+                        Project Title
                       </label>
-                      <textarea
-                        name="projectDescription"
-                        id="projectDescription"
-                        value={projectDescription}
-                        onChange={(e) => setProjectDescription(e.target.value)}
-                        placeholder="Briefy describe your project's goals, your solutions and impact you made here ... "
-                        className="border-2 border-[#B7B7B7] w-[560px] min-h-[260px] text-xl px-4 py-2 rounded-xl"
-                      ></textarea>
+                      <input
+                        type="text"
+                        id="projectTitle"
+                        placeholder="Enter your project title"
+                        name="projectTitle"
+                        value={projectTitle}
+                        onChange={(e) => setProjectTitle(e.target.value)}
+                        autoComplete="off"
+                        className="border-2 border-[#B7B7B7] w-[1100px] text-lg px-4 py-3 rounded-xl"
+                      />
                     </div>
+                    <div className="flex gap-15">
+                      <div>
+                        <div className="flex flex-col pt-12">
+                          <label
+                            htmlFor="projectDescription"
+                            className="font-semibold px-1 py-1"
+                          >
+                            Description
+                          </label>
+                          <textarea
+                            name="projectDescription"
+                            id="projectDescription"
+                            value={projectDescription}
+                            onChange={(e) =>
+                              setProjectDescription(e.target.value)
+                            }
+                            placeholder="Briefy describe your project's goals, your solutions and impact you made here ... "
+                            className="border-2 border-[#B7B7B7] w-[560px] min-h-[260px] text-xl px-4 py-2 rounded-xl"
+                          ></textarea>
+                        </div>
 
+                        <div className="flex flex-col pt-12">
+                          <label
+                            htmlFor="tags"
+                            className="font-semibold px-1 py-1"
+                          >
+                            Tags ( sent invite to your friends )
+                          </label>
+                          <Select
+                            isMulti
+                            name="tags"
+                            options={tagsOptions}
+                            value={selectedTags}
+                            onChange={setSelectedTags}
+                            placeholder="Mention your team members..."
+                            className="text-[18px] w-[560px]"
+                            formatOptionLabel={(option) => (
+                              <div className="flex items-center gap-3">
+                                {option.profilePic ? (
+                                  <img
+                                    src={option.profilePic}
+                                    alt={option.label}
+                                    className="w-8 h-8 rounded-full object-cover"
+                                  />
+                                ) : (
+                                  <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-sm">
+                                    {option.label[0]}{" "}
+                                    {/* fallback: first letter of name */}
+                                  </div>
+                                )}
+                                <span>{option.label}</span>
+                              </div>
+                            )}
+                            styles={{
+                              control: (base) => ({
+                                ...base,
+                                borderWidth: "2px",
+                                borderRadius: "12px",
+                                borderColor: "#B7B7B7",
+                                padding: "7px 6px",
+                                boxShadow: "none",
+                                "&:hover": { borderColor: "#6B7280" },
+                              }),
+                              multiValue: (base) => ({
+                                ...base,
+                                borderWidth: "2px",
+                                borderRadius: "9999px",
+                                borderColor: "#000000",
+                                backgroundColor: "#FFFFFF",
+                                padding: "1px 8px",
+                                "&:hover": { backgroundColor: "#EEEEEE" },
+                              }),
+                              multiValueLabel: (base) => ({
+                                ...base,
+                                color: "#000000", // Tailwind blue-900
+                                fontWeight: "500",
+                              }),
+                              multiValueRemove: (base) => ({
+                                ...base,
+                                borderRadius: "9999px",
+                                color: "black",
+                                "&:hover": {
+                                  backgroundColor: "#EEEEEE",
+                                  cursor: "pointer",
+                                  color: "#000000",
+                                },
+                              }),
+                            }}
+                          />{" "}
+                        </div>
+                      </div>
+                      <div className="border-2 border-dotted border-gray-400 h-[380px] w-[480px] flex justify-center flex-col items-center p-10 mt-22 rounded-3xl relative">
+                        {!selectedVideo ? (
+                          <>
+                            <label
+                              htmlFor="videoUpload"
+                              className="cursor-pointer flex items-center gap-4 border-1 border-dotted px-5 py-5 rounded-full w-fit hover:bg-gray-50 "
+                            >
+                              <FontAwesomeIcon
+                                icon={faVideo}
+                                className="text-2xl"
+                              />
+                            </label>
+                            <p className="text-lg pt-3">Upload a video</p>
+                            <input
+                              type="file"
+                              id="videoUpload"
+                              name="video"
+                              accept="video/*"
+                              className="hidden"
+                              onChange={(e) =>
+                                setSelectedVideo(e.target.files[0])
+                              }
+                            />
+                          </>
+                        ) : (
+                          <div className="relative">
+                            {/* Cross button */}
+                            <button
+                              type="button"
+                              onClick={() => setSelectedVideo(null)}
+                              className="absolute -top-3 -right-3 cursor-pointer  text-black font-semibold bg-gray-200 rounded-full px-2 py-1 flex items-center justify-center text-sm"
+                            >
+                              ✕
+                            </button>
+
+                            <div className="w-[400px] h-[300px] rounded-xl border overflow-hidden">
+                              <video
+                                src={URL.createObjectURL(selectedVideo)}
+                                controls
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
                     <div className="flex flex-col pt-12">
-                      <label htmlFor="tags" className="font-semibold px-1 py-1">
-                        Tags ( sent invite to your friends )
+                      <label htmlFor="tech" className="font-semibold px-1 py-1">
+                        Technologies Used
                       </label>
                       <Select
                         isMulti
-                        name="tags"
-                        options={tagsOptions}
-                        value={selectedTags}
-                        onChange={setSelectedTags}
-                        placeholder="Mention your team members..."
-                        className="text-[18px] w-[560px]"
-                        formatOptionLabel={(option) => (
-                          <div className="flex items-center gap-3">
-                            {option.profilePic ? (
-                              <img
-                                src={option.profilePic}
-                                alt={option.label}
-                                className="w-8 h-8 rounded-full object-cover"
-                              />
-                            ) : (
-                              <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-sm">
-                                {option.label[0]}{" "}
-                                {/* fallback: first letter of name */}
-                              </div>
-                            )}
-                            <span>{option.label}</span>
-                          </div>
-                        )}
+                        name="tech"
+                        options={skillsOptions}
+                        value={selectedSkills}
+                        onChange={setSelectedSkills}
+                        placeholder="Mention techs you used..."
+                        className="text-[18px] w-[1100px]"
                         styles={{
                           control: (base) => ({
                             ...base,
@@ -651,151 +770,74 @@ export default function Project() {
                             },
                           }),
                         }}
-                      />{" "}
+                      />
                     </div>
-                  </div>
-                  <div className="border-2 border-dotted border-gray-400 h-[380px] w-[480px] flex justify-center flex-col items-center p-10 mt-22 rounded-3xl relative">
-                    {!selectedVideo ? (
-                      <>
+                    <div className="flex pt-12 gap-10">
+                      <div className="flex flex-col">
                         <label
-                          htmlFor="videoUpload"
-                          className="cursor-pointer flex items-center gap-4 border-1 border-dotted px-5 py-5 rounded-full w-fit hover:bg-gray-50 "
+                          htmlFor="githublink"
+                          className="font-semibold px-2 py-1"
                         >
-                          <FontAwesomeIcon
-                            icon={faVideo}
-                            className="text-2xl"
-                          />
+                          Github Link
                         </label>
-                        <p className="text-lg pt-3">Upload a video</p>
                         <input
-                          type="file"
-                          id="videoUpload"
-                          name="video"
-                          accept="video/*"
-                          className="hidden"
-                          onChange={(e) => setSelectedVideo(e.target.files[0])}
+                          type="text"
+                          id="githublink"
+                          placeholder="Ex- https://www.github.com/example"
+                          name="githubLink"
+                          value={githubLink}
+                          onChange={(e) => setGithubLink(e.target.value)}
+                          autoComplete="off"
+                          className="border-2 border-[#B7B7B7] w-[560px] text-lg px-4 py-3 rounded-xl"
                         />
-                      </>
-                    ) : (
-                      <div className="relative">
-                        {/* Cross button */}
-                        <button
-                          type="button"
-                          onClick={() => setSelectedVideo(null)}
-                          className="absolute -top-3 -right-3 cursor-pointer  text-black font-semibold bg-gray-200 rounded-full px-2 py-1 flex items-center justify-center text-sm"
-                        >
-                          ✕
-                        </button>
-
-                        <div className="w-[400px] h-[300px] rounded-xl border overflow-hidden">
-                          <video
-                            src={URL.createObjectURL(selectedVideo)}
-                            controls
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
                       </div>
-                    )}
+                      <div className="flex flex-col">
+                        <label
+                          htmlFor="projectLink"
+                          className="font-semibold px-2 py-1"
+                        >
+                          Project Link
+                        </label>
+                        <input
+                          type="text"
+                          id="projectLink"
+                          placeholder="Enter your live project link"
+                          name="projectLink"
+                          value={projectLink}
+                          onChange={(e) => setProjectLink(e.target.value)}
+                          autoComplete="off"
+                          className="border-2 border-[#B7B7B7] w-[500px] text-lg px-4 py-3 rounded-xl"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex justify-end px-30 pt-10 w-full">
+                      <input
+                        type="submit"
+                        value={submitting ? "Submitting..." : "Submit Project"}
+                        disabled={submitting}
+                        className={`mt-12 cursor-pointer hover:bg-blue-300 bg-blue-400 text-white py-3 px-10 rounded-sm ${
+                          submitting ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
+                      />
+                    </div>
+                  </form>
+                </>
+              ) : (
+                <div className="text-center py-20">
+                  <p className="text-4xl font-bold text-blue-400 mb-3">
+                    Project submission is only allowed between{" "}
+                  </p>
+                  <div className="text-2xl">
+                    <span className="font-semibold ">
+                      {new Date(hackathon.startDate).toLocaleString()}
+                    </span>{" "}
+                    -{" "}
+                    <span className="font-semibold">
+                      {new Date(hackathon.endDate).toLocaleString()}
+                    </span>
                   </div>
                 </div>
-                <div className="flex flex-col pt-12">
-                  <label htmlFor="tech" className="font-semibold px-1 py-1">
-                    Technologies Used
-                  </label>
-                  <Select
-                    isMulti
-                    name="tech"
-                    options={skillsOptions}
-                    value={selectedSkills}
-                    onChange={setSelectedSkills}
-                    placeholder="Mention techs you used..."
-                    className="text-[18px] w-[1100px]"
-                    styles={{
-                      control: (base) => ({
-                        ...base,
-                        borderWidth: "2px",
-                        borderRadius: "12px",
-                        borderColor: "#B7B7B7",
-                        padding: "7px 6px",
-                        boxShadow: "none",
-                        "&:hover": { borderColor: "#6B7280" },
-                      }),
-                      multiValue: (base) => ({
-                        ...base,
-                        borderWidth: "2px",
-                        borderRadius: "9999px",
-                        borderColor: "#000000",
-                        backgroundColor: "#FFFFFF",
-                        padding: "1px 8px",
-                        "&:hover": { backgroundColor: "#EEEEEE" },
-                      }),
-                      multiValueLabel: (base) => ({
-                        ...base,
-                        color: "#000000", // Tailwind blue-900
-                        fontWeight: "500",
-                      }),
-                      multiValueRemove: (base) => ({
-                        ...base,
-                        borderRadius: "9999px",
-                        color: "black",
-                        "&:hover": {
-                          backgroundColor: "#EEEEEE",
-                          cursor: "pointer",
-                          color: "#000000",
-                        },
-                      }),
-                    }}
-                  />
-                </div>
-                <div className="flex pt-12 gap-10">
-                  <div className="flex flex-col">
-                    <label
-                      htmlFor="githublink"
-                      className="font-semibold px-2 py-1"
-                    >
-                      Github Link
-                    </label>
-                    <input
-                      type="text"
-                      id="githublink"
-                      placeholder="Ex- https://www.github.com/example"
-                      name="githubLink"
-                      value={githubLink}
-                      onChange={(e) => setGithubLink(e.target.value)}
-                      autoComplete="off"
-                      className="border-2 border-[#B7B7B7] w-[560px] text-lg px-4 py-3 rounded-xl"
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <label
-                      htmlFor="projectLink"
-                      className="font-semibold px-2 py-1"
-                    >
-                      Project Link
-                    </label>
-                    <input
-                      type="text"
-                      id="projectLink"
-                      placeholder="Enter your live project link"
-                      name="projectLink"
-                      value={projectLink}
-                      onChange={(e) => setProjectLink(e.target.value)}
-                      autoComplete="off"
-                      className="border-2 border-[#B7B7B7] w-[500px] text-lg px-4 py-3 rounded-xl"
-                    />
-                  </div>
-                </div>
-                <div className="flex justify-end px-30 pt-10 w-full">
-                  <input
-                    type="submit"
-                    value={submitting ? "Submitting..." : "Submit Project"}
-                    disabled={submitting}
-                    className={`mt-12 cursor-pointer hover:bg-blue-300 bg-blue-400 text-white py-3 px-10 rounded-sm ${
-                      submitting ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
-                  />
-                </div>
-              </form>
+              )}
             </>
           )}
         </div>
