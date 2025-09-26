@@ -14,23 +14,35 @@ export default function Users() {
       try {
         if (type === "users") {
           const { data } = await axios.get(
-            `${import.meta.env.VITE_API_BASE_URL}/menu/users`
+            `${import.meta.env.VITE_API_BASE_URL}/menu/users`,
+            {
+              withCredentials: true,
+            }
           );
           setData(data.usersWithFriends);
         } else if (type === "judges") {
           console.log(type);
           const { data } = await axios.get(
-            `${import.meta.env.VITE_API_BASE_URL}/menu/judges`
+            `${import.meta.env.VITE_API_BASE_URL}/menu/judges`,
+            {
+              withCredentials: true,
+            }
           );
           setData(data.judgeWithHackathons); // assuming backend returns { judges: [...] }
         } else if (type === "hoster") {
           const { data } = await axios.get(
-            `${import.meta.env.VITE_API_BASE_URL}/menu/hosters`
+            `${import.meta.env.VITE_API_BASE_URL}/menu/hosters`,
+            {
+              withCredentials: true,
+            }
           );
           setData(data.hosters); // backend sends hackathons with organizer populated
         } else if (type === "participants") {
           const { data } = await axios.get(
-            `${import.meta.env.VITE_API_BASE_URL}/menu/participants`
+            `${import.meta.env.VITE_API_BASE_URL}/menu/participants`,
+            {
+              withCredentials: true,
+            }
           );
           setData(data.participants); // backend returns populated participants
         }

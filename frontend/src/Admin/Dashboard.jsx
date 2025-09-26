@@ -17,7 +17,13 @@ export default function Dashboard() {
     const fetchDataForDashboard = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/menu/dashboard`
+          `${import.meta.env.VITE_API_BASE_URL}/menu/dashboard`,{
+            method: "GET",
+            headers:{
+              "Content-Type": "application/json"
+            },
+            credentials: "include"
+          }
         );
         const data = await response.json();
         setHackathonLength(data.hackathonLength);

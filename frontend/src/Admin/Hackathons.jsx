@@ -16,12 +16,16 @@ export default function Hackathons() {
       try {
         if (type === "operating") {
           const { data } = await axios.get(
-            `${import.meta.env.VITE_API_BASE_URL}/menu/hackathons/operating`
+            `${import.meta.env.VITE_API_BASE_URL}/menu/hackathons/operating`,{
+              withCredentials: true,
+            }
           );
           setHackathons(data.hackathons);
         } else if (type === "completed") {
           const { data } = await axios.get(
-            `${import.meta.env.VITE_API_BASE_URL}/menu/hackathons/completed`
+            `${import.meta.env.VITE_API_BASE_URL}/menu/hackathons/completed`,{
+              withCredentials: true,
+            }
           );
           setHackathons(data.hackathons);
         }

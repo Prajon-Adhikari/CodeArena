@@ -1,10 +1,11 @@
 import React from 'react'
 import Menu from '../Admin/Menu'
 
-export default function Admin() {
+export default function Admin({user}) {
   return (
     <div>
-      <Menu/>
+
+      <Menu user={user}/>
     </div>
   )
 }

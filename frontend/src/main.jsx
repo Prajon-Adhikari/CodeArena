@@ -67,7 +67,7 @@ const router = createBrowserRouter(
       <Route
         path="/menu"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute requiredRole="admin">
             <Admin />
           </ProtectedRoute>
         }

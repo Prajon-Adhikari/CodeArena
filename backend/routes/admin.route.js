@@ -1,7 +1,10 @@
 import express from "express";
 import { fechHackathonsForPanel,fetchOperatingHackathons ,fetchHosterForAdmin, fetchJudgesForAdmin, fetchParticipantsForAdmin, fetchUserForAdmin, fetchCompletedHackathons, getOverviewDetailsForAdmin } from "../controllers/admin.controller.js";
+import { protectRoute, authorizeRole } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
+
+router.use(protectRoute, authorizeRole("admin"));
 
 router.get("/dashboard", fechHackathonsForPanel);
 

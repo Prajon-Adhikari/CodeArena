@@ -36,7 +36,7 @@ export const signup = async (req, res) => {
     });
 
     if (newUser) {
-      generateToken(newUser._id, res);
+      generateToken(newUser, res);
       await newUser.save();
 
       res.status(200).json({
@@ -75,7 +75,7 @@ export const signin = async (req, res) => {
       return res.status(400).json({ message: "Incorrect password" });
     }
 
-    generateToken(user._id, res);
+    generateToken(user, res);
 
     res.status(200).json({
       _id: user._id,
