@@ -47,11 +47,12 @@ import AdminRules from "./Admin/AdminRules.jsx";
 import AdminPrizes from "./Admin/AdminPrizes.jsx";
 import AdminJudges from "./Admin/AdminJudges.jsx";
 import AdminSpecificProject from "./Admin/AdminSpecificProject.jsx";
+import ProtectedRoute from "./AuthLayout/ProtectedRoute.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      {/* Auth routes without navbar/footer */}
+      {/* Auth routes (public) */}
       <Route element={<AuthLayout />}>
         <Route path="api/auth/signin" element={<Signin />} />
         <Route path="api/auth/signup" element={<Signup />} />
@@ -61,28 +62,79 @@ const router = createBrowserRouter(
           element={<ResetPassword />}
         />
       </Route>
-      <Route path="/menu" element={<Admin />}>
-        <Route index element={<Navigate to="menu/dashboard" />} />
+
+      {/* Admin routes (protected) */}
+      <Route
+        path="/menu"
+        element={
+          <ProtectedRoute>
+            <Admin />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<Navigate to="dashboard" />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="users" element={<Users />} />
         <Route path="hackathons" element={<Hackathons />} />
         <Route path="setting" element={<Setting />} />
         <Route path=":id/admin/overview" element={<AdminOverview />} />
         <Route path=":id/admin/myproject" element={<AdminProject />} />
-        <Route path="project/:id" element={<AdminSpecificProject/>}/>
+        <Route path="project/:id" element={<AdminSpecificProject />} />
         <Route path=":id/admin/rules" element={<AdminRules />} />
         <Route path=":id/admin/prizes" element={<AdminPrizes />} />
         <Route path=":id/admin/judges" element={<AdminJudges />} />
       </Route>
 
-      {/* App routes with navbar/footer */}
-      <Route path="/" element={<App />}>
+      {/* App routes (some protected, some public) */}
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <App />
+          </ProtectedRoute>
+        }
+      >
         <Route index element={<Home />} />
+
+        {/* protected user routes */}
+        <Route
+          path="myjoinedhackathon"
+          element={
+            <ProtectedRoute>
+              <MyJoinedHackathon />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="myhostedhackathon"
+          element={
+            <ProtectedRoute>
+              <MyHostedHackathon />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="myjudgedhackathon"
+          element={
+            <ProtectedRoute>
+              <MyJudgedHackathon />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="portfolio" />
+        </Route>
+
+        {/* public routes */}
         <Route path="join/hackathon" element={<JoinHackathon />} />
         <Route path="hackathon" element={<HostHackathon />} />
-        <Route path="myjoinedhackathon" element={<MyJoinedHackathon />} />
-        <Route path="myhostedhackathon" element={<MyHostedHackathon />} />
-        <Route path="myjudgedhackathon" element={<MyJudgedHackathon />} />
         <Route path=":id/overview" element={<Overview />} />
         <Route path=":id/myproject" element={<Project />} />
         <Route path="project/:id" element={<SpecificProject />} />
@@ -90,9 +142,6 @@ const router = createBrowserRouter(
         <Route path=":id/prizes" element={<Prizes />} />
         <Route path=":id/judges" element={<Judges />} />
         <Route path="host/hackathon" element={<Hosting />} />
-        <Route path="profile" element={<Profile />}>
-          <Route path="portfolio" /> {/* nested, no element */}
-        </Route>
         <Route path="profile/:id" element={<SpecificPortfolioProject />} />
         <Route path="/:id/profile" element={<SearchProfile />} />
         <Route path="blog" element={<BlogPage />} />
