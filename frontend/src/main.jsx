@@ -48,6 +48,7 @@ import AdminPrizes from "./Admin/AdminPrizes.jsx";
 import AdminJudges from "./Admin/AdminJudges.jsx";
 import AdminSpecificProject from "./Admin/AdminSpecificProject.jsx";
 import ProtectedRoute from "./AuthLayout/ProtectedRoute.jsx";
+import PageNotFound from "./Pages/PageNotFound.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -150,6 +151,7 @@ const router = createBrowserRouter(
         <Route path="message" element={<Message />} />
         <Route path="contact" element={<Contact />} />
       </Route>
+       <Route path="*" element={<PageNotFound />} />
     </>
   )
 );
