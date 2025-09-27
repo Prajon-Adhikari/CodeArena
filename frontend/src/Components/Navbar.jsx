@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -20,7 +20,8 @@ const Navbar = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
 
-  const isHostPage = pathname === "/hackathon";
+  const notificationsRef = useRef(null);
+  const profileRef = useRef(null);
 
   const navigate = useNavigate();
 
@@ -143,6 +144,23 @@ const Navbar = () => {
     };
 
     fetchNotifications();
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        notificationsRef.current &&
+        !notificationsRef.current.contains(event.target)
+      ) {
+        setShowNotifications(false);
+      }
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setShowProfileMenu(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleLogout = async () => {
@@ -337,7 +355,7 @@ const Navbar = () => {
               )}
           </div>
 
-          <div className="relative">
+          <div className="relative" ref={notificationsRef}>
             <FontAwesomeIcon
               icon={faBell}
               className="text-gray-400 text-2xl cursor-pointer"
@@ -432,7 +450,7 @@ const Navbar = () => {
           {/* Right Side: Auth / Profile */}
           <div className="flex items-center gap-4 ">
             {user?.fullName ? (
-              <div className="relative">
+              <div className="relative" ref={profileRef}>
                 <div
                   onClick={() => setShowProfileMenu(!showProfileMenu)}
                   className="w-[40px] h-[40px] rounded-full bg-indigo-900 text-white flex items-center justify-center font-bold cursor-pointer"
@@ -449,16 +467,19 @@ const Navbar = () => {
                 </div>
 
                 {showProfileMenu && (
-                  <div className="absolute right-0 mt-2 w-40 bg-white border rounded shadow-md">
+                  <div className="absolute right-0 mt-2 w-40  bg-white border rounded shadow-md">
                     <button
-                      onClick={() => navigate("/profile")}
-                      className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                      onClick={() => {
+                        setShowProfileMenu(false);
+                        navigate("/profile");
+                      }}
+                      className="block w-full text-left cursor-pointer px-4 py-2 hover:bg-gray-100"
                     >
                       Profile
                     </button>
                     <button
                       onClick={handleLogout}
-                      className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                      className="block w-full text-left cursor-pointer px-4 py-2 hover:bg-gray-100"
                     >
                       Logout
                     </button>
