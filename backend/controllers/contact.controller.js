@@ -25,3 +25,15 @@ export const submitContact = async (req, res) =>{
         return res.status(500).json({message: "Internal error while saving contact message"});
     }
 }
+
+export const getContacts = async (req, res) => {
+  try {
+    // fetch all contact messages sorted by newest first
+    const contacts = await Contact.find().sort({ createdAt: -1 });
+
+    return res.status(200).json(contacts);
+  } catch (error) {
+    console.error("Error fetching contacts:", error);
+    return res.status(500).json({ message: "Internal server error while fetching contacts" });
+  }
+};

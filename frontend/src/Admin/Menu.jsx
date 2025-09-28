@@ -6,6 +6,7 @@ import { HiOutlineSpeakerphone } from "react-icons/hi";
 import { PiUsersThreeFill } from "react-icons/pi";
 import { MdLogout } from "react-icons/md";
 import { IoSettingsSharp } from "react-icons/io5";
+import { RiContactsBookFill } from "react-icons/ri";
 
 export default function Menu({ user }) {
   const location = useLocation();
@@ -69,6 +70,16 @@ export default function Menu({ user }) {
                 </div>
               </Link>
               <Link
+                to="/menu/contact"
+                className={`w-full pl-10 py-1 menu-elements ${
+                  isActive("/menu/contact") ? "active-element" : ""
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <RiContactsBookFill /> Contact
+                </div>
+              </Link>
+              <Link
                 to="/menu/setting"
                 className={`w-full pl-10 py-1 menu-elements ${
                   isActive("/menu/setting") ? "active-element" : ""
@@ -78,6 +89,7 @@ export default function Menu({ user }) {
                   <IoSettingsSharp /> Setting
                 </div>
               </Link>
+
               <Link
                 onClick={handleLogout}
                 className={`w-full pl-10 py-1 menu-elements`}

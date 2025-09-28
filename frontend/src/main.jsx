@@ -49,6 +49,7 @@ import AdminJudges from "./Admin/AdminJudges.jsx";
 import AdminSpecificProject from "./Admin/AdminSpecificProject.jsx";
 import ProtectedRoute from "./AuthLayout/ProtectedRoute.jsx";
 import PageNotFound from "./Pages/PageNotFound.jsx";
+import AdminContact from "./Admin/AdminContact.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -84,6 +85,7 @@ const router = createBrowserRouter(
         <Route path=":id/admin/rules" element={<AdminRules />} />
         <Route path=":id/admin/prizes" element={<AdminPrizes />} />
         <Route path=":id/admin/judges" element={<AdminJudges />} />
+        <Route path="contact" element={<AdminContact/>}/>
       </Route>
 
       {/* App routes (some protected, some public) */}

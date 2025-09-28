@@ -1,6 +1,7 @@
 import express from "express";
 import { fechHackathonsForPanel,fetchOperatingHackathons ,fetchHosterForAdmin, fetchJudgesForAdmin, fetchParticipantsForAdmin, fetchUserForAdmin, fetchCompletedHackathons, getOverviewDetailsForAdmin } from "../controllers/admin.controller.js";
 import { protectRoute, authorizeRole } from "../middlewares/auth.middleware.js";
+import { getContacts } from "../controllers/contact.controller.js";
 
 const router = express.Router();
 
@@ -19,6 +20,8 @@ router.get("/participants", fetchParticipantsForAdmin);
 router.get("/hackathons/operating", fetchOperatingHackathons);
 
 router.get("/hackathons/completed", fetchCompletedHackathons);
+
+router.get("/contact", getContacts);
 
 router.get("/:id/admin/overview", getOverviewDetailsForAdmin);
 
