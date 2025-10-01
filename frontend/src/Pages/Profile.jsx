@@ -148,10 +148,6 @@ const Profile = () => {
     }
   };
 
-  if (loading) {
-    return <div className="text-center mt-10 text-gray-500">Loading...</div>;
-  }
-
   const dummyVerifications = ["Email", "Phone", "Identity"];
 
   // Inside your Profile component
@@ -194,6 +190,62 @@ const Profile = () => {
       setSubmitting(false);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="pt-[80px] px-[50px]">
+        {/* Profile Header Skeleton */}
+        <div className="py-10 bg-white rounded-xl px-[80px] mt-[10px] mx-[50px] flex items-center animate-pulse">
+          <div className="flex justify-between w-[800px] pr-10">
+            <div className="flex gap-8">
+              <div className="w-40 h-40 rounded-full bg-gray-300"></div>
+              <div className="pt-4 w-[400px] space-y-4">
+                <div className="h-6 bg-gray-300 rounded w-2/3"></div>
+                <div className="h-4 bg-gray-300 rounded w-1/2"></div>
+                <div className="h-4 bg-gray-300 rounded w-1/3"></div>
+                <div className="h-4 bg-gray-300 rounded w-20 mt-4"></div>
+              </div>
+            </div>
+            <div className="pt-4">
+              <div className="h-10 w-32 bg-gray-300 rounded-2xl"></div>
+            </div>
+          </div>
+          <div className="border-l-2 border-gray-200 text-lg px-20">
+            <div className="h-4 bg-gray-300 w-32 rounded mb-3"></div>
+            <div className="h-4 bg-gray-300 w-24 rounded mb-3"></div>
+            <div className="h-4 bg-gray-300 w-40 rounded"></div>
+          </div>
+        </div>
+
+        {/* Skills + Portfolio Skeleton */}
+        <div className="grid md:grid-cols-3 gap-3 mt-3 px-[50px] pb-10">
+          {/* Left Sidebar */}
+          <div className="col-span-1 bg-white py-6 px-8 rounded-2xl animate-pulse space-y-4">
+            <div className="h-6 w-24 bg-gray-300 rounded"></div>
+            <div className="flex gap-2 flex-wrap">
+              <div className="h-6 w-16 bg-gray-300 rounded-full"></div>
+              <div className="h-6 w-20 bg-gray-300 rounded-full"></div>
+            </div>
+            <div className="h-6 w-32 bg-gray-300 rounded mt-6"></div>
+            <div className="flex gap-4 mt-2">
+              <div className="h-8 w-8 bg-gray-300 rounded-full"></div>
+              <div className="h-8 w-8 bg-gray-300 rounded-full"></div>
+            </div>
+          </div>
+
+          {/* Portfolio Section */}
+          <div className="bg-white rounded-2xl w-[945px] px-8 py-6 animate-pulse">
+            <div className="h-6 w-32 bg-gray-300 rounded mb-4"></div>
+            <div className="grid grid-cols-3 gap-10">
+              <div className="h-[280px] bg-gray-300 rounded-lg"></div>
+              <div className="h-[280px] bg-gray-300 rounded-lg"></div>
+              <div className="h-[280px] bg-gray-300 rounded-lg"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gray-100 pt-[80px] text-[#2B2C34] pb-10 relative">

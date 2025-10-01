@@ -37,6 +37,8 @@ export default function home() {
   const [themeCounts, setThemeCounts] = useState({});
   const hasTyped = useRef(false); // Prevents double typing
 
+  const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -83,6 +85,7 @@ export default function home() {
   useEffect(() => {
     const fetchHackathons = async () => {
       try {
+        setLoading(true);
         const response = await fetch(
           `${import.meta.env.VITE_API_BASE_URL}/home`,
           {
@@ -98,6 +101,8 @@ export default function home() {
         setThemeCounts(data.themeCounts || {});
       } catch (error) {
         console.log("Error while fetching hackathon tournaments", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchHackathons();
@@ -211,7 +216,7 @@ export default function home() {
             return (
               <Link to={`/${hackathon._id}/overview`}>
                 <div
-                  key={hackathon._id|| ""}
+                  key={hackathon._id || ""}
                   className="group relative bg-transparent pr-[50px] py-[2px] w-[700px] h-[250px] mb-6 overflow-hidden"
                 >
                   {/* Animated Background Layer */}
@@ -230,7 +235,7 @@ export default function home() {
                       />
                       <div className="w-[500px]">
                         <h2 className="text-[22px] font-semibold h-[100px]">
-                          {hackathon.title|| ""}
+                          {hackathon.title || ""}
                         </h2>
                         <div className="flex justify-between pr-10 py-3">
                           <p className="text-lg text-gray-500">
@@ -244,7 +249,9 @@ export default function home() {
                           <p className="text-lg text-gray-500">
                             Ends:{" "}
                             <span className="text-black">
-                              {new Date(hackathon.endDate|| "").toLocaleDateString()}
+                              {new Date(
+                                hackathon.endDate || ""
+                              ).toLocaleDateString()}
                             </span>
                           </p>
                         </div>
@@ -254,7 +261,7 @@ export default function home() {
                             <span className="text-black">
                               {new Date(
                                 hackathon.registrationDeadline
-                              ).toLocaleDateString()|| ""}
+                              ).toLocaleDateString() || ""}
                             </span>
                           </p>
                           <p className="text-lg">
@@ -263,7 +270,7 @@ export default function home() {
                               className="text-gray-500"
                             />
                             <span className="ml-2 capitalize">
-                              {hackathon.mode|| ""}
+                              {hackathon.mode || ""}
                             </span>
                           </p>
                         </div>
