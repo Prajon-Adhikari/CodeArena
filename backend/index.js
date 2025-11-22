@@ -14,10 +14,16 @@ import adminRoutes from "./routes/admin.route.js";
 dotenv.config();
 const app = express();
 const server = createServer(app); // create http server
+
+const allowedOrigins = [
+  "http://localhost:5173", // your local frontend port
+  "https://code-arena-bay.vercel.app", // your deployed frontend
+];
+
 const io = new Server(server, {
   cors: {
     origin: (origin, callback) => {
-      if (!origin || origin.startsWith("http://localhost:")) {
+      if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
